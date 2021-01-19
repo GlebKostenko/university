@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 public class Schedule {
     private Group group;
     private LocalDateTime dateTime;
-    private String duration;
+    private int duration;
     private Teacher teacher;
     private LectureHall lectureHall;
     private Subject subject;
 
-    public Schedule(Group group, LocalDateTime dateTime, String duration, Teacher teacher, LectureHall lectureHall, Subject subject) {
+    public Schedule(Group group, LocalDateTime dateTime, int duration, Teacher teacher, LectureHall lectureHall, Subject subject) {
         this.group = group;
         this.dateTime = dateTime;
         this.duration = duration;
@@ -27,7 +27,7 @@ public class Schedule {
         return dateTime;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
