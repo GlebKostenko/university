@@ -3,7 +3,7 @@ package com.foxminded.model;
 import java.util.List;
 
 public class Teacher {
-    private long teacherId;
+    private Long teacherId;
     private String firstName;
     private String lastName;
 

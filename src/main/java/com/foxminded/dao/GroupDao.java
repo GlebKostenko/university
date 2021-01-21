@@ -1,8 +1,12 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Group;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -12,23 +16,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDao implements GroupCRUD{
-    private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringJdbcConfig.class);
-    private DataSource dataSource = context.getBean("postgresDataSource",DataSource.class);
+@Repository
+public class GroupDao implements Dao<Group> {
+    @Autowired
+    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
     @Override
-    public void save(String groupName){
-        jdbcTemplate.update("INSERT INTO groups(group_name) VALUES ?",groupName);
-    }
-
-    @Override
-    public Group findById(int groupId) throws SQLException{
+    public Group save(Group group) throws SQLException{
+        jdbcTemplate.update("INSERT INTO groups(group_name) VALUES ?", group.getGroupName());
         PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement("SELECT group_id,group_name FROM groups WHERE group_id =?");
-        preparedStatement.setInt(1,groupId);
+                .prepareStatement("SELECT group_id,group_name FROM groups WHERE group_name =?");
+        preparedStatement.setString(1,group.getGroupName());
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
-        return new Group(resultSet.getInt(1),resultSet.getString(2));
+        return new Group(resultSet.getLong(1),resultSet.getString(2));
+    }
+    @Override
+    public Group findById(Group group) throws SQLException{
+        PreparedStatement preparedStatement = dataSource.getConnection()
+                .prepareStatement("SELECT group_id,group_name FROM groups WHERE group_id =?");
+        preparedStatement.setLong(1,group.getGroupId());
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return new Group(resultSet.getLong(1),resultSet.getString(2));
     }
 
     @Override
@@ -37,18 +47,18 @@ public class GroupDao implements GroupCRUD{
         ResultSet resultSet = statement.executeQuery("SELECT group_id,group_name FROM groups");
         List<Group> groups = new ArrayList<>();
         while(resultSet.next()){
-            groups.add(new Group(resultSet.getInt(1),resultSet.getString(2)));
+            groups.add(new Group(resultSet.getLong(1),resultSet.getString(2)));
         }
         return groups;
     }
 
     @Override
-    public void update(int groupId, String groupName) {
-        jdbcTemplate.update("UPDATE groups SET group_name = ? WHERE group_id = ?",groupName,groupId);
+    public void update(Long groupId,Group group) {
+        jdbcTemplate.update("UPDATE groups SET group_name = ? WHERE group_id = ?",group.getGroupName(),groupId);
     }
 
     @Override
-    public void delete(int groupId) {
-        jdbcTemplate.update("DELETE FROM groups WHERE group_id = ?",groupId);
+    public void delete(Group group) {
+        jdbcTemplate.update("DELETE FROM groups WHERE group_id = ?",group.getGroupId());
     }
 }

@@ -1,4 +1,4 @@
-package com.foxminded.dao;
+package com.foxminded.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,10 +8,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
-import java.net.URL;
 
 @Configuration
-@ComponentScan("com.foxminded.dao")
+@ComponentScan("com.foxminded.configuration")
 @PropertySource("classpath:application.properties")
 public class SpringJdbcConfig {
     @Value("${url}")

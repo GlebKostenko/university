@@ -1,9 +1,9 @@
 package com.foxminded.model;
 
 public class Subject {
-    private long subjectId;
+    private Long subjectId;
     private String subjectName;
-    public Subject(long subjectId,String subjectName){
+    public Subject(Long subjectId,String subjectName){
         this.subjectId = subjectId;
         this.subjectName = subjectName;
     }

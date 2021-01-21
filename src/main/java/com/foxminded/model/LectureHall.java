@@ -1,9 +1,9 @@
 package com.foxminded.model;
 
 public class LectureHall {
-    private long hallId;
+    private Long hallId;
     private String hallName;
-    public LectureHall(long hallId, String hallName){
+    public LectureHall(Long hallId, String hallName){
         this.hallId = hallId;
         this.hallName = hallName;
     }
