@@ -1,19 +1,20 @@
 package com.foxminded.model;
 
-import java.util.List;
 
 public class Group {
     private long groupId;
-    private List<Student> students;
-    public Group(long groupId, List<Student> students){
+    private String groupName;
+
+    public Group(long groupId,String groupName){
         this.groupId = groupId;
-        this.students = students;
+        this.groupName = groupName;
     }
-    public long getGroupId(){
+
+    public long getGroupId() {
         return groupId;
     }
 
-    public List<Student> getStudents(){
-        return students;
+    public String getGroupName() {
+        return groupName;
     }
 }
