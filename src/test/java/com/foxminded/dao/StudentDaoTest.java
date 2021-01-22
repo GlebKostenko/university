@@ -1,85 +1,78 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfig;
+import com.foxminded.configuration.SpringJdbcConfigTest;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
-import org.apache.ibatis.jdbc.ScriptRunner;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.Reader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfig.class,StudentDao.class})
+@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class StudentDaoTest {
-    @Autowired
     private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
     @Autowired
     private StudentDao studentDao;
-    @BeforeEach
-    void createTables(){
-        String aSQLScriptFilePath = "/home/gleb/IdeaProjects/university/src/test/resources/creating_scripts.sql";
-
-        try {
-            ScriptRunner sr = new ScriptRunner(dataSource.getConnection());
-            Reader reader = new BufferedReader(
-                    new FileReader(aSQLScriptFilePath));
-            sr.runScript(reader);
-        } catch (Exception e) {
-            System.err.println("Failed to Execute" + aSQLScriptFilePath
-                    + " The error is " + e.getMessage());
-        }
+    @Autowired
+    private GroupDao groupDao;
+    @Autowired
+    StudentDaoTest(DataSource dataSource){
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.dataSource = dataSource;
     }
     @Test
     void save() throws SQLException {
-        Student student = studentDao.save(new Student("Ivan","Ivanov",new Group(1L)));
-        PreparedStatement preparedStatement = dataSource.getConnection()
-                .prepareStatement("SELECT COUNT(1) FROM students WHERE student_id = ?");
-        preparedStatement.setLong(1,student.getStudentId());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        assertTrue(resultSet.getInt(1) > 0);
+        Group group = groupDao.save(new Group("fakt-06"));
+        Student student = studentDao.save(new Student("Ivan","Ivanov",new Group(group.getGroupId())));
+        int numberOfStudent = jdbcTemplate.queryForObject("SELECT COUNT(1) FROM students WHERE student_id = ?"
+                ,new Object[]{student.getStudentId()}
+                ,Integer.class);
+        assertTrue(numberOfStudent > 0);
     }
 
     @Test
     void findById() throws SQLException{
-        Student student = studentDao.save(new Student("Ivan","Ivanov",new Group(1L)));
-        Student studentForFind = new Student(1L);
-        assertEquals(student,studentDao.findById(studentForFind));
+        Group group = groupDao.save(new Group("fivt-07"));
+        Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
+        assertEquals(student,studentDao.findById(new Student(student.getStudentId())));
     }
 
     @Test
     void findAll() throws SQLException{
-        List<Student> students = new ArrayList<>();
-        students.add(studentDao.save(new Student("Ivan","Ivanov",new Group(1L))));
-        assertEquals(students,studentDao.findAll());
+        Group group = groupDao.save(new Group("fivt-03"));
+        Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
+        assertTrue(!studentDao.findAll().isEmpty());
     }
 
     @Test
     void update() throws SQLException{
-        studentDao.save(new Student("Ivan","Ivanov",new Group(1L)));
-        Student student = new Student("Victor","Victorov",new Group(2L));
-        studentDao.update(1L,student);
-        assertEquals("Victor",studentDao.findById(new Student(1L)).getFirstName());
+        Group group = groupDao.save(new Group("fivt-01"));
+        Group groupNew = groupDao.save(new Group("fopf-04"));
+        Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
+        Student studentNew = new Student("Ivan","Ivanov",new Group(groupNew.getGroupId()));
+        studentDao.update(student.getStudentId(),studentNew);
+        Student updatedStudent = new Student(student.getStudentId(),studentNew.getFirstName(),studentNew.getLastName(),groupNew);
+        assertEquals(updatedStudent,studentDao.findById(student));
     }
 
     @Test
     void delete() throws SQLException{
-        studentDao.save(new Student("Ivan","Ivanov",new Group(1L)));
-        studentDao.delete(new Student(1L));
+        Group group = groupDao.save(new Group("fivt-02"));
+        Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
+        studentDao.delete(new Student(student.getStudentId()));
         assertTrue(studentDao.findAll().isEmpty());
     }
 }

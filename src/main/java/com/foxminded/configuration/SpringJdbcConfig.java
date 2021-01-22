@@ -10,7 +10,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("com.foxminded.configuration")
 @PropertySource("classpath:application.properties")
 public class SpringJdbcConfig {
     @Value("${url}")

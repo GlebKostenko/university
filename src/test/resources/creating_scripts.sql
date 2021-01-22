@@ -1,6 +1,6 @@
 -- create database university;
-create user root with password 'root';
-alter user root with superuser;
+-- create user root  password 'root';
+-- alter user root ADMIN TRUE ;
 create table groups(
     group_id serial primary key,
     group_name varchar(255)
@@ -9,7 +9,7 @@ create table students(
     student_id serial primary key ,
     first_name varchar(255),
     last_name varchar(255),
-    group_id integer references groups(group_id)
+    group_id bigint
 );
 create table teachers(
     teacher_id serial primary key,
@@ -25,10 +25,10 @@ create table lecture_halls(
      subject_name varchar(255)
  );
 create table schedules(
-    group_id integer references groups(group_id),
+    group_id bigint,
     date_time timestamp,
     duration int,
-    teacher_id integer references teachers(teacher_id),
-    lecture_hall integer references lecture_halls(hall_id),
-    subject integer references subjects(subject_id)
+    teacher_id bigint,
+    lecture_hall_id bigint,
+    subject_id bigint
 );

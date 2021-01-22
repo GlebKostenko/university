@@ -1,5 +1,7 @@
 package com.foxminded.model;
 
+import java.util.Objects;
+
 public class Student {
     private Long studentId;
     private String firstName;
@@ -37,5 +39,18 @@ public class Student {
 
     public Group getGroup(){
         return group;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(studentId, student.studentId) && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName) && Objects.equals(group, student.group);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studentId, firstName, lastName, group);
     }
 }
