@@ -11,18 +11,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class StudentDaoTest {
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private StudentDao studentDao;
@@ -31,7 +26,6 @@ class StudentDaoTest {
     @Autowired
     StudentDaoTest(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
-        this.dataSource = dataSource;
     }
     @Test
     void save() throws SQLException {

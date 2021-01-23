@@ -25,10 +25,11 @@ create table lecture_halls(
      subject_name varchar(255)
  );
 create table schedules(
+    schedule_id serial primary key,
     group_id bigint,
     date_time timestamp,
     duration int,
     teacher_id bigint,
-    lecture_hall_id bigint,
+    hall_id bigint,
     subject_id bigint
 );

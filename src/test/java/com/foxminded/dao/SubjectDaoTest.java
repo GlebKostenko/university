@@ -20,14 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class SubjectDaoTest {
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
     @Autowired
     SubjectDao subjectDao;
     @Autowired
     SubjectDaoTest(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
-        this.dataSource = dataSource;
     }
     @Test
     void save() throws SQLException {
