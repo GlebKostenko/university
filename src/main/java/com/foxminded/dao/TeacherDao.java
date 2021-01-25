@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +31,8 @@ public class TeacherDao implements Dao<Teacher>{
                 .withTableName("teachers")
                 .usingGeneratedKeyColumns("teacher_id")
                 .executeAndReturnKey(parameters).longValue();
-        return new Teacher(id,teacher.getFirstName(),teacher.getLastName());
+        teacher.setTeacherId(id);
+        return teacher;
     }
 
     @Override
@@ -52,8 +50,11 @@ public class TeacherDao implements Dao<Teacher>{
     }
 
     @Override
-    public void update(Long teacherId, Teacher teacher) {
-        jdbcTemplate.update("UPDATE teachers SET first_name = ?,last_name = ? WHERE teacher_id = ?",teacher.getFirstName(),teacher.getLastName(),teacherId);
+    public void update(Teacher teacher) {
+        jdbcTemplate.update("UPDATE teachers SET first_name = ?,last_name = ? WHERE teacher_id = ?"
+                ,teacher.getFirstName()
+                ,teacher.getLastName()
+                ,teacher.getTeacherId());
     }
 
     @Override

@@ -7,6 +7,6 @@ public interface Dao<T> {
     T save(T t) throws SQLException;
     T findById(T t) throws SQLException;
     List<?> findAll() throws SQLException;
-    void update(Long id,T t);
+    void update(T t);
     void delete(T t);
 }

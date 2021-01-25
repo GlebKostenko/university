@@ -108,7 +108,7 @@ public class ScheduleDao implements Dao<Schedule>{
     }
 
     @Override
-    public void update(Long scheduleId, Schedule schedule) {
+    public void update(Schedule schedule) {
         jdbcTemplate.update("UPDATE schedules SET group_id = ?" +
                 ",date_time = ?" +
                 ",duration = ?" +
@@ -122,7 +122,7 @@ public class ScheduleDao implements Dao<Schedule>{
                 ,schedule.getTeacher().getTeacherId()
                 ,schedule.getLectureHall().getHallId()
                 ,schedule.getSubject().getSubjectId()
-                ,scheduleId
+                ,schedule.getScheduleId()
         );
     }
 

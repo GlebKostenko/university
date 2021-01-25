@@ -31,7 +31,8 @@ public class GroupDao implements Dao<Group> {
                 .withTableName("groups")
                 .usingGeneratedKeyColumns("group_id")
                 .executeAndReturnKey(parameters).longValue();
-        return new Group(id,group.getGroupName());
+        group.setGroupId(id);
+        return group;
     }
     @Override
     public Group findById(Group group) throws SQLException{
@@ -48,8 +49,10 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public void update(Long groupId,Group group) {
-        jdbcTemplate.update("UPDATE groups SET group_name = ? WHERE group_id = ?",group.getGroupName(),groupId);
+    public void update(Group group) {
+        jdbcTemplate.update("UPDATE groups SET group_name = ? WHERE group_id = ?"
+                ,group.getGroupName()
+                ,group.getGroupId());
     }
 
     @Override

@@ -4,12 +4,9 @@ import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -71,12 +68,12 @@ public class StudentDao implements Dao<Student>{
     }
 
     @Override
-    public void update(Long studentId, Student student) {
+    public void update(Student student) {
         jdbcTemplate.update("UPDATE students SET first_name = ?,last_name = ?,group_id = ? WHERE student_id = ?",
                 student.getFirstName(),
                 student.getLastName(),
                 student.getGroup().getGroupId(),
-                studentId);
+                student.getStudentId());
     }
 
     @Override

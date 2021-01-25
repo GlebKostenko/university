@@ -5,11 +5,9 @@ import com.foxminded.model.Teacher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,19 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class TeacherDaoTest {
-    private JdbcTemplate jdbcTemplate;
     @Autowired
     TeacherDao teacherDao;
-    @Autowired
-    TeacherDaoTest(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
     @Test
     void save() throws SQLException {
         Teacher teacher = teacherDao.save(new Teacher("Ivan","Ivanov"));
-        int numberOfTeacher = jdbcTemplate.queryForObject("SELECT COUNT(1) FROM teachers WHERE teacher_id = ?"
-                ,new Object[]{teacher.getTeacherId()},Integer.class);
-        assertTrue(numberOfTeacher > 0);
+        assertEquals(teacher,teacherDao.findById(new Teacher(teacher.getTeacherId())));
     }
 
     @Test
@@ -47,8 +38,8 @@ class TeacherDaoTest {
     @Test
     void update() throws SQLException {
         Teacher teacher = teacherDao.save(new Teacher("Alexander","Alexandrov"));
-        Teacher teacherNew = new Teacher("Lev","Landau");
-        teacherDao.update(teacher.getTeacherId(),teacherNew);
+        Teacher teacherNew = new Teacher(teacher.getTeacherId(),"Lev","Landau");
+        teacherDao.update(teacherNew);
         Teacher updatedTeacher = new Teacher(teacher.getTeacherId(),"Lev","Landau");
         assertEquals(updatedTeacher,teacherDao.findById(new Teacher(teacher.getTeacherId())));
     }

@@ -5,11 +5,9 @@ import com.foxminded.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -19,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class ScheduleDaoTest {
-    private JdbcTemplate jdbcTemplate;
     @Autowired
     ScheduleDao scheduleDao;
     @Autowired
@@ -32,10 +29,6 @@ class ScheduleDaoTest {
     SubjectDao subjectDao;
     @Autowired
     TeacherDao teacherDao;
-    @Autowired
-    ScheduleDaoTest(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
     @Test
     void save() throws SQLException {
         Group group = groupDao.save(new Group("fupm-06"));
@@ -50,10 +43,7 @@ class ScheduleDaoTest {
                 ,new LectureHall(lectureHall.getHallId())
                 ,new Subject(subject.getSubjectId()))
         );
-        int numberOdSchedule = jdbcTemplate.queryForObject("SELECT COUNT(1) FROM schedules WHERE schedule_id = ?"
-                ,new Object[]{schedule.getScheduleId()}
-                ,Integer.class);
-        assertTrue(numberOdSchedule > 0);
+        assertEquals(schedule,scheduleDao.findById(new Schedule(schedule.getScheduleId())));
     }
 
     @Test
@@ -110,7 +100,7 @@ class ScheduleDaoTest {
                 ,new LectureHall(lectureHall.getHallId())
                 ,new Subject(subject.getSubjectId()))
         );
-        Schedule scheduleNew = new Schedule(new Group(groupNew.getGroupId())
+        Schedule scheduleNew = new Schedule(schedule.getScheduleId(),new Group(groupNew.getGroupId())
                 ,localDateTimeNew
                 ,3600
                 ,new Teacher(teacherNew.getTeacherId())
@@ -125,7 +115,7 @@ class ScheduleDaoTest {
                 ,lectureHallNew
                 ,subjectNew
         );
-        scheduleDao.update(schedule.getScheduleId(),scheduleNew);
+        scheduleDao.update(scheduleNew);
         Schedule schedule1 = scheduleDao.findById(new Schedule(schedule.getScheduleId()));
         assertEquals(updatedSchedule,scheduleDao.findById(new Schedule(schedule.getScheduleId())));
     }

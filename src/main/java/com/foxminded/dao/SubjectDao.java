@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +29,8 @@ public class SubjectDao implements Dao<Subject>{
                 .withTableName("subjects")
                 .usingGeneratedKeyColumns("subject_id")
                 .executeAndReturnKey(parameters).longValue();
-        return new Subject(id,subject.getSubjectName());
+        subject.setSubjectId(id);
+        return subject;
     }
 
     @Override
@@ -50,8 +48,10 @@ public class SubjectDao implements Dao<Subject>{
     }
 
     @Override
-    public void update(Long subjectId, Subject subject) {
-        jdbcTemplate.update("UPDATE subjects SET subject_name = ? WHERE subject_id = ?",subject.getSubjectName(),subjectId);
+    public void update(Subject subject) {
+        jdbcTemplate.update("UPDATE subjects SET subject_name = ? WHERE subject_id = ?"
+                ,subject.getSubjectName()
+                ,subject.getSubjectId());
     }
 
     @Override

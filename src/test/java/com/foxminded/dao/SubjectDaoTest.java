@@ -5,31 +5,21 @@ import com.foxminded.model.Subject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class SubjectDaoTest {
-    private JdbcTemplate jdbcTemplate;
     @Autowired
     SubjectDao subjectDao;
-    @Autowired
-    SubjectDaoTest(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
     @Test
     void save() throws SQLException {
         Subject subject = subjectDao.save(new Subject("Math"));
-        int numberOfSubject = jdbcTemplate.queryForObject("SELECT COUNT(1) FROM subjects WHERE subject_id = ?"
-                ,new Object[]{subject.getSubjectId()}
-                ,Integer.class);
-        assertTrue(numberOfSubject > 0);
+        assertEquals(subject,subjectDao.findById(new Subject(subject.getSubjectId())));
     }
 
     @Test
@@ -47,8 +37,8 @@ class SubjectDaoTest {
     @Test
     void update() throws SQLException{
         Subject subject = subjectDao.save(new Subject("Design"));
-        Subject subjectNew = new Subject("Programming");
-        subjectDao.update(subject.getSubjectId(),subjectNew);
+        Subject subjectNew = new Subject(subject.getSubjectId(),"Programming");
+        subjectDao.update(subjectNew);
         Subject updatedSubject = new Subject(subject.getSubjectId(),"Programming");
         assertEquals(updatedSubject,subjectDao.findById(new Subject(subject.getSubjectId())));
     }
