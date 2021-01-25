@@ -35,6 +35,36 @@ public class Schedule {
         this.scheduleId = scheduleId;
     }
 
+    public Schedule(){}
+
+    public void setScheduleId(Long scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public void setLectureHall(LectureHall lectureHall) {
+        this.lectureHall = lectureHall;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
     public Long getScheduleId() {
         return scheduleId;
     }

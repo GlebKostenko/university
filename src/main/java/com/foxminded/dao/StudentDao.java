@@ -4,11 +4,14 @@ import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class StudentDao implements Dao<Student>{
@@ -20,21 +23,16 @@ public class StudentDao implements Dao<Student>{
     }
     @Override
     public Student save(Student student) throws SQLException {
-        jdbcTemplate.update("INSERT INTO students(first_name,last_name,group_id) VALUES (?,?,?)",
-                student.getFirstName(),student.getLastName(),student.getGroup().getGroupId());
-        String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
-                " FROM students st " +
-                "LEFT JOIN groups gr ON gr.group_id = st.group_id " +
-                "WHERE st.first_name = ? AND st.last_name = ? AND gr.group_id =?";
-        return jdbcTemplate.queryForObject(sql
-                ,new Object[]{student.getFirstName(),student.getLastName(),student.getGroup().getGroupId()}
-                ,(rs,rowNum)->
-                new Student(rs.getLong(1)
-                        ,rs.getString(2)
-                        ,rs.getString(3)
-                        ,new Group(rs.getLong(4),rs.getString(5))
-                )
-        );
+        Map<String, Object> parameters = new HashMap<>(3);
+        parameters.put("first_name",student.getFirstName());
+        parameters.put("last_name",student.getLastName());
+        parameters.put("group_id",student.getGroup().getGroupId());
+        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                .withTableName("students")
+                .usingGeneratedKeyColumns("student_id")
+                .executeAndReturnKey(parameters).longValue();
+        student.setStudentId(id);
+        return student;
     }
 
     @Override

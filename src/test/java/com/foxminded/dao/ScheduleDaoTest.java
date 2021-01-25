@@ -43,7 +43,8 @@ class ScheduleDaoTest {
                 ,new LectureHall(lectureHall.getHallId())
                 ,new Subject(subject.getSubjectId()))
         );
-        assertEquals(schedule,scheduleDao.findById(new Schedule(schedule.getScheduleId())));
+        assertEquals(schedule.getGroup().getGroupId()
+                ,scheduleDao.findById(new Schedule(schedule.getScheduleId())).getGroup().getGroupId());
     }
 
     @Test
@@ -60,7 +61,7 @@ class ScheduleDaoTest {
                 ,new LectureHall(lectureHall.getHallId())
                 ,new Subject(subject.getSubjectId()))
         );
-        assertEquals(schedule,scheduleDao.findById(new Schedule(schedule.getScheduleId())));
+        assertEquals(schedule.getDuration(),scheduleDao.findById(new Schedule(schedule.getScheduleId())).getDuration());
 
     }
 

@@ -24,14 +24,16 @@ class StudentDaoTest {
     void save() throws SQLException {
         Group group = groupDao.save(new Group("fakt-06"));
         Student student = studentDao.save(new Student("Ivan","Ivanov",new Group(group.getGroupId())));
-        assertEquals(student,studentDao.findById(new Student(student.getStudentId())));
+        assertEquals(student.getGroup().getGroupId()
+                ,studentDao.findById(new Student(student.getStudentId())).getGroup().getGroupId());
     }
 
     @Test
     void findById() throws SQLException{
         Group group = groupDao.save(new Group("fivt-07"));
         Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
-        assertEquals(student,studentDao.findById(new Student(student.getStudentId())));
+        assertEquals(student.getFirstName()
+                ,studentDao.findById(new Student(student.getStudentId())).getFirstName());
     }
 
     @Test
