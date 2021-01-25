@@ -4,6 +4,7 @@ import com.foxminded.model.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public class SubjectDao implements Dao<Subject>{
     private JdbcTemplate jdbcTemplate;
@@ -22,14 +26,13 @@ public class SubjectDao implements Dao<Subject>{
     }
     @Override
     public Subject save(Subject subject) throws SQLException {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO subjects(subject_name) VALUES ?",new String[]{"subject_id"});
-            ps.setString(1, subject.getSubjectName());
-            return ps;
-        },keyHolder);
-        return new Subject(keyHolder.getKey().longValue(),subject.getSubjectName());
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("subject_name",subject.getSubjectName());
+        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                .withTableName("subjects")
+                .usingGeneratedKeyColumns("subject_id")
+                .executeAndReturnKey(parameters).longValue();
+        return new Subject(id,subject.getSubjectName());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.foxminded.model.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class GroupDao implements Dao<Group> {
@@ -22,14 +25,13 @@ public class GroupDao implements Dao<Group> {
     }
     @Override
     public Group save(Group group) throws SQLException{
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO groups(group_name) VALUES ?",new String[]{"group_id"});
-            ps.setString(1,group.getGroupName());
-            return ps;
-        },keyHolder);
-        return new Group( keyHolder.getKey().longValue(),group.getGroupName());
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("group_name",group.getGroupName());
+        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                .withTableName("groups")
+                .usingGeneratedKeyColumns("group_id")
+                .executeAndReturnKey(parameters).longValue();
+        return new Group(id,group.getGroupName());
     }
     @Override
     public Group findById(Group group) throws SQLException{

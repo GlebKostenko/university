@@ -4,6 +4,7 @@ import com.foxminded.model.LectureHall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class LectureHallDao implements Dao<LectureHall>{
@@ -23,14 +26,14 @@ public class LectureHallDao implements Dao<LectureHall>{
 
     @Override
     public LectureHall save(LectureHall lectureHall) throws SQLException {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO lecture_halls(hall_name) VALUES ?",new String[]{"hall_id"});
-            ps.setString(1, lectureHall.getHallName());
-            return ps;
-        },keyHolder);
-        return new LectureHall(keyHolder.getKey().longValue(),lectureHall.getHallName());
+
+        Map<String, Object> parameters = new HashMap<>(1);
+        parameters.put("hall_name",lectureHall.getHallName());
+        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                .withTableName("lecture_halls")
+                .usingGeneratedKeyColumns("hall_id")
+                .executeAndReturnKey(parameters).longValue();
+        return  new LectureHall(id,lectureHall.getHallName());
     }
 
     @Override

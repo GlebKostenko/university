@@ -4,6 +4,7 @@ import com.foxminded.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class TeacherDao implements Dao<Teacher>{
@@ -24,15 +27,14 @@ public class TeacherDao implements Dao<Teacher>{
 
     @Override
     public Teacher save(Teacher teacher) throws SQLException {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection
-                    .prepareStatement("INSERT INTO teachers(first_name,last_name) VALUES (?,?)",new String[]{"teacher_id"});
-            ps.setString(1, teacher.getFirstName());
-            ps.setString(2, teacher.getLastName());
-            return ps;
-        },keyHolder);
-        return new Teacher(keyHolder.getKey().longValue(),teacher.getFirstName(),teacher.getLastName());
+        Map<String, Object> parameters = new HashMap<>(2);
+        parameters.put("first_name",teacher.getFirstName());
+        parameters.put("last_name",teacher.getLastName());
+        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
+                .withTableName("teachers")
+                .usingGeneratedKeyColumns("teacher_id")
+                .executeAndReturnKey(parameters).longValue();
+        return new Teacher(id,teacher.getFirstName(),teacher.getLastName());
     }
 
     @Override
