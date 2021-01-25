@@ -5,6 +5,8 @@ import java.util.Objects;
 public class LectureHall {
     private Long hallId;
     private String hallName;
+    public LectureHall(){
+    }
     public LectureHall(Long hallId, String hallName){
         this.hallId = hallId;
         this.hallName = hallName;
@@ -23,6 +25,14 @@ public class LectureHall {
 
     public String getHallName() {
         return hallName;
+    }
+
+    public void setHallId(Long hallId) {
+        this.hallId = hallId;
+    }
+
+    public void setHallName(String hallName) {
+        this.hallName = hallName;
     }
 
     @Override

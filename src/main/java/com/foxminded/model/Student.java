@@ -15,6 +15,8 @@ public class Student {
         this.group = group;
     }
 
+    public Student(){}
+
     public Student(String firstName, String lastName, Group group) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,6 +25,22 @@ public class Student {
 
     public Student(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public long getStudentId() {

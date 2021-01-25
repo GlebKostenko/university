@@ -10,6 +10,8 @@ public class Subject {
         this.subjectName = subjectName;
     }
 
+    public Subject(){}
+
     public Subject(Long subjectId){
         this.subjectId = subjectId;
     }
@@ -24,6 +26,14 @@ public class Subject {
 
     public long getSubjectId() {
         return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     @Override

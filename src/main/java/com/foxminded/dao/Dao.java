@@ -1,7 +1,5 @@
 package com.foxminded.dao;
 
-import com.foxminded.model.Group;
-
 import java.sql.SQLException;
 import java.util.List;
 

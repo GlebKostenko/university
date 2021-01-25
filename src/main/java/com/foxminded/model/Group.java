@@ -1,3 +1,4 @@
+
 package com.foxminded.model;
 
 
@@ -12,12 +13,22 @@ public class Group {
         this.groupName = groupName;
     }
 
+    public Group(){}
+
     public Group(String groupName){
         this.groupName = groupName;
     }
 
     public Group(Long groupId){
         this.groupId = groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public Long getGroupId() {

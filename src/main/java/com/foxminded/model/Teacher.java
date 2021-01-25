@@ -1,6 +1,5 @@
 package com.foxminded.model;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Teacher {
@@ -13,6 +12,7 @@ public class Teacher {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+    public Teacher(){}
 
     public Teacher(Long teacherId){
         this.teacherId = teacherId;
@@ -20,6 +20,18 @@ public class Teacher {
 
     public Teacher(String firstName,String lastName){
         this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
