@@ -23,7 +23,6 @@ public class LectureHallDao implements Dao<LectureHall>{
 
     @Override
     public LectureHall save(LectureHall lectureHall) throws SQLException {
-
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("hall_name",lectureHall.getHallName());
         Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
