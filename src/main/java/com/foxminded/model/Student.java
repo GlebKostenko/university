@@ -43,7 +43,7 @@ public class Student {
         this.group = group;
     }
 
-    public long getStudentId() {
+    public Long getStudentId() {
         return studentId;
     }
 

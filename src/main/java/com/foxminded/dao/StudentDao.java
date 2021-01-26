@@ -52,7 +52,7 @@ public class StudentDao implements Dao<Student>{
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<Student> findAll() throws SQLException {
         String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
                 " FROM students st " +
                 "LEFT JOIN groups gr ON gr.group_id = st.group_id ";

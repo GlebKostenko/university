@@ -41,7 +41,7 @@ public class LectureHallDao implements Dao<LectureHall>{
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<LectureHall> findAll() throws SQLException {
         return jdbcTemplate.query("SELECT hall_id,hall_name FROM lecture_halls"
                 ,new BeanPropertyRowMapper<LectureHall>(LectureHall.class)
         );

@@ -41,7 +41,7 @@ public class SubjectDao implements Dao<Subject>{
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<Subject> findAll() throws SQLException {
         return jdbcTemplate.query("SELECT subject_id,subject_name FROM subjects"
                 ,new BeanPropertyRowMapper<Subject>(Subject.class)
         );

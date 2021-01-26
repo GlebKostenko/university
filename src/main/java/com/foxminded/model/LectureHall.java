@@ -19,7 +19,7 @@ public class LectureHall {
         this.hallName = hallName;
     }
 
-    public long getHallId(){
+    public Long getHallId(){
         return hallId;
     }
 

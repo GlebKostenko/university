@@ -35,7 +35,7 @@ public class Teacher {
         this.lastName = lastName;
     }
 
-    public long getTeacherId() {
+    public Long getTeacherId() {
         return teacherId;
     }
 

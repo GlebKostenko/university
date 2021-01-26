@@ -24,7 +24,7 @@ public class Subject {
         return subjectName;
     }
 
-    public long getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 

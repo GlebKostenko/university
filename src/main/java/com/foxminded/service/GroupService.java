@@ -30,7 +30,9 @@ public class GroupService implements ServiceLayer<GroupDTO>{
 
     @Override
     public GroupDTO findById(GroupDTO groupDTO) throws SQLException {
-        return modelMapper.map(groupDao.findById(modelMapper.map(groupDTO,Group.class)),GroupDTO.class);
+        return modelMapper.map(groupDao
+                .findById(modelMapper.map(groupDTO,Group.class))
+                ,GroupDTO.class);
     }
 
     @Override

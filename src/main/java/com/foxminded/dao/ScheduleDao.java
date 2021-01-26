@@ -64,7 +64,7 @@ public class ScheduleDao implements Dao<Schedule>{
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<Schedule> findAll() throws SQLException {
         String sql = "SElECT sched.schedule_id" +
                 ",gr.group_id,gr.group_name" +
                 ",sched.date_time,sched.duration" +

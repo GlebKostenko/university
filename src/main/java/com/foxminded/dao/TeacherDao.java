@@ -43,7 +43,7 @@ public class TeacherDao implements Dao<Teacher>{
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<Teacher> findAll() throws SQLException {
         return jdbcTemplate.query("SELECT teacher_id,first_name,last_name FROM teachers"
                 ,new BeanPropertyRowMapper<Teacher>(Teacher.class)
         );
