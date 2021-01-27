@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
-@ComponentScan("com.foxminded.dao")
+@ComponentScan("com.foxminded.service")
 public class ServiceConfig {
     @Bean
         public ModelMapper modelMapper() {
