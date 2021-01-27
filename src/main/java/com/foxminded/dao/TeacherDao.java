@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,7 @@ public class TeacherDao implements Dao<Teacher>{
     }
 
     @Override
-    public Teacher save(Teacher teacher) throws SQLException {
+    public Teacher save(Teacher teacher) {
         Map<String, Object> parameters = new HashMap<>(2);
         parameters.put("first_name",teacher.getFirstName());
         parameters.put("last_name",teacher.getLastName());
@@ -36,14 +35,14 @@ public class TeacherDao implements Dao<Teacher>{
     }
 
     @Override
-    public Teacher findById(Teacher teacher) throws SQLException {
+    public Teacher findById(Teacher teacher) {
         return jdbcTemplate.queryForObject("SELECT teacher_id,first_name,last_name FROM teachers WHERE teacher_id = ?"
                 ,new BeanPropertyRowMapper<Teacher>(Teacher.class),teacher.getTeacherId()
         );
     }
 
     @Override
-    public List<Teacher> findAll() throws SQLException {
+    public List<Teacher> findAll() {
         return jdbcTemplate.query("SELECT teacher_id,first_name,last_name FROM teachers"
                 ,new BeanPropertyRowMapper<Teacher>(Teacher.class)
         );

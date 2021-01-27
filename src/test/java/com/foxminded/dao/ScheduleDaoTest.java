@@ -5,6 +5,7 @@ import com.foxminded.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -30,7 +31,7 @@ class ScheduleDaoTest {
     @Autowired
     TeacherDao teacherDao;
     @Test
-    void save() throws SQLException {
+    void save_WhenAllIsRight_thenShouldBeNewRecord()  {
         Group group = groupDao.save(new Group("fupm-06"));
         Teacher teacher = teacherDao.save(new Teacher("Nikolay","Semenov"));
         LectureHall lectureHall = lectureHallDao.save(new LectureHall("Glavnaya fizicheskaya"));
@@ -48,7 +49,7 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void findById() throws SQLException{
+    void findById_WhenRecordExist_thenShouldFindThisRecord() {
         Group group = groupDao.save(new Group("faki-03"));
         Teacher teacher = teacherDao.save(new Teacher("Dmitriy","Tereshin"));
         LectureHall lectureHall = lectureHallDao.save(new LectureHall("110 LK"));
@@ -66,7 +67,13 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void findAll() throws SQLException{
+    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> scheduleDao.findById(new Schedule(77L)));
+        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+    }
+
+    @Test
+    void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {
         Group group = groupDao.save(new Group("mehMat-302"));
         Teacher teacher = teacherDao.save(new Teacher("Vyacheslav","Artomonov"));
         LectureHall lectureHall = lectureHallDao.save(new LectureHall("232"));
@@ -83,7 +90,7 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void update() throws SQLException{
+    void update_WhenRecordExist_thenRecordShouldBeUpdated() {
         Group group = groupDao.save(new Group("fizfak-205"));
         Group groupNew = groupDao.save(new Group("matfak-807"));
         Teacher teacher = teacherDao.save(new Teacher("Vladimir","Karavaev"));
@@ -122,7 +129,21 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void delete() throws SQLException{
+    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+        LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,15,30);
+        Schedule schedule = new Schedule(
+                new Group(77L)
+                ,localDateTime
+                ,3600
+                ,new Teacher(32L)
+                ,new LectureHall(41L)
+                ,new Subject(21L)
+        );
+        scheduleDao.update(schedule);
+    }
+
+    @Test
+    void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
         Group group = groupDao.save(new Group("fkn-302"));
         Teacher teacher = teacherDao.save(new Teacher("Roman","Avdeev"));
         LectureHall lectureHall = lectureHallDao.save(new LectureHall("503"));
@@ -137,5 +158,10 @@ class ScheduleDaoTest {
         );
         scheduleDao.delete(new Schedule(schedule.getScheduleId()));
         assertFalse(scheduleDao.findAll().contains(schedule));
+    }
+
+    @Test
+    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+        scheduleDao.delete(new Schedule(77L));
     }
 }

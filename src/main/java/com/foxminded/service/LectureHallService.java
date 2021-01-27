@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,27 +14,27 @@ import java.util.stream.Collectors;
 public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     private LectureHallDao lectureHallDao;
     private ModelMapper modelMapper;
-    public LectureHallService(@Autowired ModelMapper modelMapper,@Autowired LectureHallDao lectureHallDao){
+
+    @Autowired
+    public LectureHallService( ModelMapper modelMapper,LectureHallDao lectureHallDao){
         this.modelMapper = modelMapper;
         this.lectureHallDao = lectureHallDao;
     }
 
     @Override
-    public LectureHallDTO save(LectureHallDTO lectureHallDTO) throws SQLException {
+    public LectureHallDTO save(LectureHallDTO lectureHallDTO) {
         return modelMapper.map(lectureHallDao
-                .save(modelMapper.map(lectureHallDTO,LectureHall.class))
-                ,LectureHallDTO.class);
+                .save(modelMapper.map(lectureHallDTO,LectureHall.class)),LectureHallDTO.class);
     }
 
     @Override
-    public LectureHallDTO findById(LectureHallDTO lectureHallDTO) throws SQLException {
+    public LectureHallDTO findById(LectureHallDTO lectureHallDTO) {
         return modelMapper.map(lectureHallDao
-                .findById(modelMapper.map(lectureHallDTO,LectureHall.class))
-                ,LectureHallDTO.class);
+                .findById(modelMapper.map(lectureHallDTO,LectureHall.class)),LectureHallDTO.class);
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<?> findAll() {
         return lectureHallDao.findAll().stream()
                 .map(elem -> modelMapper.map(elem,LectureHallDTO.class))
                 .collect(Collectors.toList());

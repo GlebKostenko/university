@@ -7,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,27 +15,26 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     private ModelMapper modelMapper;
     private ScheduleDao scheduleDao;
 
-    public ScheduleService(@Autowired ModelMapper modelMapper,@Autowired ScheduleDao scheduleDao){
+    @Autowired
+    public ScheduleService( ModelMapper modelMapper,ScheduleDao scheduleDao){
         this.modelMapper = modelMapper;
         this.scheduleDao = scheduleDao;
     }
 
     @Override
-    public ScheduleDTO save(ScheduleDTO scheduleDTO) throws SQLException {
+    public ScheduleDTO save(ScheduleDTO scheduleDTO) {
         return modelMapper.map(scheduleDao
-                .save(modelMapper.map(scheduleDTO, Schedule.class))
-                ,ScheduleDTO.class);
+                .save(modelMapper.map(scheduleDTO, Schedule.class)),ScheduleDTO.class);
     }
 
     @Override
-    public ScheduleDTO findById(ScheduleDTO scheduleDTO) throws SQLException {
+    public ScheduleDTO findById(ScheduleDTO scheduleDTO) {
         return modelMapper.map(scheduleDao
-                .findById(modelMapper.map(scheduleDTO,Schedule.class))
-                ,ScheduleDTO.class);
+                .findById(modelMapper.map(scheduleDTO,Schedule.class)),ScheduleDTO.class);
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<?> findAll() {
         return scheduleDao.findAll().stream()
                 .map(elem -> modelMapper.map(elem,ScheduleDTO.class))
                 .collect(Collectors.toList());

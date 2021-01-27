@@ -6,13 +6,12 @@ import com.foxminded.model.Student;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.sql.SQLException;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SpringJdbcConfigTest.class})
 class StudentDaoTest {
@@ -21,7 +20,7 @@ class StudentDaoTest {
     @Autowired
     private GroupDao groupDao;
     @Test
-    void save() throws SQLException {
+    void save_WhenAllIsRight_thenShouldBeNewRecord() {
         Group group = groupDao.save(new Group("fakt-06"));
         Student student = studentDao.save(new Student("Ivan","Ivanov",new Group(group.getGroupId())));
         assertEquals(student.getGroup().getGroupId()
@@ -29,7 +28,7 @@ class StudentDaoTest {
     }
 
     @Test
-    void findById() throws SQLException{
+    void findById_WhenRecordExist_thenShouldFindThisRecord() {
         Group group = groupDao.save(new Group("fivt-07"));
         Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
         assertEquals(student.getFirstName()
@@ -37,14 +36,20 @@ class StudentDaoTest {
     }
 
     @Test
-    void findAll() throws SQLException{
+    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> studentDao.findById(new Student(98L)));
+        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+    }
+
+    @Test
+    void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {
         Group group = groupDao.save(new Group("fivt-03"));
         Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
         assertTrue(!studentDao.findAll().isEmpty());
     }
 
     @Test
-    void update() throws SQLException{
+    void update_WhenRecordExist_thenRecordShouldBeUpdated() {
         Group group = groupDao.save(new Group("fivt-01"));
         Group groupNew = groupDao.save(new Group("fopf-04"));
         Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
@@ -55,10 +60,21 @@ class StudentDaoTest {
     }
 
     @Test
-    void delete() throws SQLException{
+    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+        Student student = new Student(98L,"Ivan","Ivanov",new Group(48L));
+        studentDao.update(student);
+    }
+
+    @Test
+    void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
         Group group = groupDao.save(new Group("fivt-02"));
         Student student = studentDao.save(new Student("Victor","Victorov",new Group(group.getGroupId())));
         studentDao.delete(new Student(student.getStudentId()));
-        assertTrue(studentDao.findAll().isEmpty());
+        assertFalse(studentDao.findAll().contains(new Student(student.getStudentId(),"Victor","Victorov",group)));
+    }
+
+    @Test
+    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+        studentDao.delete(new Student(98L));
     }
 }

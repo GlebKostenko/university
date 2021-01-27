@@ -5,38 +5,36 @@ import com.foxminded.model.Group;
 import com.foxminded.service.dto.GroupDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
 
 @Service
 public class GroupService implements ServiceLayer<GroupDTO>{
     private ModelMapper modelMapper;
     private GroupDao groupDao;
 
-    public GroupService(@Autowired ModelMapper modelMapper,@Autowired GroupDao groupDao){
+    @Autowired
+    public GroupService( ModelMapper modelMapper,GroupDao groupDao){
         this.modelMapper = modelMapper;
         this.groupDao = groupDao;
     }
 
     @Override
-    public GroupDTO save(GroupDTO groupDTO) throws SQLException {
+    public GroupDTO save(GroupDTO groupDTO) {
          return modelMapper.map(groupDao
-                 .save(modelMapper.map(groupDTO, Group.class))
-                 ,GroupDTO.class);
+                 .save(modelMapper.map(groupDTO, Group.class)),GroupDTO.class);
     }
 
     @Override
-    public GroupDTO findById(GroupDTO groupDTO) throws SQLException {
+    public GroupDTO findById(GroupDTO groupDTO) {
         return modelMapper.map(groupDao
-                .findById(modelMapper.map(groupDTO,Group.class))
-                ,GroupDTO.class);
+                .findById(modelMapper.map(groupDTO,Group.class)),GroupDTO.class);
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<?> findAll() {
         return groupDao.findAll().stream()
                 .map(elem -> modelMapper.map(elem,GroupDTO.class))
                 .collect(Collectors.toList());

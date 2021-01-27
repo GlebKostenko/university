@@ -5,6 +5,7 @@ import com.foxminded.model.*;
 import com.foxminded.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ class ScheduleServiceTest {
     ScheduleService scheduleService = new ScheduleService(modelMapper,scheduleDao);
 
     @Test
-    void save() throws SQLException {
+    void save_WhenAllIsRight_thenShouldBeNewRecord() {
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         given(scheduleDao.save(new Schedule(
                     new Group(3L)
@@ -53,7 +54,7 @@ class ScheduleServiceTest {
     }
 
     @Test
-    void findById() throws SQLException{
+    void findById_WhenRecordExist_thenShouldFindThisRecord(){
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         given(scheduleDao.findById(new Schedule(1L))).willReturn(new Schedule(
                 1L,
@@ -69,7 +70,14 @@ class ScheduleServiceTest {
     }
 
     @Test
-    void findAll() throws SQLException{
+    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
+        given(scheduleDao.findById(new Schedule(77L))).willThrow(new EmptyResultDataAccessException(1));
+        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> scheduleService.findById(new ScheduleDTO(77L)));
+        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+    }
+
+    @Test
+    void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList(){
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         given(scheduleDao.findAll()).willReturn(Arrays.asList(new Schedule(
                         1L,
@@ -85,7 +93,7 @@ class ScheduleServiceTest {
     }
 
     @Test
-    void update() {
+    void update_WhenRecordExist_thenRecordShouldBeUpdated() {
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         Schedule scheduleForUpdate = new Schedule(
                 1L,
@@ -111,7 +119,7 @@ class ScheduleServiceTest {
     }
 
     @Test
-    void delete() {
+    void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
         doNothing().when(scheduleDao).delete(new Schedule(1L));
         scheduleService.delete(new ScheduleDTO(1L));
         verify(scheduleDao,times(1)).delete(new Schedule(1L));

@@ -16,27 +16,26 @@ public class TeacherService implements ServiceLayer<TeacherDTO>{
     private ModelMapper modelMapper;
     private TeacherDao teacherDao;
 
-    public TeacherService(@Autowired ModelMapper modelMapper,@Autowired TeacherDao teacherDao){
+    @Autowired
+    public TeacherService( ModelMapper modelMapper, TeacherDao teacherDao){
         this.modelMapper = modelMapper;
         this.teacherDao = teacherDao;
     }
 
     @Override
-    public TeacherDTO save(TeacherDTO teacherDTO) throws SQLException {
+    public TeacherDTO save(TeacherDTO teacherDTO) {
         return modelMapper.map(teacherDao
-                .save(modelMapper.map(teacherDTO, Teacher.class))
-                ,TeacherDTO.class);
+                .save(modelMapper.map(teacherDTO, Teacher.class)),TeacherDTO.class);
     }
 
     @Override
-    public TeacherDTO findById(TeacherDTO teacherDTO) throws SQLException {
+    public TeacherDTO findById(TeacherDTO teacherDTO) {
         return modelMapper.map(teacherDao
-                .findById(modelMapper.map(teacherDTO,Teacher.class))
-                ,TeacherDTO.class);
+                .findById(modelMapper.map(teacherDTO,Teacher.class)),TeacherDTO.class);
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<?> findAll() {
         return teacherDao.findAll().stream()
                 .map(elem -> modelMapper.map(elem,TeacherDTO.class))
                 .collect(Collectors.toList());

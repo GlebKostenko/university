@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class SubjectDao implements Dao<Subject>{
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
     @Override
-    public Subject save(Subject subject) throws SQLException {
+    public Subject save(Subject subject) {
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("subject_name",subject.getSubjectName());
         Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
@@ -34,14 +33,14 @@ public class SubjectDao implements Dao<Subject>{
     }
 
     @Override
-    public Subject findById(Subject subject) throws SQLException {
+    public Subject findById(Subject subject) {
         return jdbcTemplate.queryForObject("SELECT subject_id,subject_name FROM subjects WHERE subject_id = ?"
                 ,new BeanPropertyRowMapper<Subject>(Subject.class),subject.getSubjectId()
         );
     }
 
     @Override
-    public List<Subject> findAll() throws SQLException {
+    public List<Subject> findAll() {
         return jdbcTemplate.query("SELECT subject_id,subject_name FROM subjects"
                 ,new BeanPropertyRowMapper<Subject>(Subject.class)
         );

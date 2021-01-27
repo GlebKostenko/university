@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class ScheduleDao implements Dao<Schedule>{
     }
 
     @Override
-    public Schedule save(Schedule schedule) throws SQLException {
+    public Schedule save(Schedule schedule)  {
         Map<String, Object> parameters = new HashMap<>(6);
         parameters.put("group_id",schedule.getGroup().getGroupId());
         parameters.put("date_time",schedule.getDateTime());
@@ -38,7 +37,7 @@ public class ScheduleDao implements Dao<Schedule>{
     }
 
     @Override
-    public Schedule findById(Schedule schedule) throws SQLException {
+    public Schedule findById(Schedule schedule)  {
         String sql = "SElECT sched.schedule_id" +
                 ",gr.group_id,gr.group_name" +
                 ",sched.date_time,sched.duration" +
@@ -64,7 +63,7 @@ public class ScheduleDao implements Dao<Schedule>{
     }
 
     @Override
-    public List<Schedule> findAll() throws SQLException {
+    public List<Schedule> findAll() {
         String sql = "SElECT sched.schedule_id" +
                 ",gr.group_id,gr.group_name" +
                 ",sched.date_time,sched.duration" +

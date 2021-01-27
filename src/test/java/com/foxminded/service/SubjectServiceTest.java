@@ -5,8 +5,8 @@ import com.foxminded.model.Subject;
 import com.foxminded.service.dto.SubjectDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +19,7 @@ class SubjectServiceTest {
     SubjectService subjectService = new SubjectService(modelMapper,subjectDao);
 
     @Test
-    void save() throws SQLException {
+    void save_WhenAllIsRight_thenShouldBeNewRecord()  {
         given(subjectDao.save(new Subject("chemistry")))
                 .willReturn(new Subject(1L,"chemistry"));
         SubjectDTO subjectDTO = subjectService.save(new SubjectDTO("chemistry"));
@@ -27,7 +27,7 @@ class SubjectServiceTest {
     }
 
     @Test
-    void findById() throws SQLException{
+    void findById_WhenRecordExist_thenShouldFindThisRecord() {
         given(subjectDao.findById(new Subject(1L)))
                 .willReturn(new Subject(1L,"chemistry"));
         SubjectDTO subjectDTO = subjectService.findById(new SubjectDTO(1L));
@@ -35,20 +35,27 @@ class SubjectServiceTest {
     }
 
     @Test
-    void findAll() throws SQLException{
+    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
+        given(subjectDao.findById(new Subject(55L))).willThrow(new EmptyResultDataAccessException(1));
+        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> subjectService.findById(new SubjectDTO(55L)));
+        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+    }
+
+    @Test
+    void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {
         given(subjectDao.findAll()).willReturn(Arrays.asList(new Subject(1L,"chemistry")));
         assertTrue(!subjectService.findAll().isEmpty());
     }
 
     @Test
-    void update() {
+    void update_WhenRecordExist_thenRecordShouldBeUpdated() {
         doNothing().when(subjectDao).update(new Subject(1L,"chemistry"));
         subjectService.update(new SubjectDTO(1L,"chemistry"));
         verify(subjectDao,times(1)).update(new Subject(1l,"chemistry"));
     }
 
     @Test
-    void delete() {
+    void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
         doNothing().when(subjectDao).delete(new Subject(1L));
         subjectService.delete(new SubjectDTO(1L));
         verify(subjectDao,times(1)).delete(new Subject(1L));

@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class StudentDao implements Dao<Student>{
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
     @Override
-    public Student save(Student student) throws SQLException {
+    public Student save(Student student) {
         Map<String, Object> parameters = new HashMap<>(3);
         parameters.put("first_name",student.getFirstName());
         parameters.put("last_name",student.getLastName());
@@ -36,7 +35,7 @@ public class StudentDao implements Dao<Student>{
     }
 
     @Override
-    public Student findById(Student student) throws SQLException {
+    public Student findById(Student student) {
         String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
                 " FROM students st " +
                 "LEFT JOIN groups gr ON gr.group_id = st.group_id " +
@@ -52,7 +51,7 @@ public class StudentDao implements Dao<Student>{
     }
 
     @Override
-    public List<Student> findAll() throws SQLException {
+    public List<Student> findAll() {
         String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
                 " FROM students st " +
                 "LEFT JOIN groups gr ON gr.group_id = st.group_id ";

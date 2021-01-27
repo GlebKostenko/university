@@ -16,27 +16,26 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     private ModelMapper modelMapper;
     private SubjectDao subjectDao;
 
-    public SubjectService(@Autowired ModelMapper modelMapper,@Autowired SubjectDao subjectDao){
+    @Autowired
+    public SubjectService( ModelMapper modelMapper, SubjectDao subjectDao){
         this.modelMapper = modelMapper;
         this.subjectDao = subjectDao;
     }
 
     @Override
-    public SubjectDTO save(SubjectDTO subjectDTO) throws SQLException {
+    public SubjectDTO save(SubjectDTO subjectDTO) {
         return modelMapper.map(subjectDao
-        .save(modelMapper.map(subjectDTO, Subject.class))
-        ,SubjectDTO.class);
+        .save(modelMapper.map(subjectDTO, Subject.class)),SubjectDTO.class);
     }
 
     @Override
-    public SubjectDTO findById(SubjectDTO subjectDTO) throws SQLException {
+    public SubjectDTO findById(SubjectDTO subjectDTO) {
         return modelMapper.map(subjectDao
-                .findById(modelMapper.map(subjectDTO,Subject.class))
-                ,SubjectDTO.class);
+                .findById(modelMapper.map(subjectDTO,Subject.class)),SubjectDTO.class);
     }
 
     @Override
-    public List<?> findAll() throws SQLException {
+    public List<?> findAll() {
         return subjectDao.findAll().stream()
                 .map(elem -> modelMapper.map(elem,SubjectDTO.class))
                 .collect(Collectors.toList());
