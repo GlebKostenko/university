@@ -47,7 +47,7 @@ public class SubjectDao implements Dao<Subject>{
                     , new BeanPropertyRowMapper<Subject>(Subject.class), subject.getSubjectId()
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Subject with the same id wasn't found");
+            logger.error("Subject with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Subjects table doesn't contain this record",e);
         }
     }
@@ -60,7 +60,7 @@ public class SubjectDao implements Dao<Subject>{
                     , new BeanPropertyRowMapper<Subject>(Subject.class)
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of subjects is empty");
+            logger.error("List of subjects is empty");
             throw new EmptyResultSetExceptionDao("Subjects table is empty",e);
         }
     }

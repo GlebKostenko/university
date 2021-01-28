@@ -47,7 +47,7 @@ public class LectureHallDao implements Dao<LectureHall>{
                     , new BeanPropertyRowMapper<LectureHall>(LectureHall.class), lectureHall.getHallId()
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Hall with the same id wasn't found");
+            logger.error("Hall with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Lecture_halls table doesn't contain this record",e);
         }
     }
@@ -60,7 +60,7 @@ public class LectureHallDao implements Dao<LectureHall>{
                     , new BeanPropertyRowMapper<LectureHall>(LectureHall.class)
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of halls is empty");
+            logger.error("List of halls is empty");
             throw new EmptyResultSetExceptionDao("Lecture halls table is empty",e);
         }
     }

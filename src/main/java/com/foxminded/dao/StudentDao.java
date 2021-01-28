@@ -58,7 +58,7 @@ public class StudentDao implements Dao<Student>{
                             )
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Student with the same id wasn't found");
+            logger.error("Student with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Students table doesn't contain this record",e);
         }
     }
@@ -78,7 +78,7 @@ public class StudentDao implements Dao<Student>{
                     )
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of students is empty");
+            logger.error("List of students is empty");
             throw new EmptyResultSetExceptionDao("Students table is empty",e);
         }
     }

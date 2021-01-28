@@ -41,8 +41,8 @@ class TeacherServiceTest {
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
         given(teacherDao.findById(new Teacher(83L)))
                 .willThrow(new EmptyResultSetExceptionDao("Teachers table doesn't contain this record",new EmptyResultDataAccessException(1)));
-        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> teacherService.findById(new TeacherDTO(83L)));
-        assertEquals("Dao layer can't find this record", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> teacherService.findById(new TeacherDTO(83L)));
+        assertEquals("Teachers table doesn't contain this record", exception.getMessage());
     }
 
     @Test

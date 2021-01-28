@@ -5,6 +5,7 @@ import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.LectureHall;
 import com.foxminded.service.dto.LectureHallDTO;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,14 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
 
     @Override
     public LectureHallDTO save(LectureHallDTO lectureHallDTO) {
-        logger.debug("Calling the save method from dao");
-        return modelMapper.map(lectureHallDao
-                .save(modelMapper.map(lectureHallDTO,LectureHall.class)),LectureHallDTO.class);
+        try {
+            logger.debug("Calling the save method from dao and trying to save lecture hall with hall name: {}", lectureHallDTO.getHallName());
+            return modelMapper.map(lectureHallDao
+                    .save(modelMapper.map(lectureHallDTO, LectureHall.class)), LectureHallDTO.class);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
+        }
     }
 
     @Override
@@ -39,9 +45,9 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
         try {
             return modelMapper.map(lectureHallDao
                     .findById(modelMapper.map(lectureHallDTO, LectureHall.class)), LectureHallDTO.class);
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find this record",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
         }
     }
 
@@ -52,21 +58,31 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
             return lectureHallDao.findAll().stream()
                     .map(elem -> modelMapper.map(elem, LectureHallDTO.class))
                     .collect(Collectors.toList());
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find any records",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map LectureHall to LectureHallDTO",e);
         }
     }
 
     @Override
     public void update(LectureHallDTO lectureHallDTO) {
-        logger.debug("Calling the update method from dao");
-        lectureHallDao.update(modelMapper.map(lectureHallDTO,LectureHall.class));
+        try {
+            logger.debug("Calling the update method from dao");
+            lectureHallDao.update(modelMapper.map(lectureHallDTO, LectureHall.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall",e);
+        }
     }
 
     @Override
     public void delete(LectureHallDTO lectureHallDTO) {
-        logger.debug("Calling the delete method from dao");
-        lectureHallDao.delete(modelMapper.map(lectureHallDTO,LectureHall.class));
+        try {
+            logger.debug("Calling the delete method from dao");
+            lectureHallDao.delete(modelMapper.map(lectureHallDTO, LectureHall.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall",e);
+        }
     }
 }

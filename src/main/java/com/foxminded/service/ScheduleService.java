@@ -5,6 +5,7 @@ import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Schedule;
 import com.foxminded.service.dto.ScheduleDTO;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,27 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
 
     @Override
     public ScheduleDTO save(ScheduleDTO scheduleDTO) {
-        logger.debug("Calling the save method from dao");
-        return modelMapper.map(scheduleDao
-                .save(modelMapper.map(scheduleDTO, Schedule.class)),ScheduleDTO.class);
+        try {
+            logger.debug("Calling the save method from dao and trying to save schedule with next parameters\n" +
+                            "group_id: {}\n" +
+                            "date_time: {}\n" +
+                            "duration: {}\n" +
+                            "teacher_id: {}\n" +
+                            "hall_id: {}\n" +
+                            "subject_id: {}"
+                    , scheduleDTO.getGroup().getGroupId()
+                    , scheduleDTO.getDateTime()
+                    , scheduleDTO.getDuration()
+                    , scheduleDTO.getTeacher().getTeacherId()
+                    , scheduleDTO.getLectureHall().getHallId()
+                    , scheduleDTO.getSubject().getSubjectId()
+            );
+            return modelMapper.map(scheduleDao
+                    .save(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
+        }
     }
 
     @Override
@@ -39,9 +58,9 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
         try {
             return modelMapper.map(scheduleDao
                     .findById(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find this record",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
         }
     }
 
@@ -52,21 +71,31 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
             return scheduleDao.findAll().stream()
                     .map(elem -> modelMapper.map(elem, ScheduleDTO.class))
                     .collect(Collectors.toList());
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find any records",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map Schedule to ScheduleDTO",e);
         }
     }
 
     @Override
     public void update(ScheduleDTO scheduleDTO) {
-        logger.debug("Calling the update method from dao");
-        scheduleDao.update(modelMapper.map(scheduleDTO,Schedule.class));
+        try {
+            logger.debug("Calling the update method from dao");
+            scheduleDao.update(modelMapper.map(scheduleDTO, Schedule.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule",e);
+        }
     }
 
     @Override
     public void delete(ScheduleDTO scheduleDTO) {
-        logger.debug("Calling the delete method from dao");
-        scheduleDao.delete(modelMapper.map(scheduleDTO,Schedule.class));
+        try {
+            logger.debug("Calling the delete method from dao");
+            scheduleDao.delete(modelMapper.map(scheduleDTO, Schedule.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule",e);
+        }
     }
 }

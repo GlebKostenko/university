@@ -75,8 +75,8 @@ class ScheduleServiceTest {
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
         given(scheduleDao.findById(new Schedule(77L)))
                 .willThrow(new EmptyResultSetExceptionDao("Schedules table doesn't contain this record",new EmptyResultDataAccessException(1)));
-        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> scheduleService.findById(new ScheduleDTO(77L)));
-        assertEquals("Dao layer can't find this record", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> scheduleService.findById(new ScheduleDTO(77L)));
+        assertEquals("Schedules table doesn't contain this record", exception.getMessage());
     }
 
     @Test

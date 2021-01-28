@@ -49,7 +49,7 @@ public class TeacherDao implements Dao<Teacher>{
                     , new BeanPropertyRowMapper<Teacher>(Teacher.class), teacher.getTeacherId()
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Teacher with the same id wasn't found");
+            logger.error("Teacher with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Teachers table doesn't contain this record",e);
         }
     }
@@ -62,7 +62,7 @@ public class TeacherDao implements Dao<Teacher>{
                     , new BeanPropertyRowMapper<Teacher>(Teacher.class)
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of teachers is empty");
+            logger.error("List of teachers is empty");
             throw new EmptyResultSetExceptionDao("Teachers table is empty",e);
         }
     }

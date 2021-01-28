@@ -46,7 +46,7 @@ public class GroupDao implements Dao<Group> {
                     , new BeanPropertyRowMapper<Group>(Group.class), group.getGroupId()
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Group with the same id wasn't found");
+            logger.error("Group with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Groups table doesn't contain this record",e);
         }
     }
@@ -59,7 +59,7 @@ public class GroupDao implements Dao<Group> {
                     , new BeanPropertyRowMapper<Group>(Group.class)
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of groups is empty");
+            logger.error("List of groups is empty");
             throw new EmptyResultSetExceptionDao("Groups table is empty",e);
         }
     }

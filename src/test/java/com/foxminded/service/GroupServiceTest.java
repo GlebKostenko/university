@@ -39,8 +39,8 @@ class GroupServiceTest {
     void findById_WhenRecordDoesNotExist_thenShouldBeException(){
         given(groupDao.findById(new Group(44L)))
                 .willThrow(new EmptyResultSetExceptionDao("Groups table doesn't contain this record",new EmptyResultDataAccessException(1)));
-        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> groupService.findById(new GroupDTO(44L)));
-        assertEquals("Dao layer can't find this record", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> groupService.findById(new GroupDTO(44L)));
+        assertEquals("Groups table doesn't contain this record", exception.getMessage());
     }
     @Test
     void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {

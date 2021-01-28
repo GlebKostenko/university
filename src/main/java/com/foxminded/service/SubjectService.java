@@ -5,6 +5,7 @@ import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Subject;
 import com.foxminded.service.dto.SubjectDTO;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,14 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
 
     @Override
     public SubjectDTO save(SubjectDTO subjectDTO) {
-        logger.debug("Calling the save method from dao");
-        return modelMapper.map(subjectDao
-        .save(modelMapper.map(subjectDTO, Subject.class)),SubjectDTO.class);
+        try {
+            logger.debug("Calling the save method from dao and trying to subject with name: {}", subjectDTO.getSubjectName());
+            return modelMapper.map(subjectDao
+                    .save(modelMapper.map(subjectDTO, Subject.class)), SubjectDTO.class);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
+        }
     }
 
     @Override
@@ -39,9 +45,9 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
         try {
             return modelMapper.map(subjectDao
                     .findById(modelMapper.map(subjectDTO,Subject.class)),SubjectDTO.class);
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find this record",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
         }
     }
 
@@ -52,21 +58,31 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
             return subjectDao.findAll().stream()
                     .map(elem -> modelMapper.map(elem,SubjectDTO.class))
                     .collect(Collectors.toList());
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find any records",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map Subject to SubjectDTO",e);
         }
     }
 
     @Override
     public void update(SubjectDTO subjectDTO) {
-        logger.debug("Calling the update method from dao");
-        subjectDao.update(modelMapper.map(subjectDTO,Subject.class));
+        try {
+            logger.debug("Calling the update method from dao");
+            subjectDao.update(modelMapper.map(subjectDTO, Subject.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject",e);
+        }
     }
 
     @Override
     public void delete(SubjectDTO subjectDTO) {
-        logger.debug("Calling the delete method from dao");
-        subjectDao.delete(modelMapper.map(subjectDTO,Subject.class));
+        try {
+            logger.debug("Calling the delete method from dao");
+            subjectDao.delete(modelMapper.map(subjectDTO, Subject.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject",e);
+        }
     }
 }

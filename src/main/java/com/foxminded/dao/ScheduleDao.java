@@ -70,7 +70,7 @@ public class ScheduleDao implements Dao<Schedule>{
                                     , new Subject(rs.getLong(11), rs.getString(12)))
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("Schedule with the same id wasn't found");
+            logger.error("Schedule with the same id wasn't found");
             throw new EmptyResultSetExceptionDao("Schedules table doesn't contain this record",e);
         }
     }
@@ -101,7 +101,7 @@ public class ScheduleDao implements Dao<Schedule>{
                                     , new Subject(rs.getLong(11), rs.getString(12)))
             );
         }catch (EmptyResultDataAccessException e){
-            logger.warn("List of schedules is empty");
+            logger.error("List of schedules is empty");
             throw new EmptyResultSetExceptionDao("Schedules table is empty",e);
         }
     }

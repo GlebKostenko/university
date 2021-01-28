@@ -40,8 +40,8 @@ class SubjectServiceTest {
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
         given(subjectDao.findById(new Subject(55L)))
                 .willThrow(new EmptyResultSetExceptionDao("Subjects table doesn't contain this record",new EmptyResultDataAccessException(1)));
-        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> subjectService.findById(new SubjectDTO(55L)));
-        assertEquals("Dao layer can't find this record", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> subjectService.findById(new SubjectDTO(55L)));
+        assertEquals("Subjects table doesn't contain this record", exception.getMessage());
     }
 
     @Test

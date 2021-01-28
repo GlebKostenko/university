@@ -5,6 +5,7 @@ import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Student;
 import com.foxminded.service.dto.StudentDTO;
+import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,16 @@ public class StudentService implements ServiceLayer<StudentDTO>{
 
     @Override
     public StudentDTO save(StudentDTO studentDTO) {
-        logger.debug("Calling the save method from dao");
-        return modelMapper.map(studentDao
-                .save(modelMapper.map(studentDTO,Student.class)), StudentDTO.class);
+        try {
+            logger.debug("Calling the save method from dao and trying to save student with next parameters:\n" +
+                    "first_name: {}\n" +
+                    "last_name: {}", studentDTO.getFirstName(), studentDTO.getLastName());
+            return modelMapper.map(studentDao
+                    .save(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student or Student to StudentDTO",e);
+        }
     }
 
     @Override
@@ -39,9 +47,9 @@ public class StudentService implements ServiceLayer<StudentDTO>{
         try {
             return modelMapper.map(studentDao
                     .findById(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find this record",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student or Student to StudentDTO",e);
         }
     }
 
@@ -52,21 +60,31 @@ public class StudentService implements ServiceLayer<StudentDTO>{
             return studentDao.findAll().stream()
                     .map(elem -> modelMapper.map(elem, StudentDTO.class))
                     .collect(Collectors.toList());
-        }catch (EmptyResultSetExceptionDao e){
-            logger.warn("Dao throws exception");
-            throw new EmptyResultSetExceptionService("Dao layer can't find any records",e);
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map Student to StudentDTO",e);
         }
     }
 
     @Override
     public void update(StudentDTO studentDTO) {
-        logger.debug("Calling the update method from dao");
-        studentDao.update(modelMapper.map(studentDTO,Student.class));
+        try {
+            logger.debug("Calling the update method from dao");
+            studentDao.update(modelMapper.map(studentDTO, Student.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student",e);
+        }
     }
 
     @Override
     public void delete(StudentDTO studentDTO) {
-        logger.debug("Calling the delete method from dao");
-        studentDao.delete(modelMapper.map(studentDTO,Student.class));
+        try {
+            logger.debug("Calling the delete method from dao");
+            studentDao.delete(modelMapper.map(studentDTO, Student.class));
+        }catch (MappingException e){
+            logger.error("Mapping error");
+            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student",e);
+        }
     }
 }
