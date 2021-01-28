@@ -2,6 +2,8 @@ package com.foxminded.service;
 
 import com.foxminded.configuration.ServiceConfig;
 import com.foxminded.dao.GroupDao;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Group;
 import com.foxminded.service.dto.GroupDTO;
 import org.junit.jupiter.api.Test;
@@ -35,9 +37,10 @@ class GroupServiceTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException(){
-        given(groupDao.findById(new Group(44L))).willThrow(new EmptyResultDataAccessException(1));
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> groupService.findById(new GroupDTO(44L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        given(groupDao.findById(new Group(44L)))
+                .willThrow(new EmptyResultSetExceptionDao("Groups table doesn't contain this record",new EmptyResultDataAccessException(1)));
+        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> groupService.findById(new GroupDTO(44L)));
+        assertEquals("Dao layer can't find this record", exception.getMessage());
     }
     @Test
     void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {

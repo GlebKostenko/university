@@ -1,6 +1,7 @@
 package com.foxminded.dao;
 
 import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import org.junit.jupiter.api.Test;
@@ -37,8 +38,8 @@ class StudentDaoTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> studentDao.findById(new Student(98L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> studentDao.findById(new Student(98L)));
+        assertEquals("Students table doesn't contain this record", exception.getMessage());
     }
 
     @Test

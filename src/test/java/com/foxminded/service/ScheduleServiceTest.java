@@ -1,6 +1,8 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.ScheduleDao;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.*;
 import com.foxminded.service.dto.*;
 import org.junit.jupiter.api.Test;
@@ -71,9 +73,10 @@ class ScheduleServiceTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        given(scheduleDao.findById(new Schedule(77L))).willThrow(new EmptyResultDataAccessException(1));
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> scheduleService.findById(new ScheduleDTO(77L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        given(scheduleDao.findById(new Schedule(77L)))
+                .willThrow(new EmptyResultSetExceptionDao("Schedules table doesn't contain this record",new EmptyResultDataAccessException(1)));
+        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> scheduleService.findById(new ScheduleDTO(77L)));
+        assertEquals("Dao layer can't find this record", exception.getMessage());
     }
 
     @Test

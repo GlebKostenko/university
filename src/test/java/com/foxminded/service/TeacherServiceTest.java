@@ -1,6 +1,8 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.TeacherDao;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Teacher;
 import com.foxminded.service.dto.TeacherDTO;
 import org.junit.jupiter.api.Test;
@@ -37,9 +39,10 @@ class TeacherServiceTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        given(teacherDao.findById(new Teacher(83L))).willThrow(new EmptyResultDataAccessException(1));
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> teacherService.findById(new TeacherDTO(83L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        given(teacherDao.findById(new Teacher(83L)))
+                .willThrow(new EmptyResultSetExceptionDao("Teachers table doesn't contain this record",new EmptyResultDataAccessException(1)));
+        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> teacherService.findById(new TeacherDTO(83L)));
+        assertEquals("Dao layer can't find this record", exception.getMessage());
     }
 
     @Test

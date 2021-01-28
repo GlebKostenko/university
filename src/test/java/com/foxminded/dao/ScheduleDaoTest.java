@@ -1,15 +1,14 @@
 package com.foxminded.dao;
 
 import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -68,8 +67,8 @@ class ScheduleDaoTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> scheduleDao.findById(new Schedule(77L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> scheduleDao.findById(new Schedule(77L)));
+        assertEquals("Schedules table doesn't contain this record", exception.getMessage());
     }
 
     @Test

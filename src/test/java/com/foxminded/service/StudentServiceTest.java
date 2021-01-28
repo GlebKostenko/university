@@ -1,6 +1,8 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.StudentDao;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import com.foxminded.service.dto.GroupDTO;
@@ -39,9 +41,10 @@ class StudentServiceTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        given(studentDao.findById(new Student(98L))).willThrow(new EmptyResultDataAccessException(1));
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> studentService.findById(new StudentDTO(98L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        given(studentDao.findById(new Student(98L)))
+                .willThrow(new EmptyResultSetExceptionDao("Students table doesn't contain this record",new EmptyResultDataAccessException(1)));
+        Throwable exception = assertThrows(EmptyResultSetExceptionService.class, () -> studentService.findById(new StudentDTO(98L)));
+        assertEquals("Dao layer can't find this record", exception.getMessage());
     }
 
     @Test

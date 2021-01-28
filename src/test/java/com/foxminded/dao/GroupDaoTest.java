@@ -1,11 +1,11 @@
 package com.foxminded.dao;
 
 import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.Group;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -31,8 +31,8 @@ class GroupDaoTest {
 
     @Test
     void findById_WhenRecordDoesNotExist_thenShouldBeException(){
-        Throwable exception = assertThrows(EmptyResultDataAccessException.class, () -> groupDao.findById(new Group(44L)));
-        assertEquals("Incorrect result size: expected 1, actual 0", exception.getMessage());
+        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> groupDao.findById(new Group(44L)));
+        assertEquals("Groups table doesn't contain this record", exception.getMessage());
     }
 
     @Test
