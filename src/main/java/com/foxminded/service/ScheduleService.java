@@ -1,8 +1,7 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.ScheduleDao;
-import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
+import com.foxminded.exception.DomainException;
 import com.foxminded.model.Schedule;
 import com.foxminded.service.dto.ScheduleDTO;
 import org.modelmapper.MappingException;
@@ -48,7 +47,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
                     .save(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
+            throw new DomainException("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
         }
     }
 
@@ -60,7 +59,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
                     .findById(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
+            throw new DomainException("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
         }
     }
 
@@ -73,7 +72,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
                     .collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map Schedule to ScheduleDTO",e);
+            throw new DomainException("Can't map Schedule to ScheduleDTO",e);
         }
     }
 
@@ -84,7 +83,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
             scheduleDao.update(modelMapper.map(scheduleDTO, Schedule.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule",e);
+            throw new DomainException("Can't map ScheduleDTO to Schedule",e);
         }
     }
 
@@ -95,7 +94,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
             scheduleDao.delete(modelMapper.map(scheduleDTO, Schedule.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map ScheduleDTO to Schedule",e);
+            throw new DomainException("Can't map ScheduleDTO to Schedule",e);
         }
     }
 }

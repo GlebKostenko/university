@@ -2,14 +2,12 @@ package com.foxminded.service;
 
 import com.foxminded.dao.ScheduleDao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.*;
 import com.foxminded.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;

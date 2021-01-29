@@ -1,8 +1,7 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.SubjectDao;
-import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
+import com.foxminded.exception.DomainException;
 import com.foxminded.model.Subject;
 import com.foxminded.service.dto.SubjectDTO;
 import org.modelmapper.MappingException;
@@ -35,7 +34,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
                     .save(modelMapper.map(subjectDTO, Subject.class)), SubjectDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
+            throw new DomainException("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
         }
     }
 
@@ -47,7 +46,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
                     .findById(modelMapper.map(subjectDTO,Subject.class)),SubjectDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
+            throw new DomainException("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
         }
     }
 
@@ -60,7 +59,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
                     .collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map Subject to SubjectDTO",e);
+            throw new DomainException("Can't map Subject to SubjectDTO",e);
         }
     }
 
@@ -71,7 +70,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
             subjectDao.update(modelMapper.map(subjectDTO, Subject.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject",e);
+            throw new DomainException("Can't map SubjectDTO to Subject",e);
         }
     }
 
@@ -82,7 +81,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
             subjectDao.delete(modelMapper.map(subjectDTO, Subject.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map SubjectDTO to Subject",e);
+            throw new DomainException("Can't map SubjectDTO to Subject",e);
         }
     }
 }

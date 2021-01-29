@@ -1,8 +1,7 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.StudentDao;
-import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
+import com.foxminded.exception.DomainException;
 import com.foxminded.model.Student;
 import com.foxminded.service.dto.StudentDTO;
 import org.modelmapper.MappingException;
@@ -37,7 +36,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
                     .save(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student or Student to StudentDTO",e);
+            throw new DomainException("Can't map StudentDTO to Student or Student to StudentDTO",e);
         }
     }
 
@@ -49,7 +48,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
                     .findById(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student or Student to StudentDTO",e);
+            throw new DomainException("Can't map StudentDTO to Student or Student to StudentDTO",e);
         }
     }
 
@@ -62,7 +61,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
                     .collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map Student to StudentDTO",e);
+            throw new DomainException("Can't map Student to StudentDTO",e);
         }
     }
 
@@ -73,7 +72,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
             studentDao.update(modelMapper.map(studentDTO, Student.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student",e);
+            throw new DomainException("Can't map StudentDTO to Student",e);
         }
     }
 
@@ -84,7 +83,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
             studentDao.delete(modelMapper.map(studentDTO, Student.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map StudentDTO to Student",e);
+            throw new DomainException("Can't map StudentDTO to Student",e);
         }
     }
 }

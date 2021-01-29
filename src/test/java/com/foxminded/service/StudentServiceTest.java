@@ -2,7 +2,6 @@ package com.foxminded.service;
 
 import com.foxminded.dao.StudentDao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import com.foxminded.service.dto.GroupDTO;

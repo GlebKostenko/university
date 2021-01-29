@@ -1,8 +1,7 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.LectureHallDao;
-import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
+import com.foxminded.exception.DomainException;
 import com.foxminded.model.LectureHall;
 import com.foxminded.service.dto.LectureHallDTO;
 import org.modelmapper.MappingException;
@@ -35,7 +34,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
                     .save(modelMapper.map(lectureHallDTO, LectureHall.class)), LectureHallDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
+            throw new DomainException("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
         }
     }
 
@@ -47,7 +46,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
                     .findById(modelMapper.map(lectureHallDTO, LectureHall.class)), LectureHallDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
+            throw new DomainException("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
         }
     }
 
@@ -60,7 +59,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
                     .collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map LectureHall to LectureHallDTO",e);
+            throw new DomainException("Can't map LectureHall to LectureHallDTO",e);
         }
     }
 
@@ -71,7 +70,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
             lectureHallDao.update(modelMapper.map(lectureHallDTO, LectureHall.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall",e);
+            throw new DomainException("Can't map LectureHallDTO to LectureHall",e);
         }
     }
 
@@ -82,7 +81,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
             lectureHallDao.delete(modelMapper.map(lectureHallDTO, LectureHall.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map LectureHallDTO to LectureHall",e);
+            throw new DomainException("Can't map LectureHallDTO to LectureHall",e);
         }
     }
 }

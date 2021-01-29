@@ -1,16 +1,13 @@
 package com.foxminded.service;
 
-import com.foxminded.configuration.ServiceConfig;
 import com.foxminded.dao.GroupDao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Group;
 import com.foxminded.service.dto.GroupDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;

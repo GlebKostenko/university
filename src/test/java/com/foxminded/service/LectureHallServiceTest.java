@@ -3,7 +3,6 @@ package com.foxminded.service;
 import com.foxminded.configuration.ServiceConfig;
 import com.foxminded.dao.LectureHallDao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.LectureHall;
 import com.foxminded.service.dto.LectureHallDTO;
 import org.junit.jupiter.api.Test;

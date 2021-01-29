@@ -2,7 +2,6 @@ package com.foxminded.service;
 
 import com.foxminded.dao.SubjectDao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
 import com.foxminded.model.Subject;
 import com.foxminded.service.dto.SubjectDTO;
 import org.junit.jupiter.api.Test;

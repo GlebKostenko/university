@@ -1,8 +1,7 @@
 package com.foxminded.service;
 
 import com.foxminded.dao.GroupDao;
-import com.foxminded.exception.EmptyResultSetExceptionDao;
-import com.foxminded.exception.EmptyResultSetExceptionService;
+import com.foxminded.exception.DomainException;
 import com.foxminded.model.Group;
 import com.foxminded.service.dto.GroupDTO;
 import org.modelmapper.MappingException;
@@ -35,7 +34,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
                     .save(modelMapper.map(groupDTO, Group.class)), GroupDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map GroupDTO to Group or Group to GroupDTO",e);
+            throw new DomainException("Can't map GroupDTO to Group or Group to GroupDTO",e);
         }
     }
 
@@ -47,7 +46,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
                     .findById(modelMapper.map(groupDTO, Group.class)), GroupDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map GroupDTO to Group or Group to GroupDTO",e);
+            throw new DomainException("Can't map GroupDTO to Group or Group to GroupDTO",e);
         }
     }
 
@@ -60,7 +59,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
                     .collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map Group to GroupDTO",e);
+            throw new DomainException("Can't map Group to GroupDTO",e);
         }
     }
 
@@ -71,7 +70,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
             groupDao.update(modelMapper.map(groupDTO, Group.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map GroupDTO to Group",e);
+            throw new DomainException("Can't map GroupDTO to Group",e);
         }
 
     }
@@ -83,7 +82,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
             groupDao.delete(modelMapper.map(groupDTO, Group.class));
         }catch (MappingException e){
             logger.error("Mapping error");
-            throw new EmptyResultSetExceptionService("Can't map GroupDTO to Group",e);
+            throw new DomainException("Can't map GroupDTO to Group",e);
         }
     }
 }
