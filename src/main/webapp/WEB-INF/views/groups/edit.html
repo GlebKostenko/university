@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update group</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/groups/{id}(id=${group.getGroupId()})}" th:object="${group}">
+    <label for="name">Enter group name: </label>
+    <input type="text" th:field="*{groupName}" id="name"/>
+    <br/>
+    <input type="submit" value="Update group">
+</form>
+
+</body>
+</html>

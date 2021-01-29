@@ -51,7 +51,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     }
 
     @Override
-    public List<?> findAll() {
+    public List<SubjectDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
             return subjectDao.findAll().stream()

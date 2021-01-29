@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All groups</title>
+</head>
+<body>
+
+<div th:each="group : ${groups}">
+    <a th:href="@{/groups/{id}(id=${group.getGroupId()})}" th:text="${group.getGroupName()}">user</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/groups/new">Create new group</a>
+</body>
+</html>

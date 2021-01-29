@@ -51,7 +51,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     }
 
     @Override
-    public List<?> findAll() {
+    public List<LectureHallDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
             return lectureHallDao.findAll().stream()

@@ -53,7 +53,7 @@ public class TeacherService implements ServiceLayer<TeacherDTO>{
     }
 
     @Override
-    public List<?> findAll() {
+    public List<TeacherDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
             return teacherDao.findAll().stream()

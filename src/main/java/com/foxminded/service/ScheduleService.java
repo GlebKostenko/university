@@ -64,7 +64,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     }
 
     @Override
-    public List<?> findAll() {
+    public List<ScheduleDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
             return scheduleDao.findAll().stream()

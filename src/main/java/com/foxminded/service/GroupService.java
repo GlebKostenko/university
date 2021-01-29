@@ -51,7 +51,7 @@ public class GroupService implements ServiceLayer<GroupDTO>{
     }
 
     @Override
-    public List<?> findAll() {
+    public List<GroupDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
             return groupDao.findAll().stream()
