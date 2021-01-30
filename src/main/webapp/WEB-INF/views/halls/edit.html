@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update hall</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/halls/{id}(id=${hall.getHallId()})}" th:object="${hall}">
+    <label for="name">Enter hall name: </label>
+    <input type="text" th:field="*{hallName}" id="name"/>
+    <br/>
+    <input type="submit" value="Update hall">
+</form>
+
+</body>
+</html>

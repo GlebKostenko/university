@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update schedule</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/schedules/{id}(id=${schedule.getScheduleId()})}" th:object="${schedule}">
+    <label for="group id">Enter group id: </label>
+    <input name="group id" type="number" id="group id"/>
+    <br/>
+    <label for="date time">Enter date time: </label>
+    <input name="date time" type="datetime-local" id="date time"/>
+    <br/>
+    <label for="duration">Enter duration in seconds: </label>
+    <input name="duration" type="number" id="duration"/>
+    <br/>
+    <label for="teacher id">Enter teacher id: </label>
+    <input name="teacher id" type="number" id="teacher id"/>
+    <br/>
+    <label for="hall id">Enter hall id: </label>
+    <input name="hall id" type="number" id="hall id"/>
+    <br/>
+    <label for="subject id">Enter subject id: </label>
+    <input name="subject id" type="number" id="subject id"/>
+    <br/>
+    <input type="submit" value="Update schedule">
+</form>
+
+</body>
+</html>

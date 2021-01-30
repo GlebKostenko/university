@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update subject</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/subjects/{id}(id=${subject.getSubjectId()})}" th:object="${subject}">
+    <label for="name">Enter subject name: </label>
+    <input type="text" th:field="*{subjectName}" id="name"/>
+    <br/>
+    <input type="submit" value="Update subject">
+</form>
+
+</body>
+</html>

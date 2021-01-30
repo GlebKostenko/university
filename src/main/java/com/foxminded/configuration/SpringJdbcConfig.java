@@ -11,11 +11,11 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.foxminded.dao")
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:app.properties")
 public class SpringJdbcConfig {
     @Value("${url}")
     private String url;
-    @Value("${user}")
+    @Value("root")
     private String user;
     @Value("${password}")
     private String password;

@@ -7,7 +7,7 @@
 <body>
 
 <div th:each="group : ${groups}">
-    <a th:href="@{/groups/{id}(id=${group.getGroupId()})}" th:text="${group.getGroupName()}">user</a>
+    <a th:href="@{/groups/{id}(id=${group.getGroupId()})}" th:text="${group.getGroupName()}">groups</a>
 </div>
 
 <br/>

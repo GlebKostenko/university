@@ -2,8 +2,6 @@ package com.foxminded.controller;
 
 import com.foxminded.service.GroupService;
 import com.foxminded.service.dto.GroupDTO;
-import com.foxminded.service.dto.StudentDTO;
-import org.modelmapper.internal.bytebuddy.matcher.StringMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,12 +50,12 @@ public class GroupsController {
     public String update(@ModelAttribute("group") GroupDTO groupDTO,@PathVariable("id") Long id){
         groupDTO.setGroupId(id);
         groupService.update(groupDTO);
-        return "redirect:groups";
+        return "redirect:/groups";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id){
         groupService.delete(new GroupDTO(id));
-        return "redirect:groups";
+        return "redirect:/groups";
     }
 }

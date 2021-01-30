@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hall</title>
+</head>
+<body>
+<p th:text="${hall.getHallId()}">VALUE</p>
+<p th:text="${hall.getHallName()}">VALUE</p>
+<a th:href="@{/halls/{id}/edit(id=${hall.getHallId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/halls/{id}(id=${hall.getHallId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>

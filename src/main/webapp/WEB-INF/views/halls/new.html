@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New hall</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/halls}" th:object="${hall}">
+    <label for="name">Enter hall name: </label>
+    <input type="text" th:field="*{hallName}" id="name"/>
+    <br/>
+    <input type="submit" value="Create hall">
+</form>
+
+</body>
+</html>

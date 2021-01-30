@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teachers</title>
+</head>
+<body>
+
+<div th:each="teacher : ${teachers}">
+    <a th:href="@{/teachers/{id}(id=${teacher.getTeacherId()})}" th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}">teachers</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/teachers/new">Create new teacher</a>
+
+</body>
+</html>

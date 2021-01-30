@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule</title>
+</head>
+<body>
+<p th:text="${schedule.getScheduleId()}">VALUE</p>
+<a th:href="@{/groups/{id}(id=${schedule.getGroup().getGroupId()})}">
+    <p th:text="${schedule.getGroup().getGroupName()}">VALUE</p>
+</a>
+<p th:text="${schedule.getDateTime()}">VALUE</p>
+<p th:text="${schedule.getDuration()}">VALUE</p>
+<a th:href="@{/teachers/{id}(id=${schedule.getTeacher().getTeacherId()})}">
+    <p th:text="${schedule.getTeacher().getFirstName() + ' '+ schedule.getTeacher().getLastName()}">VALUE</p>
+</a>
+<a th:href="@{/halls/{id}(id=${schedule.getLectureHall().getHallId()})}">
+    <p th:text="${schedule.getLectureHall().getHallName()}">VALUE</p>
+</a>
+<a th:href="@{/subjects/{id}(id=${schedule.getSubject().getSubjectId()})}">
+    <p th:text="${schedule.getSubject().getSubjectName()}">VALUE</p>
+</a>
+<a th:href="@{/schedules/{id}/edit(id=${schedule.getScheduleId()})}">Edit</a>
+<br/>
+<form th:method="DELETE" th:action="@{/schedules/{id}(id=${schedule.getScheduleId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>

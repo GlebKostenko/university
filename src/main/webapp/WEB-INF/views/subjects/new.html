@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New hall</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/subjects}" th:object="${subject}">
+    <label for="name">Enter subject name: </label>
+    <input type="text" th:field="*{subjectName}" id="name"/>
+    <br/>
+    <input type="submit" value="Create subject">
+</form>
+</body>
+</html>

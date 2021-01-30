@@ -7,8 +7,8 @@
 <body>
 <p th:text="${group.getGroupId()}">VALUE</p>
 <p th:text="${group.getGroupName()}">VALUE</p>
-<a th:href="@{/groups/{id}(id=${group.getGroupId()})}">Edit</a>
-<form th:method="DELETE" th:action="@{/groups/{id}(id=${group.getGroupId})">
+<a th:href="@{/groups/{id}/edit(id=${group.getGroupId()})}">Edit</a>
+<form th:method="DELETE" th:action="@{/groups/{id}(id=${group.getGroupId()})}">
     <input type="submit" value="Delete"/>
 </form>
 </body>

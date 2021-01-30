@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture halls</title>
+</head>
+<body>
+
+<div th:each="hall : ${halls}">
+    <a th:href="@{/halls/{id}(id=${hall.getHallId()})}" th:text="${hall.getHallName()}">halls</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/halls/new">Create new hall</a>
+
+</body>
+</html>
