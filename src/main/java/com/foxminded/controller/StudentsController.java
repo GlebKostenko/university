@@ -21,13 +21,13 @@ public class StudentsController {
     @GetMapping()
     public String findAll(Model model){
         model.addAttribute("students",studentService.findAll());
-        return "students/findAll";
+        return "students/find-all";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id,Model model){
         model.addAttribute("student",studentService.findById(new StudentDTO(id)));
-        return "students/findById";
+        return "students/find-by-id";
     }
 
     @GetMapping("/new")
@@ -36,9 +36,9 @@ public class StudentsController {
     }
 
     @PostMapping()
-    public String save(@RequestParam("first name") String firstName
-                      ,@RequestParam("last name") String lastName
-                      ,@RequestParam("group id") Long groupId){
+    public String save(@RequestParam("first-name") String firstName
+                      ,@RequestParam("last-name") String lastName
+                      ,@RequestParam("group-id") Long groupId){
         studentService.save(new StudentDTO(firstName,lastName,new GroupDTO(groupId)));
         return "redirect:/students";
     }
@@ -50,9 +50,9 @@ public class StudentsController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("first name") String firstName
-                        ,@RequestParam("last name") String lastName
-                        ,@RequestParam("group id") Long groupId
+    public String update(@RequestParam("first-name") String firstName
+                        ,@RequestParam("last-name") String lastName
+                        ,@RequestParam("group-id") Long groupId
                         ,@PathVariable("id") Long id){
         studentService.update(new StudentDTO(id,firstName,lastName,new GroupDTO(groupId)));
         return "redirect:/students";

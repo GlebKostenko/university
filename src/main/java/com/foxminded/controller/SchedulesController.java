@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/schedules")
@@ -22,13 +23,13 @@ public class SchedulesController {
     @GetMapping()
     public String findAll(Model model){
         model.addAttribute("schedules",scheduleService.findAll());
-        return "schedules/findAll";
+        return "schedules/find-all";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model){
         model.addAttribute("schedule", scheduleService.findById(new ScheduleDTO(id)));
-        return "schedules/findById";
+        return "schedules/find-by-id";
     }
 
     @GetMapping("/new")
@@ -37,19 +38,21 @@ public class SchedulesController {
     }
 
     @PostMapping()
-    public String save(@RequestParam("group id") Long groupId
-                      ,@RequestParam("date time") LocalDateTime ldt
-                      ,@RequestParam("duration") Integer duration
-                      ,@RequestParam("teacher id") Long teacherId
-                      ,@RequestParam("hall id") Long hallId
-                      ,@RequestParam("subject id") Long subjectId){
+    public String save(@RequestParam("group-id") Long groupId
+                      ,@RequestParam("date-time") String ldt
+                      ,@RequestParam("duration") Integer  duration
+                      ,@RequestParam("teacher-id") Long teacherId
+                      ,@RequestParam("hall-id") Long hallId
+                      ,@RequestParam("subject-id") Long subjectId){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
         ScheduleDTO scheduleDTO = new ScheduleDTO(
-                new GroupDTO(groupId)
-                ,ldt
-                ,duration
-                ,new TeacherDTO(teacherId)
-                ,new LectureHallDTO(hallId)
-                ,new SubjectDTO(subjectId)
+                new GroupDTO(groupId),
+                localDateTime,
+                duration,
+                new TeacherDTO(teacherId),
+                new LectureHallDTO(hallId),
+                new SubjectDTO(subjectId)
         );
         scheduleService.save(scheduleDTO);
         return "redirect:/schedules";
@@ -62,21 +65,23 @@ public class SchedulesController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("group id") Long groupId
-            ,@RequestParam("date time") LocalDateTime ldt
-            ,@RequestParam("duration") int duration
-            ,@RequestParam("teacher id") Long teacherId
-            ,@RequestParam("hall id") Long hallId
-            ,@RequestParam("subject id") Long subjectId
-            ,@PathVariable("id") Long id){
+    public String update(@RequestParam("group-id") Long groupId,
+                         @RequestParam("date-time") String ldt,
+                         @RequestParam("duration") int duration,
+                         @RequestParam("teacher-id") Long teacherId,
+                         @RequestParam("hall-id") Long hallId,
+                         @RequestParam("subject-id") Long subjectId,
+                         @PathVariable("id") Long id){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
         ScheduleDTO scheduleDTO = new ScheduleDTO(
-                id
-                ,new GroupDTO(groupId)
-                ,ldt
-                ,duration
-                ,new TeacherDTO(teacherId)
-                ,new LectureHallDTO(hallId)
-                ,new SubjectDTO(subjectId)
+                id,
+                new GroupDTO(groupId),
+                localDateTime,
+                duration,
+                new TeacherDTO(teacherId),
+                new LectureHallDTO(hallId),
+                new SubjectDTO(subjectId)
         );
         scheduleService.update(scheduleDTO);
         return "redirect:/schedules";

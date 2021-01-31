@@ -20,13 +20,13 @@ public class GroupsController {
     @GetMapping()
     public String findAll(Model model){
         model.addAttribute("groups",groupService.findAll());
-        return "groups/findAll";
+        return "groups/find-all";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id,Model model){
         model.addAttribute("group", groupService.findById(new GroupDTO(id)));
-        return "groups/findById";
+        return "groups/find-by-id";
     }
 
     @GetMapping("/new")

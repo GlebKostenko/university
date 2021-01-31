@@ -7,23 +7,23 @@
 <body>
 
 <form th:method="POST" th:action="@{/schedules}" th:object="${schedule}">
-    <label for="group id">Enter group id: </label>
-    <input name="group id" type="number" id="group id"/>
+    <label for="group-id">Enter group id: </label>
+    <input name="group-id" type="number" id="group-id"/>
     <br/>
-    <label for="date time">Enter date time: </label>
-    <input name="date time" type="datetime-local" id="date time"/>
+    <label for="date-time">Enter date time: </label>
+    <input name="date-time" type="datetime-local" id="date-time"/>
     <br/>
     <label for="duration">Enter duration in seconds: </label>
     <input name="duration" type="number" id="duration"/>
     <br/>
-    <label for="teacher id">Enter teacher id: </label>
-    <input name="teacher id" type="number" id="teacher id"/>
+    <label for="teacher-id">Enter teacher id: </label>
+    <input name="teacher-id" type="number" id="teacher-id"/>
     <br/>
-    <label for="hall id">Enter hall id: </label>
-    <input name="hall id" type="number" id="hall id"/>
+    <label for="hall-id">Enter hall id: </label>
+    <input name="hall-id" type="number" id="hall-id"/>
     <br/>
-    <label for="subject id">Enter subject id: </label>
-    <input name="subject id" type="number" id="subject id"/>
+    <label for="subject-id">Enter subject id: </label>
+    <input name="subject-id" type="number" id="subject-id"/>
     <br/>
     <input type="submit" value="Create schedule">
 </form>

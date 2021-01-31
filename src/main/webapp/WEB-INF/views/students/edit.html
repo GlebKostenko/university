@@ -7,14 +7,14 @@
 <body>
 
 <form th:method="PATCH" th:action="@{/students/{id}(id=${student.getStudentId()})}" th:object="${student}">
-    <label for="first name">Enter first name: </label>
-    <input name="first name" type="text" id="first name"/>
+    <label for="first-name">Enter first name: </label>
+    <input name="first-name" type="text" id="first-name"/>
     <br/>
-    <label for="last name">Enter last name: </label>
-    <input name="last name" type="text" id="last name"/>
+    <label for="last-name">Enter last name: </label>
+    <input name="last-name" type="text" id="last-name"/>
     <br/>
-    <label for="group id">Enter group_id: </label>
-    <input name="group id" type="number" id="group id"/>
+    <label for="group-id">Enter group_id: </label>
+    <input name="group-id" type="number" id="group-id"/>
     <br/>
     <input type="submit" value="Update student">
 </form>

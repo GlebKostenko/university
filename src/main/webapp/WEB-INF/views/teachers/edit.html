@@ -7,11 +7,11 @@
 <body>
 
 <form th:method="PATCH" th:action="@{/teachers/{id}(id=${teacher.getTeacherId()})}" th:object="${teacher}">
-    <label for="first name">Enter first name: </label>
-    <input type="text" th:field="*{firstName}" id="first name"/>
+    <label for="first-name">Enter first name: </label>
+    <input type="text" th:field="*{firstName}" id="first-name"/>
     <br/>
-    <label for="last name">Enter last name: </label>
-    <input type="text" th:field="*{lastName}" id="last name">
+    <label for="last-name">Enter last name: </label>
+    <input type="text" th:field="*{lastName}" id="last-name">
     <br/>
     <input type="submit" value="Update teacher">
 </form>

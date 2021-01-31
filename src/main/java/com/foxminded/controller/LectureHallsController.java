@@ -20,13 +20,13 @@ public class LectureHallsController {
     @GetMapping()
     public String findAll(Model model){
         model.addAttribute("halls",lectureHallService.findAll());
-        return "halls/findAll";
+        return "halls/find-all";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model){
         model.addAttribute("hall", lectureHallService.findById(new LectureHallDTO(id)));
-        return "halls/findById";
+        return "halls/find-by-id";
     }
 
     @GetMapping("/new")

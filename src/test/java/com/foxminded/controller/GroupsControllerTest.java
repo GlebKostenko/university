@@ -11,8 +11,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.when;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,39 +30,52 @@ class GroupsControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(groupsController).build();
     }
 
-//    @Test
-//    void findAll() throws Exception{
-//        List<GroupDTO> groups = new ArrayList<>();
-//        groups.add(new GroupDTO());
-//        groups.add(new GroupDTO());
-//        when(groupService.findAll()).thenReturn((List) groups);
-//        mockMvc.perform(get("/groups/findAll"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("groups/findAll"))
-//                .andExpect(model().attribute("groups",hasSize(2)));
-//    }
-
     @Test
-    void findById() {
+    void findAll_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
+        List<GroupDTO> groups = new ArrayList<>();
+        groups.add(new GroupDTO());
+        groups.add(new GroupDTO());
+        when(groupService.findAll()).thenReturn((List) groups);
+        mockMvc.perform(get("/groups"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/find-all"))
+                .andExpect(model().attribute("groups",hasSize(2)));
     }
 
     @Test
-    void newGroup() {
+    void findById_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
+        GroupDTO groupDTO = new GroupDTO(1L);
+        when(groupService.findById(groupDTO)).thenReturn(new GroupDTO());
+        mockMvc.perform(get("/groups/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/find-by-id"))
+                .andExpect(model().attribute("group",instanceOf(GroupDTO.class)));
     }
 
     @Test
-    void save() {
+    void newGroup_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
+        verifyZeroInteractions(groupService);
+        mockMvc.perform(get("/groups/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/new"))
+                .andExpect(model().attribute("group",instanceOf(GroupDTO.class)));
     }
 
     @Test
-    void edit() {
+    void edit_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
+        GroupDTO groupDTO = new GroupDTO(1L);
+        when(groupService.findById(groupDTO)).thenReturn(new GroupDTO());
+        mockMvc.perform(get("/groups/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/edit"))
+                .andExpect(model().attribute("group",instanceOf(GroupDTO.class)));
     }
 
     @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
+    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        GroupDTO groupDTO = new GroupDTO(1L);
+        doNothing().when(groupService).delete(groupDTO);
+        groupsController.delete(1L);
+        verify(groupService,times(1)).delete(groupDTO);
     }
 }
