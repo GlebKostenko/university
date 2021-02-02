@@ -9,12 +9,12 @@ import javax.servlet.ServletException;
 public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{SpringJdbcConfig.class,ServiceConfig.class,ControllerConfig.class};
+        return new Class<?>[]{SpringJdbcConfig.class,ServiceConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class<?>[]{ControllerConfig.class};
     }
 
     @Override
