@@ -31,6 +31,21 @@ class SubjectsControllerTest {
     }
 
     @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        SubjectDTO subjectDTO = new SubjectDTO("Math");
+        when(subjectService.save(subjectDTO)).thenReturn(new SubjectDTO(1L,"Math"));
+        subjectsController.save(subjectDTO);
+        verify(subjectService,times(1)).save(subjectDTO);
+    }
+
+    @Test
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        doNothing().when(subjectService).update(new SubjectDTO(1L,"Math"));
+        subjectsController.update(new SubjectDTO("Math"),1L);
+        verify(subjectService,times(1)).update(new SubjectDTO(1L,"Math"));
+    }
+
+    @Test
     void findAll_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
         List<SubjectDTO> subjects = new ArrayList<>();
         subjects.add(new SubjectDTO());

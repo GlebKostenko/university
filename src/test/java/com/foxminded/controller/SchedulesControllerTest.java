@@ -1,7 +1,7 @@
 package com.foxminded.controller;
 
 import com.foxminded.service.ScheduleService;
-import com.foxminded.service.dto.ScheduleDTO;
+import com.foxminded.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -9,6 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,35 @@ class SchedulesControllerTest {
     SchedulesControllerTest(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(schedulesController).build();
+    }
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
+        ScheduleDTO scheduleDTO = new ScheduleDTO(new GroupDTO(1L),
+                localDateTime,
+                5400,
+                new TeacherDTO(1L),
+                new LectureHallDTO(1L),
+                new SubjectDTO(1L));
+        when(scheduleService.save(scheduleDTO)).thenReturn(new ScheduleDTO(1L));
+        schedulesController.save(1L,"2021-04-08T12:30",5400,1L,1L,1L);
+        verify(scheduleService,times(1)).save(scheduleDTO);
+    }
+
+    @Test
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
+        ScheduleDTO scheduleDTO = new ScheduleDTO(1L,
+                new GroupDTO(1L),
+                localDateTime,
+                5400,
+                new TeacherDTO(1L),
+                new LectureHallDTO(1L),
+                new SubjectDTO(1L));
+        doNothing().when(scheduleService).update(scheduleDTO);
+        schedulesController.update(1L,"2021-04-08T12:30",5400,1L,1L,1L,1L);
+        verify(scheduleService,times(1)).update(scheduleDTO);
     }
 
     @Test

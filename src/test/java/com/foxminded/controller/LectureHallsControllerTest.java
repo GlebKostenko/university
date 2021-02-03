@@ -32,6 +32,21 @@ class LectureHallsControllerTest {
     }
 
     @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        LectureHallDTO lectureHallDTO = new LectureHallDTO("GK");
+        when(lectureHallService.save(lectureHallDTO)).thenReturn(new LectureHallDTO(1L,"GK"));
+        lectureHallsController.save(lectureHallDTO);
+        verify(lectureHallService,times(1)).save(lectureHallDTO);
+    }
+
+    @Test
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"GK"));
+        lectureHallsController.update(new LectureHallDTO("GK"),1L);
+        verify(lectureHallService,times(1)).update(new LectureHallDTO(1L,"GK"));
+    }
+
+    @Test
     void findAll_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
         List<LectureHallDTO> halls = new ArrayList<>();
         halls.add(new LectureHallDTO());

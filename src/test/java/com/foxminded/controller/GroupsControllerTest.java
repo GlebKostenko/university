@@ -30,6 +30,22 @@ class GroupsControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(groupsController).build();
     }
 
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        GroupDTO groupDTO = new GroupDTO("faki");
+        when(groupService.save(groupDTO)).thenReturn(new GroupDTO(1L,"faki"));
+        groupsController.save(groupDTO);
+        verify(groupService,times(1)).save(groupDTO);
+    }
+
+    @Test
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        doNothing().when(groupService).update(new GroupDTO(1L,"faki"));
+        groupsController.update(new GroupDTO("faki"),1L);
+        verify(groupService,times(1)).update(new GroupDTO(1L,"faki"));
+    }
+
     @Test
     void findAll_WhenAllIsOk_thenShouldBeRightStatus() throws Exception{
         List<GroupDTO> groups = new ArrayList<>();

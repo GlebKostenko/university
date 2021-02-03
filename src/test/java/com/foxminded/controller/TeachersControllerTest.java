@@ -1,6 +1,7 @@
 package com.foxminded.controller;
 
 import com.foxminded.service.TeacherService;
+import com.foxminded.service.dto.SubjectDTO;
 import com.foxminded.service.dto.TeacherDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,6 +29,21 @@ class TeachersControllerTest {
     TeachersControllerTest(){
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(teachersController).build();
+    }
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        TeacherDTO teacherDTO = new TeacherDTO("Lev","Landau");
+        when(teacherService.save(teacherDTO)).thenReturn(new TeacherDTO(1L,"Lev","Landau"));
+        teacherService.save(teacherDTO);
+        verify(teacherService,times(1)).save(teacherDTO);
+    }
+
+    @Test
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        doNothing().when(teacherService).update(new TeacherDTO(1L,"Lev","Landau"));
+        teachersController.update(new TeacherDTO("Lev","Landau"),1L);
+        verify(teacherService,times(1)).update(new TeacherDTO(1L,"Lev","Landau"));
     }
 
     @Test

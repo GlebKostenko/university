@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Teachers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
 
 <div th:each="teacher : ${teachers}">
-    <a th:href="@{/teachers/{id}(id=${teacher.getTeacherId()})}" th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}">teachers</a>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <a class="btn btn-primary" th:href="@{/teachers/{id}(id=${teacher.getTeacherId()})}" role="button">
+                <p th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}">VALUE</p>
+            </a>
+        </div>
+    </div>
 </div>
 
 <br/>
 <hr/>
 
-<a href="/teachers/new">Create new teacher</a>
+<a class="btn btn-primary" href="/teachers/new" role="button">Create new teacher</a>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>
 </html>

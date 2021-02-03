@@ -3,27 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Schedule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<p th:text="${schedule.getScheduleId()}">VALUE</p>
-<a th:href="@{/groups/{id}(id=${schedule.getGroup().getGroupId()})}">
-    <p th:text="${schedule.getGroup().getGroupName()}">VALUE</p>
-</a>
-<p th:text="${schedule.getDateTime() + ' '}">VALUE</p>
-<p th:text="${schedule.getDuration()}">VALUE</p>
-<a th:href="@{/teachers/{id}(id=${schedule.getTeacher().getTeacherId()})}">
-    <p th:text="${schedule.getTeacher().getFirstName() + ' '+ schedule.getTeacher().getLastName()}">VALUE</p>
-</a>
-<a th:href="@{/halls/{id}(id=${schedule.getLectureHall().getHallId()})}">
-    <p th:text="${schedule.getLectureHall().getHallName()}">VALUE</p>
-</a>
-<a th:href="@{/subjects/{id}(id=${schedule.getSubject().getSubjectId()})}">
-    <p th:text="${schedule.getSubject().getSubjectName()}">VALUE</p>
-</a>
-<a th:href="@{/schedules/{id}/edit(id=${schedule.getScheduleId()})}">Edit</a>
-<br/>
-<form th:method="DELETE" th:action="@{/schedules/{id}(id=${schedule.getScheduleId()})}">
-    <input type="submit" value="Delete"/>
-</form>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">
+            <p th:text="${schedule.getScheduleId()}">VALUE</p>
+            <p th:text="${schedule.getDateTime() + ' '}">VALUE</p>
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+            <a th:href="@{/groups/{id}(id=${schedule.getGroup().getGroupId()})}">
+                <p th:text="${schedule.getGroup().getGroupName()}">VALUE</p>
+            </a>
+        </h6>
+        <p th:text="${schedule.getDuration()}">VALUE</p>
+        <a th:href="@{/teachers/{id}(id=${schedule.getTeacher().getTeacherId()})}">
+            <p th:text="${schedule.getTeacher().getFirstName() + ' '+ schedule.getTeacher().getLastName()}">VALUE</p>
+        </a>
+        <a th:href="@{/halls/{id}(id=${schedule.getLectureHall().getHallId()})}">
+            <p th:text="${schedule.getLectureHall().getHallName()}">VALUE</p>
+        </a>
+        <a th:href="@{/subjects/{id}(id=${schedule.getSubject().getSubjectId()})}">
+            <p th:text="${schedule.getSubject().getSubjectName()}">VALUE</p>
+        </a>
+        <a class="btn btn-primary" th:href="@{/schedules/{id}/edit(id=${schedule.getScheduleId()})}" role="button">Edit</a>
+        <hr/>
+        <form th:method="DELETE" th:action="@{/schedules/{id}(id=${schedule.getScheduleId()})}">
+            <input class="btn btn-primary" type="submit" value="Delete">
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>
 </html>
