@@ -4,12 +4,52 @@
     <meta charset="UTF-8">
     <title>Update schedule</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+        label{
+            display: block;
+            float: left;
+            width : 200px;
+        }
+    </style>
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">University</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/groups">Groups</a></li>
+                        <li><a class="dropdown-item" href="/halls">Halls</a></li>
+                        <li><a class="dropdown-item" href="/schedules">Schedules</a></li>
+                        <li><a class="dropdown-item" href="/students">Students</a></li>
+                        <li><a class="dropdown-item" href="/subjects">Subjects</a></li>
+                        <li><a class="dropdown-item" href="/teachers">Teachers</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <form th:method="PATCH" th:action="@{/schedules/{id}(id=${schedule.getScheduleId()})}" th:object="${schedule}">
-    <label for="group-id">Enter group id: </label>
-    <input name="group-id" type="number" id="group-id"/>
+    <label >Choose group id: </label>
+    <input list="groups" type="number" name="group-id">
+    <datalist id="groups">
+        <div th:each="group : ${groups}">
+            <option th:text="${group.getGroupId()}"/>
+        </div>
+    </datalist>
     <br/>
     <label for="date-time">Enter date time: </label>
     <input name="date-time" type="datetime-local" id="date-time"/>
@@ -17,14 +57,29 @@
     <label for="duration">Enter duration in seconds: </label>
     <input name="duration" type="number" id="duration"/>
     <br/>
-    <label for="teacher-id">Enter teacher id: </label>
-    <input name="teacher-id" type="number" id="teacher-id"/>
+    <label>Choose teacher id: </label>
+    <input list="teachers" type="number" name="teacher-id">
+    <datalist id="teachers">
+        <div th:each="teacher : ${teachers}">
+            <option th:text="${teacher.getTeacherId()}"/>
+        </div>
+    </datalist>
     <br/>
-    <label for="hall-id">Enter hall id: </label>
-    <input name="hall-id" type="number" id="hall-id"/>
+    <label>Choose hall id: </label>
+    <input list="halls" type="number" name="hall-id">
+    <datalist id="halls">
+        <div th:each="hall : ${halls}">
+            <option th:text="${hall.getHallId()}"/>
+        </div>
+    </datalist>
     <br/>
-    <label for="subject-id">Enter subject id: </label>
-    <input name="subject-id" type="number" id="subject-id"/>
+    <label>Choose subject id: </label>
+    <input list="subjects" type="number" name="subject-id">
+    <datalist id="subjects">
+        <div th:each="subject : ${subjects}">
+            <option th:text="${subject.getSubjectId()}"/>
+        </div>
+    </datalist>
     <br/>
     <input class="btn btn-primary" type="submit" value="Update schedule">
 </form>

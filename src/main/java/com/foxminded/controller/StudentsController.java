@@ -1,5 +1,6 @@
 package com.foxminded.controller;
 
+import com.foxminded.service.GroupService;
 import com.foxminded.service.StudentService;
 import com.foxminded.service.dto.GroupDTO;
 import com.foxminded.service.dto.StudentDTO;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/students")
 public class StudentsController {
     private final StudentService studentService;
+    private final GroupService groupService;
 
     @Autowired
-    public StudentsController(StudentService studentService) {
+    public StudentsController(StudentService studentService,GroupService groupService) {
         this.studentService = studentService;
+        this.groupService = groupService;
     }
 
     @GetMapping()
@@ -31,7 +34,8 @@ public class StudentsController {
     }
 
     @GetMapping("/new")
-    public String newStudent(@ModelAttribute("student") StudentDTO studentDTO){
+    public String newStudent(@ModelAttribute("student") StudentDTO studentDTO,Model model){
+        model.addAttribute("groups",groupService.findAll());
         return "students/new";
     }
 
@@ -45,6 +49,7 @@ public class StudentsController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id){
+        model.addAttribute("groups",groupService.findAll());
         model.addAttribute("student",studentService.findById(new StudentDTO(id)));
         return "students/edit";
     }

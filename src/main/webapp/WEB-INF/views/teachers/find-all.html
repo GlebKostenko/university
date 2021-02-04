@@ -7,15 +7,74 @@
 </head>
 <body>
 
-<div th:each="teacher : ${teachers}">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <a class="btn btn-primary" th:href="@{/teachers/{id}(id=${teacher.getTeacherId()})}" role="button">
-                <p th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}">VALUE</p>
-            </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">University</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/groups">Groups</a></li>
+                        <li><a class="dropdown-item" href="/halls">Halls</a></li>
+                        <li><a class="dropdown-item" href="/schedules">Schedules</a></li>
+                        <li><a class="dropdown-item" href="/students">Students</a></li>
+                        <li><a class="dropdown-item" href="/subjects">Subjects</a></li>
+                        <li><a class="dropdown-item" href="/teachers">Teachers</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
+</nav>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." title="Type in a name">
+<table id="myTable">
+    <tr class="header">
+        <th style="width:50%;">Teacher id</th>
+        <th style="width:50%;">Teacher</th>
+    </tr>
+
+    <div th:each="teacher : ${teachers}">
+        <tr>
+            <td>
+                <a th:href="@{/teachers/{id}(id=${teacher.getTeacherId()})}">
+                    <p th:text="${teacher.getTeacherId()}">VALUE</p>
+                </a>
+            </td>
+            <td>
+                <p th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}">VALUE</p>
+            </td>
+        </tr>
+    </div>
+</table>
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
 
 <br/>
 <hr/>

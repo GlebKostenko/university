@@ -1,6 +1,6 @@
 package com.foxminded.controller;
 
-import com.foxminded.service.ScheduleService;
+import com.foxminded.service.*;
 import com.foxminded.service.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +14,22 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/schedules")
 public class SchedulesController {
     private final ScheduleService scheduleService;
+    private final GroupService groupService;
+    private final LectureHallService lectureHallService;
+    private final SubjectService subjectService;
+    private final TeacherService teacherService;
 
     @Autowired
-    public SchedulesController(ScheduleService scheduleService) {
+    public SchedulesController(ScheduleService scheduleService,
+                               GroupService groupService,
+                               LectureHallService lectureHallService,
+                               SubjectService subjectService,
+                               TeacherService teacherService) {
         this.scheduleService = scheduleService;
+        this.groupService = groupService;
+        this.lectureHallService = lectureHallService;
+        this.subjectService = subjectService;
+        this.teacherService = teacherService;
     }
 
     @GetMapping()
@@ -33,7 +45,11 @@ public class SchedulesController {
     }
 
     @GetMapping("/new")
-    public String newSchedule(@ModelAttribute("schedule") ScheduleDTO scheduleDTO){
+    public String newSchedule(@ModelAttribute("schedule") ScheduleDTO scheduleDTO,Model model){
+        model.addAttribute("groups",groupService.findAll());
+        model.addAttribute("halls",lectureHallService.findAll());
+        model.addAttribute("subjects",subjectService.findAll());
+        model.addAttribute("teachers",teacherService.findAll());
         return "schedules/new";
     }
 
@@ -60,6 +76,10 @@ public class SchedulesController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") Long id){
+        model.addAttribute("groups",groupService.findAll());
+        model.addAttribute("halls",lectureHallService.findAll());
+        model.addAttribute("subjects",subjectService.findAll());
+        model.addAttribute("teachers",teacherService.findAll());
         model.addAttribute("schedule",scheduleService.findById(new ScheduleDTO(id)));
         return "schedules/edit";
     }

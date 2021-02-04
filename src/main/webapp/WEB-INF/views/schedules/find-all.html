@@ -7,16 +7,136 @@
 </head>
 <body>
 
-<div th:each="schedule : ${schedules}">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <a class="btn btn-primary" th:href="@{/schedules/{id}(id=${schedule.getScheduleId()})}" role="button">
-                <p th:text="${schedule.getDateTime() + ' ' + schedule.getGroup().getGroupName()}">VALUE</p>
-            </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">University</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/groups">Groups</a></li>
+                        <li><a class="dropdown-item" href="/halls">Halls</a></li>
+                        <li><a class="dropdown-item" href="/schedules">Schedules</a></li>
+                        <li><a class="dropdown-item" href="/students">Students</a></li>
+                        <li><a class="dropdown-item" href="/subjects">Subjects</a></li>
+                        <li><a class="dropdown-item" href="/teachers">Teachers</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
-</div>
+</nav>
 
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." title="Type in a name">
+<table id="myTable">
+    <tr class="header">
+        <th style="width:10%;">Schedule id</th>
+        <th style="width:10%;">Group</th>
+        <th style="width:20%;">Datetime</th>
+        <th style="width:10%;">Duration</th>
+        <th style="width:15%;">Teacher</th>
+        <th style="width:25%;">Hall</th>
+        <th style="width:20%;">Subject</th>
+    </tr>
+
+    <div th:each="schedule : ${schedules}">
+        <tr>
+            <td>
+                <a th:href="@{/schedules/{id}(id=${schedule.getScheduleId()})}">
+                    <p th:text="${schedule.getScheduleId()}">VALUE</p>
+                </a>
+            </td>
+            <td>
+                <p th:text="${schedule.getGroup().getGroupName()}">VALUE</p>
+            </td>
+            <td>
+                <p th:text="${schedule.getDateTime() + ' '}">VALUE</p>
+            </td>
+            <td>
+                <p th:text="${schedule.getDuration()}">VALUE</p>
+            </td>
+            <td>
+                <p th:text="${schedule.getTeacher().getFirstName() + ' ' + schedule.getTeacher().getLastName()}">VALUE</p>
+            </td>
+            <td>
+                <p th:text="${schedule.getLectureHall().getHallName()}">VALUE</p>
+            </td>
+            <td>
+                <p th:text="${schedule.getSubject().getSubjectName()}">VALUE</p>
+            </td>
+        </tr>
+    </div>
+</table>
+
+<script>
+    function myFunction() {
+        var input, filter, table, tr, td1, td2, td3, td4, td5, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    td1 = tr[i].getElementsByTagName("td")[2];
+                    if (td1) {
+                        txtValue = td1.textContent || td1.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            td2 = tr[i].getElementsByTagName("td")[3];
+                            if (td2) {
+                                txtValue = td2.textContent || td2.innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    td3 = tr[i].getElementsByTagName("td")[4];
+                                    if (td3) {
+                                        txtValue = td3.textContent || td3.innerText;
+                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                            tr[i].style.display = "";
+                                        } else {
+                                            td4 = tr[i].getElementsByTagName("td")[5];
+                                            if (td4) {
+                                                txtValue = td4.textContent || td4.innerText;
+                                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                    tr[i].style.display = "";
+                                                } else {
+                                                    td5= tr[i].getElementsByTagName("td")[6];
+                                                    if (td5) {
+                                                        txtValue = td5.textContent || td5.innerText;
+                                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                            tr[i].style.display = "";
+                                                        } else {
+                                                            tr[i].style.display = "none";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
 <br/>
 <hr/>
 
