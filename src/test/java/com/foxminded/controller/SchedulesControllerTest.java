@@ -1,6 +1,6 @@
 package com.foxminded.controller;
 
-import com.foxminded.service.ScheduleService;
+import com.foxminded.service.*;
 import com.foxminded.service.dto.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SchedulesControllerTest {
     @Mock
     private ScheduleService scheduleService;
+    @Mock
+    private GroupService groupService;
+    @Mock
+    private LectureHallService lectureHallService;
+    @Mock
+    private TeacherService teacherService;
+    @Mock
+    private SubjectService subjectService;
     @InjectMocks
     private SchedulesController schedulesController;
 

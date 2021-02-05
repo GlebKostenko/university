@@ -1,5 +1,6 @@
 package com.foxminded.controller;
 
+import com.foxminded.service.GroupService;
 import com.foxminded.service.StudentService;
 import com.foxminded.service.dto.GroupDTO;
 import com.foxminded.service.dto.StudentDTO;
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StudentsControllerTest {
     @Mock
     private StudentService studentService;
+    @Mock
+    private GroupService groupService;
     @InjectMocks
     private StudentsController studentsController;
 
