@@ -42,8 +42,9 @@ public class StudentsController {
     @PostMapping()
     public String save(@RequestParam("first-name") String firstName
                       ,@RequestParam("last-name") String lastName
-                      ,@RequestParam("group-id") Long groupId){
-        studentService.save(new StudentDTO(firstName,lastName,new GroupDTO(groupId)));
+                      ,@RequestParam("group") String group){
+        GroupDTO groupDTO = groupService.findAll().stream().filter((x)->x.getGroupName().equals(group)).findAny().get();
+        studentService.save(new StudentDTO(firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
         return "redirect:/students";
     }
 
@@ -57,9 +58,10 @@ public class StudentsController {
     @PatchMapping("/{id}")
     public String update(@RequestParam("first-name") String firstName
                         ,@RequestParam("last-name") String lastName
-                        ,@RequestParam("group-id") Long groupId
+                        ,@RequestParam("group") String group
                         ,@PathVariable("id") Long id){
-        studentService.update(new StudentDTO(id,firstName,lastName,new GroupDTO(groupId)));
+        GroupDTO groupDTO = groupService.findAll().stream().filter((x)->x.getGroupName().equals(group)).findAny().get();
+        studentService.update(new StudentDTO(id,firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
         return "redirect:/students";
     }
 

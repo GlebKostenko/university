@@ -27,7 +27,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        Others
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{/groups}">Groups</a></li>
@@ -44,13 +44,17 @@
 </nav>
 
 <form th:method="POST" th:action="@{/schedules}" th:object="${schedule}">
-    <label >Choose group id: </label>
-    <input list="groups" type="number" name="group-id">
-    <datalist id="groups">
-        <div th:each="group : ${groups}">
-            <option th:text="${group.getGroupId()}"/>
-        </div>
-    </datalist>
+    <label for="all-groups">Choose group : </label>
+    <select id="all-groups" name="group">
+        <option selected="selected">
+            <p th:text=".....">VALUE</p>
+        </option>
+        <datalist id="groups">
+            <div th:each="group : ${groups}">
+                <option th:text="${group.getGroupName()}"/>
+            </div>
+        </datalist>
+    </select>
     <br/>
     <label for="date-time">Enter date time: </label>
     <input name="date-time" type="datetime-local" id="date-time"/>
@@ -58,29 +62,41 @@
     <label for="duration">Enter duration in seconds: </label>
     <input name="duration" type="number" id="duration"/>
     <br/>
-    <label>Choose teacher id: </label>
-    <input list="teachers" type="number" name="teacher-id">
-    <datalist id="teachers">
-        <div th:each="teacher : ${teachers}">
-            <option th:text="${teacher.getTeacherId()}"/>
-        </div>
-    </datalist>
+    <label for="all-teachers">Choose teacher : </label>
+    <select id="all-teachers" name="teacher">
+        <option selected="selected">
+            <p th:text=".....">VALUE</p>
+        </option>
+        <datalist id="teachers">
+            <div th:each="teacher : ${teachers}">
+                <option th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}"/>
+            </div>
+        </datalist>
+    </select>
     <br/>
-    <label>Choose hall id: </label>
-    <input list="halls" type="number" name="hall-id">
-    <datalist id="halls">
-        <div th:each="hall : ${halls}">
-            <option th:text="${hall.getHallId()}"/>
-        </div>
-    </datalist>
+    <label for="all-halls">Choose hall : </label>
+    <select id="all-halls" name="hall">
+        <option selected="selected">
+            <p th:text=".....">VALUE</p>
+        </option>
+        <datalist id="halls">
+            <div th:each="hall : ${halls}">
+                <option th:text="${hall.getHallName()}"/>
+            </div>
+        </datalist>
+    </select>
     <br/>
-    <label>Choose subject id: </label>
-    <input list="subjects" type="number" name="subject-id">
-    <datalist id="subjects">
-        <div th:each="subject : ${subjects}">
-            <option th:text="${subject.getSubjectId()}"/>
-        </div>
-    </datalist>
+    <label for="all-subjects">Choose subject : </label>
+    <select id="all-subjects" name="subject">
+        <option selected="selected">
+            <p th:text=".....">VALUE</p>
+        </option>
+        <datalist id="subjects">
+            <div th:each="subject : ${subjects}">
+                <option th:text="${subject.getSubjectName()}"/>
+            </div>
+        </datalist>
+    </select>
     <br/>
     <input class="btn btn-primary" type="submit" value="Create schedule">
 </form>

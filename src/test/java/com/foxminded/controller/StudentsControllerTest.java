@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -36,17 +37,21 @@ class StudentsControllerTest {
 
     @Test
     void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        when(groupService.findAll())
+                .thenReturn(Arrays.asList(new GroupDTO(1L,"mehmat")));
         StudentDTO studentDTO = new StudentDTO("Ivan","Ivanov",new GroupDTO(1L));
         when(studentService.save(studentDTO)).thenReturn(new StudentDTO(1L,"Ivan","Ivanov",new GroupDTO(1L)));
-        studentsController.save("Ivan","Ivanov",1L);
+        studentsController.save("Ivan","Ivanov","mehmat");
         verify(studentService,times(1)).save(studentDTO);
     }
 
     @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        when(groupService.findAll())
+                .thenReturn(Arrays.asList(new GroupDTO(1L,"mehmat")));
         StudentDTO studentDTO = new StudentDTO(1L,"Ivan","Ivanov",new GroupDTO(1L));
         doNothing().when(studentService).update(studentDTO);
-        studentsController.update("Ivan","Ivanov",1L,1L);
+        studentsController.update("Ivan","Ivanov","mehmat",1L);
         verify(studentService,times(1)).update(studentDTO);
     }
 

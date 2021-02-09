@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        Others
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{/groups}">Groups</a></li>
@@ -44,18 +44,22 @@
 
 <form th:method="PATCH" th:action="@{/students/{id}(id=${student.getStudentId()})}" th:object="${student}">
     <label for="first-name">Enter first name: </label>
-    <input name="first-name" type="text" id="first-name"/>
+    <input name="first-name" type="text" th:value = "*{firstName}" id="first-name"/>
     <br/>
     <label for="last-name">Enter last name: </label>
-    <input name="last-name" type="text" id="last-name"/>
+    <input name="last-name" type="text" th:value = "*{lastName}" id="last-name"/>
     <br/>
-    <label >Choose group id: </label>
-    <input list="groups" type="number" name="group-id">
-    <datalist id="groups">
-        <div th:each="group : ${groups}">
-            <option th:text="${group.getGroupId()}"/>
-        </div>
-    </datalist>
+    <label for="all-groups">Choose group : </label>
+    <select id="all-groups" name="group">
+        <option selected="selected">
+            <p th:text="${student.getGroup().getGroupName()}">VALUE</p>
+        </option>
+        <datalist id="groups">
+            <div th:each="group : ${groups}">
+                <option th:text="${group.getGroupName()}"/>
+            </div>
+        </datalist>
+    </select>
     <br/>
     <input class="btn btn-primary" type="submit" value="Update student">
 </form>

@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -42,6 +43,14 @@ class SchedulesControllerTest {
 
     @Test
     void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        when(groupService.findAll())
+                .thenReturn(Arrays.asList(new GroupDTO(1L,"mehmat")));
+        when(teacherService.findAll())
+                .thenReturn(Arrays.asList(new TeacherDTO(1L,"Ivan","Ivanov")));
+        when(lectureHallService.findAll())
+                .thenReturn(Arrays.asList(new LectureHallDTO(1L,"404")));
+        when(subjectService.findAll())
+                .thenReturn(Arrays.asList(new SubjectDTO(1L,"Biology")));
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         ScheduleDTO scheduleDTO = new ScheduleDTO(new GroupDTO(1L),
                 localDateTime,
@@ -50,12 +59,20 @@ class SchedulesControllerTest {
                 new LectureHallDTO(1L),
                 new SubjectDTO(1L));
         when(scheduleService.save(scheduleDTO)).thenReturn(new ScheduleDTO(1L));
-        schedulesController.save(1L,"2021-04-08T12:30",5400,1L,1L,1L);
+        schedulesController.save("mehmat","2021-04-08T12:30",5400,"Ivan Ivanov","404","Biology");
         verify(scheduleService,times(1)).save(scheduleDTO);
     }
 
     @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+        when(groupService.findAll())
+                .thenReturn(Arrays.asList(new GroupDTO(1L,"mehmat")));
+        when(teacherService.findAll())
+                .thenReturn(Arrays.asList(new TeacherDTO(1L,"Ivan","Ivanov")));
+        when(lectureHallService.findAll())
+                .thenReturn(Arrays.asList(new LectureHallDTO(1L,"404")));
+        when(subjectService.findAll())
+                .thenReturn(Arrays.asList(new SubjectDTO(1L,"Biology")));
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
         ScheduleDTO scheduleDTO = new ScheduleDTO(1L,
                 new GroupDTO(1L),
@@ -65,7 +82,7 @@ class SchedulesControllerTest {
                 new LectureHallDTO(1L),
                 new SubjectDTO(1L));
         doNothing().when(scheduleService).update(scheduleDTO);
-        schedulesController.update(1L,"2021-04-08T12:30",5400,1L,1L,1L,1L);
+        schedulesController.update("mehmat","2021-04-08T12:30",5400,"Ivan Ivanov","404","Biology",1L);
         verify(scheduleService,times(1)).update(scheduleDTO);
     }
 

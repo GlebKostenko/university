@@ -54,21 +54,29 @@ public class SchedulesController {
     }
 
     @PostMapping()
-    public String save(@RequestParam("group-id") Long groupId
+    public String save(@RequestParam("group") String group
                       ,@RequestParam("date-time") String ldt
                       ,@RequestParam("duration") Integer  duration
-                      ,@RequestParam("teacher-id") Long teacherId
-                      ,@RequestParam("hall-id") Long hallId
-                      ,@RequestParam("subject-id") Long subjectId){
+                      ,@RequestParam("teacher") String teacher
+                      ,@RequestParam("hall") String hall
+                      ,@RequestParam("subject") String subject){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
+        GroupDTO groupDTO = groupService.findAll().stream()
+                .filter((x)->x.getGroupName().equals(group)).findAny().get();
+        TeacherDTO teacherDTO = teacherService.findAll().stream()
+                .filter((x)-> (x.getFirstName() + " " + x.getLastName()).equals(teacher)).findAny().get();
+        LectureHallDTO lectureHallDTO = lectureHallService.findAll().stream()
+                .filter((x) -> x.getHallName().equals(hall)).findAny().get();
+        SubjectDTO subjectDTO = subjectService.findAll().stream()
+                .filter((x) -> x.getSubjectName().equals(subject)).findAny().get();
         ScheduleDTO scheduleDTO = new ScheduleDTO(
-                new GroupDTO(groupId),
+                new GroupDTO(groupDTO.getGroupId()),
                 localDateTime,
                 duration,
-                new TeacherDTO(teacherId),
-                new LectureHallDTO(hallId),
-                new SubjectDTO(subjectId)
+                new TeacherDTO(teacherDTO.getTeacherId()),
+                new LectureHallDTO(lectureHallDTO.getHallId()),
+                new SubjectDTO(subjectDTO.getSubjectId())
         );
         scheduleService.save(scheduleDTO);
         return "redirect:/schedules";
@@ -85,23 +93,31 @@ public class SchedulesController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("group-id") Long groupId,
+    public String update(@RequestParam("group") String group,
                          @RequestParam("date-time") String ldt,
                          @RequestParam("duration") int duration,
-                         @RequestParam("teacher-id") Long teacherId,
-                         @RequestParam("hall-id") Long hallId,
-                         @RequestParam("subject-id") Long subjectId,
+                         @RequestParam("teacher") String teacher,
+                         @RequestParam("hall") String hall,
+                         @RequestParam("subject") String subject,
                          @PathVariable("id") Long id){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
+        GroupDTO groupDTO = groupService.findAll().stream()
+                .filter((x)->x.getGroupName().equals(group)).findAny().get();
+        TeacherDTO teacherDTO = teacherService.findAll().stream()
+                .filter((x)-> (x.getFirstName() + " " + x.getLastName()).equals(teacher)).findAny().get();
+        LectureHallDTO lectureHallDTO = lectureHallService.findAll().stream()
+                .filter((x) -> x.getHallName().equals(hall)).findAny().get();
+        SubjectDTO subjectDTO = subjectService.findAll().stream()
+                .filter((x) -> x.getSubjectName().equals(subject)).findAny().get();
         ScheduleDTO scheduleDTO = new ScheduleDTO(
                 id,
-                new GroupDTO(groupId),
+                new GroupDTO(groupDTO.getGroupId()),
                 localDateTime,
                 duration,
-                new TeacherDTO(teacherId),
-                new LectureHallDTO(hallId),
-                new SubjectDTO(subjectId)
+                new TeacherDTO(teacherDTO.getTeacherId()),
+                new LectureHallDTO(lectureHallDTO.getHallId()),
+                new SubjectDTO(subjectDTO.getSubjectId())
         );
         scheduleService.update(scheduleDTO);
         return "redirect:/schedules";
