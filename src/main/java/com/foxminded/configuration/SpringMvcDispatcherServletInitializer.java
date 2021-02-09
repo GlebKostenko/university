@@ -45,7 +45,7 @@ public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationCon
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         FilterRegistration.Dynamic filter = servletContext.addFilter("characterEncodingFilter", characterEncodingFilter);
-        filter.addMappingForUrlPatterns(null, true, "/*");
+        filter.addMappingForUrlPatterns(null, false, "/*");
     }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
