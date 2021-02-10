@@ -15,8 +15,8 @@ import javax.sql.DataSource;
 public class SpringJdbcConfig {
     @Value("${url}")
     private String url;
-    @Value("${user}")
-    private String user;
+//    @Value("${user}")
+    private String user = "root";
     @Value("${password}")
     private String password;
     @Value("${driver}")
