@@ -1,8 +1,9 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.Group;
+import com.foxminded.model.Schedule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
+import javax.persistence.OptimisticLockException;
+
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class GroupDaoTest {
 
     @Autowired
@@ -30,9 +33,8 @@ class GroupDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException(){
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> groupDao.findById(new Group(44L)));
-        assertEquals("Groups table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing(){
+        groupDao.findById(new Group(44L));
     }
 
     @Test
@@ -51,9 +53,9 @@ class GroupDaoTest {
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong(){
+    void update_WhenRecordDoesNotExist_thenShouldBeException(){
         Group groupNew = new Group(44L,"fefm-002");
-        groupDao.update(groupNew);
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> groupDao.update(groupNew));
     }
 
     @Test
@@ -64,7 +66,7 @@ class GroupDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        groupDao.delete(new Group(44L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> groupDao.delete(new Group(44L)));
     }
 }

@@ -1,7 +1,10 @@
 package com.foxminded.dao;
 
 import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.model.LectureHall;
 import com.foxminded.model.Teacher;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,67 +21,68 @@ import java.util.Map;
 
 @Repository
 public class TeacherDao implements Dao<Teacher>{
+    private SessionFactory factory;
     private static final Logger logger = LoggerFactory.getLogger(TeacherDao.class.getSimpleName());
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public TeacherDao(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public TeacherDao(SessionFactory factory) {
+        this.factory = factory;
     }
 
     @Override
     public Teacher save(Teacher teacher) {
-        Map<String, Object> parameters = new HashMap<>(2);
-        parameters.put("first_name",teacher.getFirstName());
-        parameters.put("last_name",teacher.getLastName());
         logger.debug("Trying to insert new record in teachers table");
-        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
-                .withTableName("teachers")
-                .usingGeneratedKeyColumns("teacher_id")
-                .executeAndReturnKey(parameters).longValue();
-        teacher.setTeacherId(id);
-        logger.debug("Return Teacher with id: {}", id);
-        return teacher;
+        try (final Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            teacher.setTeacherId((Long) session.save(teacher));
+
+            session.getTransaction().commit();
+
+            return teacher;
+        }
     }
 
     @Override
     public Teacher findById(Teacher teacher) {
         logger.debug("Trying to find teacher with id: {}",teacher.getTeacherId());
-        try {
-            return jdbcTemplate.queryForObject("SELECT teacher_id,first_name,last_name FROM teachers WHERE teacher_id = ?"
-                    , new BeanPropertyRowMapper<Teacher>(Teacher.class), teacher.getTeacherId()
-            );
-        }catch (EmptyResultDataAccessException e){
-            logger.error("Teacher with the same id wasn't found");
-            throw new EmptyResultSetExceptionDao("Teachers table doesn't contain this record",e);
+        try (final Session session = factory.openSession()) {
+            return session.get(Teacher.class, teacher.getTeacherId());
         }
     }
 
     @Override
     public List<Teacher> findAll() {
         logger.debug("Trying to return existing teachers");
-        try {
-            return jdbcTemplate.query("SELECT teacher_id,first_name,last_name FROM teachers"
-                    , new BeanPropertyRowMapper<Teacher>(Teacher.class)
-            );
-        }catch (EmptyResultDataAccessException e){
-            logger.error("List of teachers is empty");
-            throw new EmptyResultSetExceptionDao("Teachers table is empty",e);
+        try (final Session session = factory.openSession()) {
+            return session.createQuery("SELECT a FROM Teacher a", Teacher.class).getResultList();
         }
     }
 
     @Override
     public void update(Teacher teacher) {
         logger.debug("Updating record with id: {}",teacher.getTeacherId());
-        jdbcTemplate.update("UPDATE teachers SET first_name = ?,last_name = ? WHERE teacher_id = ?"
-                ,teacher.getFirstName()
-                ,teacher.getLastName()
-                ,teacher.getTeacherId());
+        try (Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            session.update(teacher);
+
+            session.getTransaction().commit();
+        }
     }
 
     @Override
     public void delete(Teacher teacher) {
         logger.debug("Deleting record with id: {}",teacher.getTeacherId());
-        jdbcTemplate.update("DELETE FROM teachers WHERE teacher_id = ?",teacher.getTeacherId());
+        try (Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            session.delete(teacher);
+
+            session.getTransaction().commit();
+        }
     }
 }

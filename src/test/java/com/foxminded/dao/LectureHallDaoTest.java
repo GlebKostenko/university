@@ -1,17 +1,20 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.LectureHall;
+import com.foxminded.service.dto.GroupDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.OptimisticLockException;
+
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class LectureHallDaoTest {
     @Autowired
     LectureHallDao lectureHallDao;
@@ -28,9 +31,8 @@ class LectureHallDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> lectureHallDao.findById(new LectureHall(56L)));
-        assertEquals("Lecture_halls table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing() {
+        lectureHallDao.findById(new LectureHall(56L));
     }
 
     @Test
@@ -49,9 +51,9 @@ class LectureHallDaoTest {
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+    void update_WhenRecordDoesNotExist_thenShouldBeException() {
         LectureHall lectureHallNew = new LectureHall(56L,"122");
-        lectureHallDao.update(lectureHallNew);
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> lectureHallDao.update(lectureHallNew));
     }
 
     @Test
@@ -62,7 +64,7 @@ class LectureHallDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        lectureHallDao.delete(new LectureHall(56L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> lectureHallDao.delete(new LectureHall(56L)));
     }
 }

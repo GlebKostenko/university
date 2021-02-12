@@ -1,21 +1,23 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.*;
+import org.hibernate.TransientObjectException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class ScheduleDaoTest {
     @Autowired
     ScheduleDao scheduleDao;
@@ -66,9 +68,8 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> scheduleDao.findById(new Schedule(77L)));
-        assertEquals("Schedules table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing() {
+        scheduleDao.findById(new Schedule(77L));
     }
 
     @Test
@@ -124,11 +125,12 @@ class ScheduleDaoTest {
         );
         scheduleDao.update(scheduleNew);
         Schedule schedule1 = scheduleDao.findById(new Schedule(schedule.getScheduleId()));
-        assertEquals(updatedSchedule,scheduleDao.findById(new Schedule(schedule.getScheduleId())));
+        assertEquals(updatedSchedule.getGroup().getGroupName(),
+                scheduleDao.findById(new Schedule(schedule.getScheduleId())).getGroup().getGroupName());
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+    void update_WhenRecordDoesNotExist_thenShouldBeException() {
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,15,30);
         Schedule schedule = new Schedule(
                 new Group(77L)
@@ -138,7 +140,7 @@ class ScheduleDaoTest {
                 ,new LectureHall(41L)
                 ,new Subject(21L)
         );
-        scheduleDao.update(schedule);
+        Throwable exception = assertThrows(TransientObjectException.class, () -> scheduleDao.update(schedule));
     }
 
     @Test
@@ -160,7 +162,7 @@ class ScheduleDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        scheduleDao.delete(new Schedule(77L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> scheduleDao.delete(new Schedule(77L)));
     }
 }

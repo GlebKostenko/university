@@ -9,7 +9,7 @@ import javax.servlet.*;
 public class    SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{SpringJdbcConfig.class,ServiceConfig.class};
+        return new Class<?>[]{SpringHibernateConfig.class,ServiceConfig.class};
     }
 
     @Override

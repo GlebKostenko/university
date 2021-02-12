@@ -1,18 +1,20 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.model.Schedule;
 import com.foxminded.model.Subject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.OptimisticLockException;
+
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class SubjectDaoTest {
     @Autowired
     SubjectDao subjectDao;
@@ -29,9 +31,8 @@ class SubjectDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> subjectDao.findById(new Subject(55L)));
-        assertEquals("Subjects table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing() {
+        subjectDao.findById(new Subject(55L));
     }
 
     @Test
@@ -50,9 +51,9 @@ class SubjectDaoTest {
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+    void update_WhenRecordDoesNotExist_thenShouldBeException() {
         Subject subject = new Subject(55L,"Physics");
-        subjectDao.update(subject);
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> subjectDao.update(subject));
     }
 
     @Test
@@ -63,7 +64,7 @@ class SubjectDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        subjectDao.delete(new Subject(55L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> subjectDao.delete(new Subject(55L)));
     }
 }

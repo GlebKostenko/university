@@ -1,20 +1,21 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import javax.persistence.OptimisticLockException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class StudentDaoTest {
     @Autowired
     private StudentDao studentDao;
@@ -37,9 +38,8 @@ class StudentDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> studentDao.findById(new Student(98L)));
-        assertEquals("Students table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing() {
+        studentDao.findById(new Student(98L));
     }
 
     @Test
@@ -57,13 +57,13 @@ class StudentDaoTest {
         Student studentNew = new Student(student.getStudentId(),"Ivan","Ivanov",new Group(groupNew.getGroupId()));
         studentDao.update(studentNew);
         Student updatedStudent = new Student(student.getStudentId(),studentNew.getFirstName(),studentNew.getLastName(),groupNew);
-        assertEquals(updatedStudent,studentDao.findById(student));
+        assertEquals(updatedStudent.getFirstName(),studentDao.findById(student).getFirstName());
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+    void update_WhenRecordDoesNotExist_thenShouldBeException() {
         Student student = new Student(98L,"Ivan","Ivanov",new Group(48L));
-        studentDao.update(student);
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> studentDao.update(student));
     }
 
     @Test
@@ -75,7 +75,7 @@ class StudentDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        studentDao.delete(new Student(98L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> studentDao.delete(new Student(98L)));
     }
 }

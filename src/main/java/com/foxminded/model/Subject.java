@@ -1,9 +1,16 @@
 package com.foxminded.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "subjects")
 public class Subject {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "subject_id")
     private Long subjectId;
+    @Column(name = "subject_name")
     private String subjectName;
     public Subject(Long subjectId,String subjectName){
         this.subjectId = subjectId;

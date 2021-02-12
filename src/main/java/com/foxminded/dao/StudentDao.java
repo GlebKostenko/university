@@ -3,6 +3,10 @@ package com.foxminded.dao;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
 import com.foxminded.model.Group;
 import com.foxminded.model.Student;
+import com.foxminded.model.Teacher;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,84 +22,74 @@ import java.util.Map;
 
 @Repository
 public class StudentDao implements Dao<Student>{
+    private SessionFactory factory;
     private static final Logger logger = LoggerFactory.getLogger(StudentDao.class.getSimpleName());
-    private JdbcTemplate jdbcTemplate;
+
     @Autowired
-    public StudentDao(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    public StudentDao(SessionFactory factory){
+        this.factory = factory;
     }
 
     @Override
     public Student save(Student student) {
-        Map<String, Object> parameters = new HashMap<>(3);
-        parameters.put("first_name",student.getFirstName());
-        parameters.put("last_name",student.getLastName());
-        parameters.put("group_id",student.getGroup().getGroupId());
         logger.debug("Trying to insert new record in students table");
-        Long id = new SimpleJdbcInsert(jdbcTemplate.getDataSource())
-                .withTableName("students")
-                .usingGeneratedKeyColumns("student_id")
-                .executeAndReturnKey(parameters).longValue();
-        student.setStudentId(id);
-        logger.debug("Return Student with id: {}", id);
-        return student;
+        try (final Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            student.setStudentId((Long) session.save(student));
+
+            session.getTransaction().commit();
+
+            return student;
+        }
     }
 
     @Override
     public Student findById(Student student) {
         logger.debug("Trying to find student with id: {}",student.getStudentId());
-        try {
-            String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
-                    " FROM students st " +
-                    "LEFT JOIN groups gr ON gr.group_id = st.group_id " +
-                    "WHERE st.student_id = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{student.getStudentId()}
-                    , (rs, rowNum) ->
-                            new Student(rs.getLong(1)
-                                    , rs.getString(2)
-                                    , rs.getString(3)
-                                    , new Group(rs.getLong(4), rs.getString(5))
-                            )
-            );
-        }catch (EmptyResultDataAccessException e){
-            logger.error("Student with the same id wasn't found");
-            throw new EmptyResultSetExceptionDao("Students table doesn't contain this record",e);
+        try (final Session session = factory.openSession()) {
+            Student result = session.get(Student.class, student.getStudentId());
+            if(result != null){
+                Hibernate.initialize(result.getGroup());
+            }
+            return result;
         }
     }
 
     @Override
     public List<Student> findAll() {
         logger.debug("Trying to return existing students");
-        try {
-            String sql = "SELECT st.student_id,st.first_name,st.last_name,gr.group_id,gr.group_name" +
-                    " FROM students st " +
-                    "LEFT JOIN groups gr ON gr.group_id = st.group_id ";
-            return jdbcTemplate.query(sql, (rs, rowNum) ->
-                    new Student(rs.getLong(1)
-                            , rs.getString(2)
-                            , rs.getString(3)
-                            , new Group(rs.getLong(4), rs.getString(5))
-                    )
-            );
-        }catch (EmptyResultDataAccessException e){
-            logger.error("List of students is empty");
-            throw new EmptyResultSetExceptionDao("Students table is empty",e);
+        try (final Session session = factory.openSession()) {
+            List<Student> students = session.createQuery("SELECT a FROM Student a", Student.class).getResultList();
+            students.stream().forEach((x) -> Hibernate.initialize(x.getGroup()));
+            return students;
         }
     }
 
     @Override
     public void update(Student student) {
         logger.debug("Updating record with id: {}",student.getStudentId());
-        jdbcTemplate.update("UPDATE students SET first_name = ?,last_name = ?,group_id = ? WHERE student_id = ?",
-                student.getFirstName(),
-                student.getLastName(),
-                student.getGroup().getGroupId(),
-                student.getStudentId());
+        try (Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            session.update(student);
+
+            session.getTransaction().commit();
+        }
     }
 
     @Override
     public void delete(Student student) {
         logger.debug("Deleting record with id: {}",student.getStudentId());
-        jdbcTemplate.update("DELETE FROM students WHERE student_id = ?",student.getStudentId());
+        try (Session session = factory.openSession()) {
+
+            session.beginTransaction();
+
+            session.delete(student);
+
+            session.getTransaction().commit();
+        }
     }
 }

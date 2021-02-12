@@ -1,19 +1,21 @@
 package com.foxminded.dao;
 
-import com.foxminded.configuration.SpringJdbcConfigTest;
+import com.foxminded.configuration.SpringHibernateConfigTest;
 import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.model.Subject;
 import com.foxminded.model.Teacher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import javax.persistence.OptimisticLockException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {SpringJdbcConfigTest.class})
+@ContextConfiguration(classes = {SpringHibernateConfigTest.class})
 class TeacherDaoTest {
     @Autowired
     TeacherDao teacherDao;
@@ -30,9 +32,8 @@ class TeacherDaoTest {
     }
 
     @Test
-    void findById_WhenRecordDoesNotExist_thenShouldBeException() {
-        Throwable exception = assertThrows(EmptyResultSetExceptionDao.class, () -> teacherDao.findById(new Teacher(83L)));
-        assertEquals("Teachers table doesn't contain this record", exception.getMessage());
+    void findById_WhenRecordDoesNotExist_thenShouldBeNothing() {
+        teacherDao.findById(new Teacher(83L));
     }
 
     @Test
@@ -51,9 +52,9 @@ class TeacherDaoTest {
     }
 
     @Test
-    void update_WhenRecordDoesNotExist_thenNothingGoesWrong() {
+    void update_WhenRecordDoesNotExist_thenShouldBeException() {
         Teacher teacher = new Teacher(93L,"Georgiy","Semenov");
-        teacherDao.update(teacher);
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> teacherDao.update(teacher));
     }
 
     @Test
@@ -64,7 +65,7 @@ class TeacherDaoTest {
     }
 
     @Test
-    void delete_WhenRecordDoesNotExist_thenNothingGoesWrong() {
-        teacherDao.delete(new Teacher(83L));
+    void delete_WhenRecordDoesNotExist_thenShouldBeException() {
+        Throwable exception = assertThrows(OptimisticLockException.class, () -> teacherDao.delete(new Teacher(83L)));
     }
 }
