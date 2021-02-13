@@ -17,7 +17,6 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
     private Group group;
 
     public Student(Long studentId, String firstName, String lastName, Group group) {

@@ -24,7 +24,9 @@
         root
     </property>
 
-    <mapping class="com.foxminded.model.Group" />
+    <property name="hbm2ddl.auto">create</property>
+
+        <mapping class="com.foxminded.model.Group" />
     <mapping class="com.foxminded.model.LectureHall" />
     <mapping class="com.foxminded.model.Schedule" />
     <mapping class="com.foxminded.model.Student" />

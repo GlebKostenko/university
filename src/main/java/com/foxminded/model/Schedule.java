@@ -12,20 +12,16 @@ public class Schedule {
     @Column(name = "schedule_id")
     private Long scheduleId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
     private Group group;
     @Column(name = "date_time")
     private LocalDateTime dateTime;
     @Column(name = "duration")
     private int duration;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hall_id")
     private LectureHall lectureHall;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     public Schedule(Long scheduleId,Group group, LocalDateTime dateTime, int duration, Teacher teacher, LectureHall lectureHall, Subject subject) {
