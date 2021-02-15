@@ -1,11 +1,17 @@
 package com.foxminded.controller;
 
 import com.foxminded.service.LectureHallService;
+import com.foxminded.service.dto.GroupDTO;
 import com.foxminded.service.dto.LectureHallDTO;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -14,36 +20,35 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(LectureHallsController.class)
 class LectureHallsControllerTest {
-    @Mock
+    @MockBean
     private LectureHallService lectureHallService;
-    @InjectMocks
-    private LectureHallsController lectureHallsController;
 
+    @Autowired
     private MockMvc mockMvc;
-    LectureHallsControllerTest(){
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(lectureHallsController).build();
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        mockMvc.perform(get("/halls/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("halls/new"));
     }
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("GK");
-        when(lectureHallService.save(lectureHallDTO)).thenReturn(new LectureHallDTO(1L,"GK"));
-        lectureHallsController.save(lectureHallDTO);
-        verify(lectureHallService,times(1)).save(lectureHallDTO);
-    }
-
-    @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"GK"));
-        lectureHallsController.update(new LectureHallDTO("GK"),1L);
-        verify(lectureHallService,times(1)).update(new LectureHallDTO(1L,"GK"));
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        given(lectureHallService.findById(new LectureHallDTO(1L))).willReturn(new LectureHallDTO(1L,"202"));
+        doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"404"));
+        mockMvc.perform(get("/halls/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("halls/edit"));
     }
 
     @Test
@@ -85,13 +90,5 @@ class LectureHallsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("halls/edit"))
                 .andExpect(model().attribute("hall",instanceOf(LectureHallDTO.class)));
-    }
-
-    @Test
-    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        LectureHallDTO lectureHallDTO = new LectureHallDTO(1L);
-        doNothing().when(lectureHallService).delete(lectureHallDTO);
-        lectureHallsController.delete(1L);
-        verify(lectureHallService,times(1)).delete(lectureHallDTO);
     }
 }

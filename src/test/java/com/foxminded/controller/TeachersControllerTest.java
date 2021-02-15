@@ -4,9 +4,14 @@ import com.foxminded.service.TeacherService;
 import com.foxminded.service.dto.SubjectDTO;
 import com.foxminded.service.dto.TeacherDTO;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -15,35 +20,33 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(TeachersController.class)
 class TeachersControllerTest {
-    @Mock
+    @MockBean
     private TeacherService teacherService;
-    @InjectMocks
-    private TeachersController teachersController;
-
+    @Autowired
     private MockMvc mockMvc;
-    TeachersControllerTest(){
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(teachersController).build();
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        mockMvc.perform(get("/teachers/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("teachers/new"));
     }
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        TeacherDTO teacherDTO = new TeacherDTO("Lev","Landau");
-        when(teacherService.save(teacherDTO)).thenReturn(new TeacherDTO(1L,"Lev","Landau"));
-        teacherService.save(teacherDTO);
-        verify(teacherService,times(1)).save(teacherDTO);
-    }
-
-    @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        doNothing().when(teacherService).update(new TeacherDTO(1L,"Lev","Landau"));
-        teachersController.update(new TeacherDTO("Lev","Landau"),1L);
-        verify(teacherService,times(1)).update(new TeacherDTO(1L,"Lev","Landau"));
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        given(teacherService.findById(new TeacherDTO(1L))).willReturn(new TeacherDTO(1L,"Lev","Landau"));
+        doNothing().when(teacherService).update(new TeacherDTO(1L,"Nikolay","Semenov"));
+        mockMvc.perform(get("/teachers/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("teachers/edit"));
     }
 
     @Test
@@ -87,11 +90,4 @@ class TeachersControllerTest {
                 .andExpect(model().attribute("teacher",instanceOf(TeacherDTO.class)));
     }
 
-    @Test
-    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        TeacherDTO teacherDTO = new TeacherDTO(1L);
-        doNothing().when(teacherService).delete(teacherDTO);
-        teachersController.delete(1L);
-        verify(teacherService,times(1)).delete(teacherDTO);
-    }
 }

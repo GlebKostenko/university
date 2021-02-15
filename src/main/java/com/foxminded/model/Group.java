@@ -5,14 +5,9 @@ package com.foxminded.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "groups")
 public class Group {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
+
     private Long groupId;
-    @Column(name = "group_name")
     private String groupName;
 
     public Group(Long groupId,String groupName){

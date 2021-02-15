@@ -3,46 +3,45 @@ package com.foxminded.controller;
 import com.foxminded.service.SubjectService;
 import com.foxminded.service.dto.SubjectDTO;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(SubjectsController.class)
 class SubjectsControllerTest {
-    @Mock
+    @MockBean
     private SubjectService subjectService;
-    @InjectMocks
-    private SubjectsController subjectsController;
-
+    @Autowired
     private MockMvc mockMvc;
-    SubjectsControllerTest(){
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(subjectsController).build();
+
+    @Test
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        mockMvc.perform(get("/subjects/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("subjects/new"));
     }
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        SubjectDTO subjectDTO = new SubjectDTO("Math");
-        when(subjectService.save(subjectDTO)).thenReturn(new SubjectDTO(1L,"Math"));
-        subjectsController.save(subjectDTO);
-        verify(subjectService,times(1)).save(subjectDTO);
-    }
-
-    @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        given(subjectService.findById(new SubjectDTO(1L))).willReturn(new SubjectDTO(1L,"Math"));
         doNothing().when(subjectService).update(new SubjectDTO(1L,"Math"));
-        subjectsController.update(new SubjectDTO("Math"),1L);
-        verify(subjectService,times(1)).update(new SubjectDTO(1L,"Math"));
+        mockMvc.perform(get("/subjects/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("subjects/edit"));
     }
 
     @Test
@@ -86,11 +85,4 @@ class SubjectsControllerTest {
                 .andExpect(model().attribute("subject",instanceOf(SubjectDTO.class)));
     }
 
-    @Test
-    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        SubjectDTO subjectDTO = new SubjectDTO(1L);
-        doNothing().when(subjectService).delete(subjectDTO);
-        subjectsController.delete(1L);
-        verify(subjectService,times(1)).delete(subjectDTO);
-    }
 }

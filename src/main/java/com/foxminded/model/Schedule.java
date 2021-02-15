@@ -4,24 +4,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-@Table(name = "schedules")
+
 public class Schedule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_id")
     private Long scheduleId;
-    @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
-    @Column(name = "date_time")
     private LocalDateTime dateTime;
-    @Column(name = "duration")
     private int duration;
-    @ManyToOne(fetch = FetchType.LAZY)
     private Teacher teacher;
-    @ManyToOne(fetch = FetchType.LAZY)
     private LectureHall lectureHall;
-    @ManyToOne(fetch = FetchType.LAZY)
     private Subject subject;
 
     public Schedule(Long scheduleId,Group group, LocalDateTime dateTime, int duration, Teacher teacher, LectureHall lectureHall, Subject subject) {

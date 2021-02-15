@@ -3,47 +3,51 @@ package com.foxminded.controller;
 import com.foxminded.service.GroupService;
 import com.foxminded.service.dto.GroupDTO;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(GroupsController.class)
 class GroupsControllerTest {
-    @Mock
-    private GroupService groupService;
-    @InjectMocks
-    private GroupsController groupsController;
-
+    @Autowired
     private MockMvc mockMvc;
-    GroupsControllerTest(){
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(groupsController).build();
-    }
 
+    @MockBean
+    private GroupService groupService;
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
-        GroupDTO groupDTO = new GroupDTO("faki");
-        when(groupService.save(groupDTO)).thenReturn(new GroupDTO(1L,"faki"));
-        groupsController.save(groupDTO);
-        verify(groupService,times(1)).save(groupDTO);
+    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        mockMvc.perform(get("/groups/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/new"));
     }
 
     @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError(){
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        given(groupService.findById(new GroupDTO(1L))).willReturn(new GroupDTO(1L,"fivt"));
         doNothing().when(groupService).update(new GroupDTO(1L,"faki"));
-        groupsController.update(new GroupDTO("faki"),1L);
-        verify(groupService,times(1)).update(new GroupDTO(1L,"faki"));
+        mockMvc.perform(get("/groups/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("groups/edit"));
     }
 
     @Test
@@ -85,13 +89,5 @@ class GroupsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("groups/edit"))
                 .andExpect(model().attribute("group",instanceOf(GroupDTO.class)));
-    }
-
-    @Test
-    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        GroupDTO groupDTO = new GroupDTO(1L);
-        doNothing().when(groupService).delete(groupDTO);
-        groupsController.delete(1L);
-        verify(groupService,times(1)).delete(groupDTO);
     }
 }

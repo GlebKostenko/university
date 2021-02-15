@@ -1,8 +1,8 @@
 package com.foxminded.service;
 
-import com.foxminded.dao.StudentDao;
 import com.foxminded.exception.DomainException;
 import com.foxminded.model.Student;
+import com.foxminded.repository.StudentRepository;
 import com.foxminded.service.dto.StudentDTO;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
@@ -17,14 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService implements ServiceLayer<StudentDTO>{
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class.getSimpleName());
-    private ModelMapper modelMapper;
-    private StudentDao studentDao;
-
     @Autowired
-    public StudentService( ModelMapper modelMapper, StudentDao studentDao){
-        this.modelMapper = modelMapper;
-        this.studentDao = studentDao;
-    }
+    private StudentRepository studentRepository;
 
     @Override
     public StudentDTO save(StudentDTO studentDTO) {
@@ -32,8 +26,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
             logger.debug("Calling the save method from dao and trying to save student with next parameters:\n" +
                     "first_name: {}\n" +
                     "last_name: {}", studentDTO.getFirstName(), studentDTO.getLastName());
-            return modelMapper.map(studentDao
-                    .save(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
+            return studentRepository.save(studentDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map StudentDTO to Student or Student to StudentDTO",e);
@@ -44,8 +37,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
     public StudentDTO findById(StudentDTO studentDTO) {
         logger.debug("Calling the findById method from dao");
         try {
-            return modelMapper.map(studentDao
-                    .findById(modelMapper.map(studentDTO, Student.class)), StudentDTO.class);
+            return studentRepository.findById(studentDTO.getStudentId()).get();
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map StudentDTO to Student or Student to StudentDTO",e);
@@ -56,9 +48,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
     public List<StudentDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
-            return studentDao.findAll().stream()
-                    .map(elem -> modelMapper.map(elem, StudentDTO.class))
-                    .collect(Collectors.toList());
+            return (List<StudentDTO>) studentRepository.findAll();
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map Student to StudentDTO",e);
@@ -69,7 +59,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
     public void update(StudentDTO studentDTO) {
         try {
             logger.debug("Calling the update method from dao");
-            studentDao.update(modelMapper.map(studentDTO, Student.class));
+            studentRepository.save(studentDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map StudentDTO to Student",e);
@@ -80,7 +70,7 @@ public class StudentService implements ServiceLayer<StudentDTO>{
     public void delete(StudentDTO studentDTO) {
         try {
             logger.debug("Calling the delete method from dao");
-            studentDao.delete(modelMapper.map(studentDTO, Student.class));
+            studentRepository.delete(studentDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map StudentDTO to Student",e);

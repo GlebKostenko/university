@@ -1,8 +1,8 @@
 package com.foxminded.service;
 
-import com.foxminded.dao.ScheduleDao;
 import com.foxminded.exception.DomainException;
 import com.foxminded.model.Schedule;
+import com.foxminded.repository.ScheduleRepository;
 import com.foxminded.service.dto.ScheduleDTO;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
@@ -17,14 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class.getSimpleName());
-    private ModelMapper modelMapper;
-    private ScheduleDao scheduleDao;
-
     @Autowired
-    public ScheduleService( ModelMapper modelMapper,ScheduleDao scheduleDao){
-        this.modelMapper = modelMapper;
-        this.scheduleDao = scheduleDao;
-    }
+    private ScheduleRepository scheduleRepository;
 
     @Override
     public ScheduleDTO save(ScheduleDTO scheduleDTO) {
@@ -43,8 +37,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
                     , scheduleDTO.getLectureHall().getHallId()
                     , scheduleDTO.getSubject().getSubjectId()
             );
-            return modelMapper.map(scheduleDao
-                    .save(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
+            return scheduleRepository.save(scheduleDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
@@ -55,8 +48,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     public ScheduleDTO findById(ScheduleDTO scheduleDTO) {
         logger.debug("Calling the findById method from dao");
         try {
-            return modelMapper.map(scheduleDao
-                    .findById(modelMapper.map(scheduleDTO, Schedule.class)), ScheduleDTO.class);
+            return scheduleRepository.findById(scheduleDTO.getScheduleId()).get();
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map ScheduleDTO to Schedule or Schedule to ScheduleDTO",e);
@@ -67,9 +59,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     public List<ScheduleDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
-            return scheduleDao.findAll().stream()
-                    .map(elem -> modelMapper.map(elem, ScheduleDTO.class))
-                    .collect(Collectors.toList());
+            return (List<ScheduleDTO>) scheduleRepository.findAll();
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map Schedule to ScheduleDTO",e);
@@ -80,7 +70,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     public void update(ScheduleDTO scheduleDTO) {
         try {
             logger.debug("Calling the update method from dao");
-            scheduleDao.update(modelMapper.map(scheduleDTO, Schedule.class));
+            scheduleRepository.save(scheduleDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map ScheduleDTO to Schedule",e);
@@ -91,7 +81,7 @@ public class ScheduleService implements ServiceLayer<ScheduleDTO>{
     public void delete(ScheduleDTO scheduleDTO) {
         try {
             logger.debug("Calling the delete method from dao");
-            scheduleDao.delete(modelMapper.map(scheduleDTO, Schedule.class));
+            scheduleRepository.delete(scheduleDTO);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map ScheduleDTO to Schedule",e);
