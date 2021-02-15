@@ -17,14 +17,19 @@ import java.util.stream.Collectors;
 @Service
 public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     private static final Logger logger = LoggerFactory.getLogger(LectureHallService.class.getSimpleName());
-    @Autowired
+    ModelMapper mapper;
     private LectureHallRepository lectureHallRepository;
+    @Autowired
+    public LectureHallService(ModelMapper mapper, LectureHallRepository lectureHallRepository) {
+        this.mapper = mapper;
+        this.lectureHallRepository = lectureHallRepository;
+    }
 
     @Override
     public LectureHallDTO save(LectureHallDTO lectureHallDTO) {
         try {
             logger.debug("Calling the save method from dao and trying to save lecture hall with hall name: {}", lectureHallDTO.getHallName());
-            return lectureHallRepository.save(lectureHallDTO);
+            return mapper.map(lectureHallRepository.save(mapper.map(lectureHallDTO, LectureHall.class)),LectureHallDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
@@ -35,7 +40,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     public LectureHallDTO findById(LectureHallDTO lectureHallDTO) {
         logger.debug("Calling the findById method from dao");
         try {
-            return lectureHallRepository.findById(lectureHallDTO.getHallId()).get();
+            return mapper.map(lectureHallRepository.findById(lectureHallDTO.getHallId()).get(),LectureHallDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map LectureHallDTO to LectureHall or LectureHall to LectureHallDTO",e);
@@ -46,7 +51,8 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     public List<LectureHallDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
-            return (List<LectureHallDTO>) lectureHallRepository.findAll();
+            List<LectureHall> halls = (List<LectureHall>) lectureHallRepository.findAll();
+            return halls.stream().map(x -> mapper.map(x,LectureHallDTO.class)).collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map LectureHall to LectureHallDTO",e);
@@ -57,7 +63,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     public void update(LectureHallDTO lectureHallDTO) {
         try {
             logger.debug("Calling the update method from dao");
-            lectureHallRepository.save(lectureHallDTO);
+            lectureHallRepository.save(mapper.map(lectureHallDTO,LectureHall.class));
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map LectureHallDTO to LectureHall",e);
@@ -68,7 +74,7 @@ public class LectureHallService implements ServiceLayer<LectureHallDTO>{
     public void delete(LectureHallDTO lectureHallDTO) {
         try {
             logger.debug("Calling the delete method from dao");
-            lectureHallRepository.delete(lectureHallDTO);
+            lectureHallRepository.delete(mapper.map(lectureHallDTO,LectureHall.class));
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map LectureHallDTO to LectureHall",e);

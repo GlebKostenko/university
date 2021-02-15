@@ -22,34 +22,30 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 class ScheduleServiceTest {
-    @Mock
-    ScheduleRepository scheduleRepository;
-    @InjectMocks
-    ScheduleService scheduleService;
+    ModelMapper mapper = new ModelMapper();
+    ScheduleRepository scheduleRepository = mock(ScheduleRepository.class);
+    ScheduleService scheduleService = new ScheduleService(mapper,scheduleRepository);
 
-    ScheduleServiceTest(){
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Test
     void save_WhenAllIsRight_thenShouldBeNewRecord() {
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
-        given(scheduleRepository.save(new ScheduleDTO(
-                    new GroupDTO(3L)
+        given(scheduleRepository.save(new Schedule(
+                    new Group(3L)
                     ,localDateTime
                     ,3600
-                    ,new TeacherDTO(7L)
-                    ,new LectureHallDTO(223L)
-                    ,new SubjectDTO(9L))
+                    ,new Teacher(7L)
+                    ,new LectureHall(223L)
+                    ,new Subject(9L))
                 )
-        ).willReturn(new ScheduleDTO(
+        ).willReturn(new Schedule(
                 1L,
-                new GroupDTO(3L)
+                new Group(3L)
                 ,localDateTime
                 ,3600
-                ,new TeacherDTO(7L)
-                ,new LectureHallDTO(223L)
-                ,new SubjectDTO(9L))
+                ,new Teacher(7L)
+                ,new LectureHall(223L)
+                ,new Subject(9L))
         );
         ScheduleDTO scheduleDTO = scheduleService.save(
                 new ScheduleDTO(
@@ -66,14 +62,14 @@ class ScheduleServiceTest {
     @Test
     void findById_WhenRecordExist_thenShouldFindThisRecord(){
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
-        given(scheduleRepository.findById(1L)).willReturn(Optional.of(new ScheduleDTO(
+        given(scheduleRepository.findById(1L)).willReturn(Optional.of(new Schedule(
                 1L,
-                new GroupDTO(3L,"frkt-001")
+                new Group(3L,"frkt-001")
                 ,localDateTime
                 ,3600
-                ,new TeacherDTO(7L,"Semen","Yokhov")
-                ,new LectureHallDTO(223L,"Harmony")
-                ,new SubjectDTO(9L,"Physics"))
+                ,new Teacher(7L,"Semen","Yokhov")
+                ,new LectureHall(223L,"Harmony")
+                ,new Subject(9L,"Physics"))
         ));
         ScheduleDTO scheduleDTO = scheduleService.findById(new ScheduleDTO(1L));
         assertEquals(scheduleDTO.getGroup().getGroupName(),"frkt-001");
@@ -90,14 +86,14 @@ class ScheduleServiceTest {
     @Test
     void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList(){
         LocalDateTime localDateTime = LocalDateTime.of(2021, Month.APRIL,8,12,30);
-        given(scheduleRepository.findAll()).willReturn(Arrays.asList(new ScheduleDTO(
+        given(scheduleRepository.findAll()).willReturn(Arrays.asList(new Schedule(
                         1L,
-                        new GroupDTO(3L,"frkt-001")
+                        new Group(3L,"frkt-001")
                         ,localDateTime
                         ,3600
-                        ,new TeacherDTO(7L,"Semen","Yokhov")
-                        ,new LectureHallDTO(223L,"Harmony")
-                        ,new SubjectDTO(9L,"Physics"))
+                        ,new Teacher(7L,"Semen","Yokhov")
+                        ,new LectureHall(223L,"Harmony")
+                        ,new Subject(9L,"Physics"))
                 )
         );
         assertTrue(!scheduleService.findAll().isEmpty());
@@ -116,13 +112,21 @@ class ScheduleServiceTest {
                 ,new SubjectDTO(9L,"Physics")
         );
         scheduleService.update(scheduleForUpdate);
-        verify(scheduleRepository,times(1)).save(scheduleForUpdate);
+        verify(scheduleRepository,times(1)).save(new Schedule(
+                1L,
+                new Group(3L,"frkt-001")
+                ,localDateTime
+                ,3600
+                ,new Teacher(7L,"Semen","Yokhov")
+                ,new LectureHall(223L,"Harmony")
+                ,new Subject(9L,"Physics")
+        ));
     }
 
     @Test
     void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
-        doNothing().when(scheduleRepository).delete(new ScheduleDTO(1L));
+        doNothing().when(scheduleRepository).delete(new Schedule(1L));
         scheduleService.delete(new ScheduleDTO(1L));
-        verify(scheduleRepository,times(1)).delete(new ScheduleDTO(1L));
+        verify(scheduleRepository,times(1)).delete(new Schedule(1L));
     }
 }

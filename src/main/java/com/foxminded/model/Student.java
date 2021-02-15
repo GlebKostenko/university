@@ -5,11 +5,18 @@ package com.foxminded.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-
+@Entity
+@Table(name = "students")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private Long studentId;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
     public Student(Long studentId, String firstName, String lastName, Group group) {

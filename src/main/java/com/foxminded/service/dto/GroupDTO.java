@@ -5,14 +5,8 @@ package com.foxminded.service.dto;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "groups")
 public class GroupDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
     private Long groupId;
-    @Column(name = "group_name")
     private String groupName;
 
     public GroupDTO(Long groupId, String groupName){

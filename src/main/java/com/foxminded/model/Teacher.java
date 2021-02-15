@@ -3,9 +3,16 @@ package com.foxminded.model;
 import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "teachers")
 public class Teacher {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "teacher_id")
     private Long teacherId;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
 
     public Teacher(Long teacherId, String firstName, String lastName) {

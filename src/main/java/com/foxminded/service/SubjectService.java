@@ -17,14 +17,19 @@ import java.util.stream.Collectors;
 @Service
 public class SubjectService implements ServiceLayer<SubjectDTO>{
     private static final Logger logger = LoggerFactory.getLogger(SubjectService.class.getSimpleName());
-    @Autowired
+    ModelMapper mapper;
     private SubjectRepository subjectRepository;
+    @Autowired
+    public SubjectService(ModelMapper mapper, SubjectRepository subjectRepository) {
+        this.mapper = mapper;
+        this.subjectRepository = subjectRepository;
+    }
 
     @Override
     public SubjectDTO save(SubjectDTO subjectDTO) {
         try {
             logger.debug("Calling the save method from dao and trying to subject with name: {}", subjectDTO.getSubjectName());
-            return subjectRepository.save(subjectDTO);
+            return mapper.map(subjectRepository.save(mapper.map(subjectDTO, Subject.class)),SubjectDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
@@ -35,7 +40,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     public SubjectDTO findById(SubjectDTO subjectDTO) {
         logger.debug("Calling the findById method from dao");
         try {
-            return subjectRepository.findById(subjectDTO.getSubjectId()).get();
+            return mapper.map(subjectRepository.findById(subjectDTO.getSubjectId()).get(),SubjectDTO.class);
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map SubjectDTO to Subject or Subject to SubjectDTO",e);
@@ -46,7 +51,8 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     public List<SubjectDTO> findAll() {
         logger.debug("Calling the findAll method from dao");
         try {
-            return (List<SubjectDTO>) subjectRepository.findAll();
+            List<Subject> subjects = (List<Subject>) subjectRepository.findAll();
+            return subjects.stream().map(x -> mapper.map(x,SubjectDTO.class)).collect(Collectors.toList());
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map Subject to SubjectDTO",e);
@@ -57,7 +63,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     public void update(SubjectDTO subjectDTO) {
         try {
             logger.debug("Calling the update method from dao");
-            subjectRepository.save(subjectDTO);
+            subjectRepository.save(mapper.map(subjectDTO,Subject.class));
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map SubjectDTO to Subject",e);
@@ -68,7 +74,7 @@ public class SubjectService implements ServiceLayer<SubjectDTO>{
     public void delete(SubjectDTO subjectDTO) {
         try {
             logger.debug("Calling the delete method from dao");
-            subjectRepository.delete(subjectDTO);
+            subjectRepository.delete(mapper.map(subjectDTO,Subject.class));
         }catch (MappingException e){
             logger.error("Mapping error");
             throw new DomainException("Can't map SubjectDTO to Subject",e);

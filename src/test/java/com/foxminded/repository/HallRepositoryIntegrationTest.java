@@ -1,6 +1,6 @@
 package com.foxminded.repository;
 
-import com.foxminded.service.dto.GroupDTO;
+import com.foxminded.model.LectureHall;
 import com.foxminded.service.dto.LectureHallDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,44 +20,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 public class HallRepositoryIntegrationTest {
     @Autowired
-    private TestEntityManager entityManager;
-    @Autowired
     private LectureHallRepository lectureHallRepository;
     @Test
     public void whenFindById_thenReturnHall() {
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("202");
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        List<LectureHallDTO> halls = (List<LectureHallDTO>) lectureHallRepository.findAll();
-        assertTrue(!halls.stream().filter(x->x.getHallName().equals("202")).collect(Collectors.toList()).isEmpty());
+        LectureHall lectureHall = new LectureHall("202");
+        lectureHallRepository.save(lectureHall);
+        List<LectureHall> halls = (List<LectureHall>) lectureHallRepository.findAll();
+        assertTrue(halls.contains(lectureHall));
     }
 
     @Test
     public void whenUpdate_thenShouldBeNewHallName() {
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("GK");
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        List<LectureHallDTO> halls = (List<LectureHallDTO>) lectureHallRepository.findAll();
-        halls.stream().filter(x->x.getHallName().equals("GK")).forEach(x -> lectureHallRepository.save(new LectureHallDTO(x.getHallId(),"LK")));
-        halls = (List<LectureHallDTO>) lectureHallRepository.findAll();
+        LectureHall lectureHall= new LectureHall("GK");
+        lectureHallRepository.save(lectureHall);
+        List<LectureHall> halls = (List<LectureHall>) lectureHallRepository.findAll();
+        halls.stream().filter(x->x.getHallName().equals("GK")).forEach(x -> lectureHallRepository.save(new LectureHall(x.getHallId(),"LK")));
+        halls = (List<LectureHall>) lectureHallRepository.findAll();
         assertTrue(halls.stream().filter(x->x.getHallName().equals("GK")).collect(Collectors.toList()).isEmpty());
     }
 
     @Test
     public void whenDeleteById_thenShouldBeNoHall() {
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("Glavnaya");
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        lectureHallRepository.delete(new LectureHallDTO(1L));
-        Throwable exception = assertThrows(NoSuchElementException.class, () -> lectureHallRepository.findById(1L).get());
+        LectureHall lectureHall = lectureHallRepository.save(new LectureHall("Glavnaya"));
+        lectureHallRepository.delete(new LectureHall(lectureHall.getHallId()));
+        Throwable exception = assertThrows(NoSuchElementException.class, () -> lectureHallRepository.findById(lectureHall.getHallId()).get());
     }
 
     @Test
     public void whenFindAll_thenShouldBeNotEmptyResultList() {
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("Bolishaya");
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        List<LectureHallDTO> halls = (List<LectureHallDTO>) lectureHallRepository.findAll();
+        LectureHall lectureHall = new LectureHall("Bolishaya");
+        lectureHallRepository.save(lectureHall);
+        List<LectureHall> halls = (List<LectureHall>) lectureHallRepository.findAll();
         assertTrue(!halls.isEmpty());
     }
 }

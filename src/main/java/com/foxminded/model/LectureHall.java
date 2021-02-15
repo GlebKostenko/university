@@ -3,9 +3,14 @@ package com.foxminded.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-
+@Entity
+@Table(name = "lecture_halls")
 public class LectureHall {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hall_id")
     private Long hallId;
+    @Column(name = "hall_name")
     private String hallName;
     public LectureHall(){
     }

@@ -1,5 +1,6 @@
 package com.foxminded.repository;
 
+import com.foxminded.model.*;
 import com.foxminded.service.SubjectService;
 import com.foxminded.service.dto.*;
 import org.junit.Test;
@@ -22,131 +23,102 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 public class ScheduleRepositoryIntegrationTest {
     @Autowired
-    private TestEntityManager entityManager;
-    @Autowired
     private ScheduleRepository scheduleRepository;
+    @Autowired
+    private GroupRepository groupRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
+    @Autowired
+    private SubjectRepository subjectRepository;
+    @Autowired
+    private LectureHallRepository hallRepository;
+
     @Test
     public void whenFindById_thenReturnSchedule() {
-        GroupDTO groupDTO = new GroupDTO("fivt");
-        TeacherDTO teacherDTO = new TeacherDTO("Ivan","Ivanov");
-        SubjectDTO subjectDTO = new SubjectDTO("Biology");
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("GK");
         LocalDateTime ldt = LocalDateTime.of(2021, Month.APRIL,8,12,30);
-        entityManager.persist(groupDTO);
-        entityManager.flush();
-        entityManager.persist(teacherDTO);
-        entityManager.flush();
-        entityManager.persist(subjectDTO);
-        entityManager.flush();
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        ScheduleDTO scheduleDTO = new ScheduleDTO( new GroupDTO(groupDTO.getGroupId()),
+        Group group = groupRepository.save(new Group("fizfak"));
+        Teacher teacher = teacherRepository.save( new Teacher("Georgiy","Ivanov"));
+        Subject subject = subjectRepository.save(new Subject("Mechanics"));
+        LectureHall lectureHall = hallRepository.save(new LectureHall("506"));
+        Schedule schedule = new Schedule( new Group(group.getGroupId()),
                 ldt,
                 5400,
-                new TeacherDTO(teacherDTO.getTeacherId()),
-                new LectureHallDTO(lectureHallDTO.getHallId()),
-                new SubjectDTO(subjectDTO.getSubjectId()));
-        entityManager.persist(scheduleDTO);
-        entityManager.flush();
-        List<ScheduleDTO> schedules = (List<ScheduleDTO>) scheduleRepository.findAll();
-        assertTrue(schedules.contains(scheduleDTO));
+                new Teacher(teacher.getTeacherId()),
+                new LectureHall(lectureHall.getHallId()),
+                new Subject(subject.getSubjectId()));
+        scheduleRepository.save(schedule);
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAll();
+        assertTrue(schedules.contains(schedule));
     }
 
     @Test
     public void whenUpdate_thenShouldBeScheduleWithUpdatedData() {
-        GroupDTO groupDTO = new GroupDTO("fivt");
-        TeacherDTO teacherDTO = new TeacherDTO("Ivan","Ivanov");
-        SubjectDTO subjectDTO = new SubjectDTO("Biology");
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("GK");
-        GroupDTO groupDTO1 = new GroupDTO("fupm");
-        TeacherDTO teacherDTO1 = new TeacherDTO("Lev","Semenov");
-        SubjectDTO subjectDTO1 = new SubjectDTO("Math");
+        Group group = groupRepository.save(new Group("matfak"));
+        Teacher teacher = teacherRepository.save(new Teacher("Ivan","Arseniev"));
+        Subject subject = subjectRepository.save(new Subject("UI"));
+        LectureHall lectureHall = hallRepository.save(new LectureHall("bolishaya chimeshiskaya"));
+        Group groupNew = groupRepository.save(new Group("matmeh"));
+        Teacher teacherNew = teacherRepository.save(new Teacher("Anton","Semenov"));
+        Subject subjectNew = subjectRepository.save(new Subject("UX"));
         LocalDateTime ldt = LocalDateTime.of(2021, Month.APRIL,9,12,30);
-        entityManager.persist(groupDTO);
-        entityManager.flush();
-        entityManager.persist(teacherDTO);
-        entityManager.flush();
-        entityManager.persist(subjectDTO);
-        entityManager.flush();
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        entityManager.persist(groupDTO1);
-        entityManager.flush();
-        entityManager.persist(teacherDTO1);
-        entityManager.flush();
-        entityManager.persist(subjectDTO1);
-        entityManager.flush();
-        ScheduleDTO scheduleDTO = new ScheduleDTO(new GroupDTO(groupDTO.getGroupId()),
+
+        Schedule schedule = new Schedule(new Group(group.getGroupId()),
                 ldt,
                 5400,
-                new TeacherDTO(teacherDTO.getTeacherId()),
-                new LectureHallDTO(lectureHallDTO.getHallId()),
-                new SubjectDTO(subjectDTO.getSubjectId()));
-        entityManager.persist(scheduleDTO);
-        entityManager.flush();
-        List<ScheduleDTO> schedules = (List<ScheduleDTO>) scheduleRepository.findAll();
-        schedules.stream().filter(x->x.getScheduleId().equals(scheduleDTO.getScheduleId())).forEach(x -> scheduleRepository.save(new ScheduleDTO(x.getScheduleId(),
-                new GroupDTO(groupDTO1.getGroupId()),
+                new Teacher(teacher.getTeacherId()),
+                new LectureHall(lectureHall.getHallId()),
+                new Subject(subject.getSubjectId()));
+        scheduleRepository.save(schedule);
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAll();
+        schedules.stream().filter(x->x.getScheduleId().equals(schedule.getScheduleId())).forEach(x -> scheduleRepository.save(new Schedule(x.getScheduleId(),
+                new Group(groupNew.getGroupId()),
                 ldt,
                 5400,
-                new TeacherDTO(teacherDTO1.getTeacherId()),
-                new LectureHallDTO(lectureHallDTO.getHallId()),
-                new SubjectDTO(subjectDTO1.getSubjectId()))));
-        schedules = (List<ScheduleDTO>) scheduleRepository.findAll();
-        assertTrue(schedules.stream().filter(x->x.getGroup().getGroupId().equals(groupDTO.getGroupId())).collect(Collectors.toList()).isEmpty());
+                new Teacher(teacherNew.getTeacherId()),
+                new LectureHall(lectureHall.getHallId()),
+                new Subject(subjectNew.getSubjectId()))));
+        schedules = (List<Schedule>) scheduleRepository.findAll();
+        assertTrue(schedules.stream()
+                .filter(x->x.getScheduleId().equals(schedule.getScheduleId()))
+                .findAny().get().getGroup().equals(groupNew)
+        );
     }
 
     @Test
-    public void whenDeleteById_thenShouldBeNoSchedule() {
-        GroupDTO groupDTO = new GroupDTO("fopf");
-        TeacherDTO teacherDTO = new TeacherDTO("Valeriy","Koldunov");
-        SubjectDTO subjectDTO = new SubjectDTO("Physics");
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("bolishaya fizicheskaya");
+    public void whenDeleteById_thenShouldBeNoGroup() {
+        Group group = groupRepository.save(new Group("b03-001"));
+        Teacher teacher = teacherRepository.save(new Teacher("Nikolay","Archipov"));
+        Subject subject = subjectRepository.save(new Subject("LinAl"));
+        LectureHall lectureHall = hallRepository.save(new LectureHall("galvanaya"));
         LocalDateTime ldt = LocalDateTime.of(2021, Month.APRIL,10,12,30);
-        entityManager.persist(groupDTO);
-        entityManager.flush();
-        entityManager.persist(teacherDTO);
-        entityManager.flush();
-        entityManager.persist(subjectDTO);
-        entityManager.flush();
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        ScheduleDTO scheduleDTO = new ScheduleDTO(new GroupDTO(groupDTO.getGroupId()),
+
+        Schedule schedule = new Schedule(new Group(group.getGroupId()),
                 ldt,
                 5400,
-                new TeacherDTO(teacherDTO.getTeacherId()),
-                new LectureHallDTO(lectureHallDTO.getHallId()),
-                new SubjectDTO(subjectDTO.getSubjectId()));
-        entityManager.persist(scheduleDTO);
-        entityManager.flush();
-        scheduleRepository.delete(new ScheduleDTO(scheduleDTO.getScheduleId()));
-        Throwable exception = assertThrows(NoSuchElementException.class, () -> scheduleRepository.findById(scheduleDTO.getScheduleId()).get());
+                new Teacher(teacher.getTeacherId()),
+                new LectureHall(lectureHall.getHallId()),
+                new Subject(subject.getSubjectId()));
+        scheduleRepository.save(schedule);
+        scheduleRepository.delete(new Schedule(schedule.getScheduleId()));
+        Throwable exception = assertThrows(NoSuchElementException.class, () -> scheduleRepository.findById(schedule.getScheduleId()).get());
     }
 
     @Test
     public void whenFindAll_thenShouldBeNotEmptyResultList() {
-        GroupDTO groupDTO = new GroupDTO("faki");
-        TeacherDTO teacherDTO = new TeacherDTO("Petr","Kapronov");
-        SubjectDTO subjectDTO = new SubjectDTO("Programming");
-        LectureHallDTO lectureHallDTO = new LectureHallDTO("fizicheskaya");
+        Group group = groupRepository.save(new Group("b03-002"));
+        Teacher teacher = teacherRepository.save(new Teacher("Alexey","Sharipov"));
+        Subject subject = subjectRepository.save(new Subject("AnGem"));
+        LectureHall lectureHall = hallRepository.save(new LectureHall("LK"));
         LocalDateTime ldt = LocalDateTime.of(2021, Month.APRIL,11,12,30);
-        entityManager.persist(groupDTO);
-        entityManager.flush();
-        entityManager.persist(teacherDTO);
-        entityManager.flush();
-        entityManager.persist(subjectDTO);
-        entityManager.flush();
-        entityManager.persist(lectureHallDTO);
-        entityManager.flush();
-        ScheduleDTO scheduleDTO = new ScheduleDTO(new GroupDTO(groupDTO.getGroupId()),
+
+        Schedule schedule = new Schedule(new Group(group.getGroupId()),
                 ldt,
                 5400,
-                new TeacherDTO(teacherDTO.getTeacherId()),
-                new LectureHallDTO(lectureHallDTO.getHallId()),
-                new SubjectDTO(subjectDTO.getSubjectId()));
-        entityManager.persist(scheduleDTO);
-        entityManager.flush();
-        List<ScheduleDTO> schedules = (List<ScheduleDTO>) scheduleRepository.findAll();
+                new Teacher(teacher.getTeacherId()),
+                new LectureHall(lectureHall.getHallId()),
+                new Subject(subject.getSubjectId()));
+        scheduleRepository.save(schedule);
+        List<Schedule> schedules = (List<Schedule>) scheduleRepository.findAll();
         assertTrue(!schedules.isEmpty());
     }
 

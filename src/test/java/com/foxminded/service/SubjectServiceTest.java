@@ -1,12 +1,10 @@
 package com.foxminded.service;
 
 import com.foxminded.exception.EmptyResultSetExceptionDao;
+import com.foxminded.model.Subject;
 import com.foxminded.repository.SubjectRepository;
 import com.foxminded.service.dto.SubjectDTO;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -18,19 +16,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 class SubjectServiceTest {
-    @Mock
-    SubjectRepository subjectRepository;
-    @InjectMocks
-    SubjectService subjectService;
-
-    SubjectServiceTest(){
-        MockitoAnnotations.initMocks(this);
-    }
+    ModelMapper mapper = new ModelMapper();
+    SubjectRepository subjectRepository = mock(SubjectRepository.class);
+    SubjectService subjectService = new SubjectService(mapper,subjectRepository);
 
     @Test
     void save_WhenAllIsRight_thenShouldBeNewRecord()  {
-        given(subjectRepository.save(new SubjectDTO("chemistry")))
-                .willReturn(new SubjectDTO(1L,"chemistry"));
+        given(subjectRepository.save(new Subject("chemistry")))
+                .willReturn(new Subject(1L,"chemistry"));
         SubjectDTO subjectDTO = subjectService.save(new SubjectDTO("chemistry"));
         assertEquals(subjectDTO,new SubjectDTO(subjectDTO.getSubjectId(),"chemistry"));
     }
@@ -38,7 +31,7 @@ class SubjectServiceTest {
     @Test
     void findById_WhenRecordExist_thenShouldFindThisRecord() {
         given(subjectRepository.findById(1L))
-                .willReturn(Optional.of(new SubjectDTO(1L,"chemistry")));
+                .willReturn(Optional.of(new Subject(1L,"chemistry")));
         SubjectDTO subjectDTO = subjectService.findById(new SubjectDTO(1L));
         assertEquals(subjectDTO,new SubjectDTO(subjectDTO.getSubjectId(),"chemistry"));
     }
@@ -53,20 +46,20 @@ class SubjectServiceTest {
 
     @Test
     void findAll_WhenRecordsExist_thenShouldBeNotEmptyResultList() {
-        given(subjectRepository.findAll()).willReturn(Arrays.asList(new SubjectDTO(1L,"chemistry")));
+        given(subjectRepository.findAll()).willReturn(Arrays.asList(new Subject(1L,"chemistry")));
         assertTrue(!subjectService.findAll().isEmpty());
     }
 
     @Test
     void update_WhenRecordExist_thenRecordShouldBeUpdated() {
         subjectService.update(new SubjectDTO(1L,"chemistry"));
-        verify(subjectRepository,times(1)).save(new SubjectDTO(1l,"chemistry"));
+        verify(subjectRepository,times(1)).save(new Subject(1l,"chemistry"));
     }
 
     @Test
     void delete_WhenRecordExist_thenRecordShouldBeDeleted() {
-        doNothing().when(subjectRepository).delete(new SubjectDTO(1L));
+        doNothing().when(subjectRepository).delete(new Subject(1L));
         subjectService.delete(new SubjectDTO(1L));
-        verify(subjectRepository,times(1)).delete(new SubjectDTO(1L));
+        verify(subjectRepository,times(1)).delete(new Subject(1L));
     }
 }

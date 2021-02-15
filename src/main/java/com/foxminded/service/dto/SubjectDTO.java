@@ -3,14 +3,8 @@ package com.foxminded.service.dto;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "subjects")
 public class SubjectDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_id")
     private Long subjectId;
-    @Column(name = "subject_name")
     private String subjectName;
     public SubjectDTO(Long subjectId, String subjectName){
         this.subjectId = subjectId;
