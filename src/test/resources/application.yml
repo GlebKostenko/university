@@ -1,0 +1,27 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:Test;DB_CLOSE_DELAY=-1
+    username:
+    password:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  application:
+    name: Test Bootstrap Spring Boot
+logging:
+  pattern:
+    console:

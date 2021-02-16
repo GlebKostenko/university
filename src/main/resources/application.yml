@@ -1,0 +1,29 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/university
+    username: root
+    password: root
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  application:
+    name: Bootstrap Spring Boot
+  main:
+    allow-bean-definition-overriding: true
+logging:
+  pattern:
+    console:
+    file: d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+  file: log/tests.log
+  path: log

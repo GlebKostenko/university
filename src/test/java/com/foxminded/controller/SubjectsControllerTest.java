@@ -1,6 +1,7 @@
 package com.foxminded.controller;
 
 import com.foxminded.service.SubjectService;
+import com.foxminded.service.dto.GroupDTO;
 import com.foxminded.service.dto.SubjectDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -29,14 +31,27 @@ class SubjectsControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        mockMvc.perform(get("/subjects/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("subjects/new"));
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        doNothing().when(subjectService).update(new SubjectDTO(1L,"Biology"));
+        mockMvc.perform(patch("/subjects/1").flashAttr("subject",new SubjectDTO("Biology")));
+        verify(subjectService,times(1)).update(new SubjectDTO(1L,"Biology"));
+    }
+    @Test
+    void post_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        when(subjectService.save(new SubjectDTO("Biology"))).thenReturn(new SubjectDTO(1L,"Biology"));
+        mockMvc.perform(post("/subjects").flashAttr("subject",new SubjectDTO("Biology")));
+        verify(subjectService,times(1)).save(new SubjectDTO("Biology"));
     }
 
     @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        doNothing().when(subjectService).delete(new SubjectDTO(1L));
+        mockMvc.perform(delete("/subjects/1"));
+        verify(subjectService,times(1)).delete(new SubjectDTO(1L));
+    }
+
+    @Test
+    void edit_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         given(subjectService.findById(new SubjectDTO(1L))).willReturn(new SubjectDTO(1L,"Math"));
         doNothing().when(subjectService).update(new SubjectDTO(1L,"Math"));
         mockMvc.perform(get("/subjects/1/edit"))

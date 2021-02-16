@@ -25,7 +25,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -39,14 +40,36 @@ class StudentsControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        mockMvc.perform(get("/students/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("students/new"));
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        when(groupService.findAll()).thenReturn(Arrays.asList(new GroupDTO(1L,"fivt")));
+        doNothing().when(studentService).update(new StudentDTO(1L,"Alexey","Romanov",new GroupDTO(1L)));
+        mockMvc.perform(patch("/students/1")
+                        .param("first-name","Alexey")
+                        .param("last-name","Romanov")
+                        .param("group","fivt"));
+        verify(studentService,times(1)).update(new StudentDTO(1L,"Alexey","Romanov",new GroupDTO(1L)));
+    }
+    @Test
+    void post_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        when(groupService.findAll()).thenReturn(Arrays.asList(new GroupDTO(1L,"fivt")));
+        StudentDTO studentDTO = new StudentDTO("Alexey","Romanov",new GroupDTO(1L));
+        when(studentService.save(studentDTO)).thenReturn(studentDTO);
+        mockMvc.perform(post("/students")
+                .param("first-name","Alexey")
+                .param("last-name","Romanov")
+                .param("group","fivt"));
+        verify(studentService,times(1)).save(studentDTO);
     }
 
     @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        doNothing().when(studentService).delete(new StudentDTO(1L));
+        mockMvc.perform(delete("/students/1"));
+        verify(studentService,times(1)).delete(new StudentDTO(1L));
+    }
+
+    @Test
+    void edit_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         given(studentService.findById(new StudentDTO(1L))).willReturn(new StudentDTO(1L,
                 "Alexey",
                 "Romanov",

@@ -22,7 +22,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -36,14 +37,27 @@ class LectureHallsControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void save_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
-        mockMvc.perform(get("/halls/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("halls/new"));
+    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"GK"));
+        mockMvc.perform(patch("/halls/1").flashAttr("hall",new LectureHallDTO("GK")));
+        verify(lectureHallService,times(1)).update(new LectureHallDTO(1L,"GK"));
+    }
+    @Test
+    void post_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        when(lectureHallService.save(new LectureHallDTO("bolishaya"))).thenReturn(new LectureHallDTO(1L,"bolishaya"));
+        mockMvc.perform(post("/halls").flashAttr("hall",new LectureHallDTO("bolishaya")));
+        verify(lectureHallService,times(1)).save(new LectureHallDTO("bolishaya"));
     }
 
     @Test
-    void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+    void delete_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
+        doNothing().when(lectureHallService).delete(new LectureHallDTO(1L));
+        mockMvc.perform(delete("/halls/1"));
+        verify(lectureHallService,times(1)).delete(new LectureHallDTO(1L));
+    }
+
+    @Test
+    void edit_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         given(lectureHallService.findById(new LectureHallDTO(1L))).willReturn(new LectureHallDTO(1L,"202"));
         doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"404"));
         mockMvc.perform(get("/halls/1/edit"))
