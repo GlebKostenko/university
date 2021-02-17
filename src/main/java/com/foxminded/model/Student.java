@@ -3,6 +3,7 @@ package com.foxminded.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -13,8 +14,10 @@ public class Student {
     @Column(name = "student_id")
     private Long studentId;
     @Column(name = "first_name")
+    @NotBlank(message = "student first name is mandatory")
     private String firstName;
     @Column(name = "last_name")
+    @NotBlank(message = "student last name is mandatory")
     private String lastName;
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;

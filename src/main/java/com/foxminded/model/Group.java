@@ -3,6 +3,7 @@ package com.foxminded.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +14,7 @@ public class Group {
     @Column(name = "group_id")
     private Long groupId;
     @Column(name = "group_name")
+    @NotBlank(message = "group name is mandatory")
     private String groupName;
 
     public Group(Long groupId,String groupName){

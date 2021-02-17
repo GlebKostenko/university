@@ -1,6 +1,7 @@
 package com.foxminded.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +12,7 @@ public class Subject {
     @Column(name = "subject_id")
     private Long subjectId;
     @Column(name = "subject_name")
+    @NotBlank(message = "subject name is mandatory")
     private String subjectName;
     public Subject(Long subjectId,String subjectName){
         this.subjectId = subjectId;

@@ -1,6 +1,7 @@
 package com.foxminded.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +12,10 @@ public class Teacher {
     @Column(name = "teacher_id")
     private Long teacherId;
     @Column(name = "first_name")
+    @NotBlank(message = "teacher first name is mandatory")
     private String firstName;
     @Column(name = "last_name")
+    @NotBlank(message = "teacher last name is mandatory")
     private String lastName;
 
     public Teacher(Long teacherId, String firstName, String lastName) {
