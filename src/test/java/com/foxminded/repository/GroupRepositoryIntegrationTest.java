@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -53,5 +55,15 @@ public class GroupRepositoryIntegrationTest {
         groupRepository.save(group);
         List<Group> groups = (List<Group>) groupRepository.findAll();
         assertTrue(!groups.isEmpty());
+    }
+
+    @Test
+    public void findByNameAndUpdate(){
+        Group group = groupRepository.save(new Group("FKN"));
+        Map<String,String> dataForUpdate = new HashMap<>();
+        dataForUpdate.put("group_name","Fivt");
+        groupRepository.findByNameAndUpdate(group.getGroupName(),dataForUpdate);
+        List<Group> groups = (List<Group>) groupRepository.findAll();
+        assertTrue(groups.stream().filter(x -> x.getGroupName().equals("FKN")).collect(Collectors.toList()).isEmpty());
     }
 }

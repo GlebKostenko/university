@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -58,6 +58,15 @@ class GroupServiceTest {
         doNothing().when(groupRepository).delete(new Group(1L));
         groupService.delete(new GroupDTO(1L));
         verify(groupRepository,times(1)).delete(new Group(1L));
+    }
+
+    @Test
+    public void findByNameAndUpdate(){
+        Map<String,String> dataForUpdate = new HashMap<>();
+        dataForUpdate.put("group_name","Fivt");
+        doNothing().when(groupRepository).findByNameAndUpdate("FKN",dataForUpdate);
+        groupService.findByNameAndUpdate("FKN",dataForUpdate);
+        verify(groupRepository,times(1)).findByNameAndUpdate("FKN",dataForUpdate);
     }
 
 }

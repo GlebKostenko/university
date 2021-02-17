@@ -6,6 +6,15 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
+    spring:
+      jpa:
+        properties:
+          hibernate:
+            current_session_context_class=org:
+              springframework:
+                orm:
+                  hibernate5:
+                    SpringSessionContext:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:Test;DB_CLOSE_DELAY=-1

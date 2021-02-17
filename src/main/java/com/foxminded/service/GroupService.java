@@ -3,6 +3,7 @@ package com.foxminded.service;
 import com.foxminded.exception.DomainException;
 import com.foxminded.model.Group;
 import com.foxminded.repository.GroupRepository;
+
 import com.foxminded.service.dto.GroupDTO;
 import org.modelmapper.MappingException;
 import org.modelmapper.ModelMapper;
@@ -12,10 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class GroupService implements ServiceLayer<GroupDTO>{
+public class GroupService implements ServiceLayer<GroupDTO>  {
     private static final Logger logger = LoggerFactory.getLogger(GroupService.class.getSimpleName());
     ModelMapper mapper;
     private GroupRepository groupRepository;
@@ -81,5 +83,9 @@ public class GroupService implements ServiceLayer<GroupDTO>{
             logger.error("Mapping error");
             throw new DomainException("Can't map GroupDTO to Group",e);
         }
+    }
+
+    public void findByNameAndUpdate(String groupName, Map<String ,String> dataFroUpdate) {
+        groupRepository.findByNameAndUpdate(groupName,dataFroUpdate);
     }
 }
