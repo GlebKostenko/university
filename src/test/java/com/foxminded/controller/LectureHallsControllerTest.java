@@ -37,11 +37,24 @@ class LectureHallsControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void saveEmptyHall_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(post("/halls").flashAttr("hall",new LectureHallDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateHallWithEmptyName_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(patch("/halls/1").flashAttr("hall",new LectureHallDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         doNothing().when(lectureHallService).update(new LectureHallDTO(1L,"GK"));
         mockMvc.perform(patch("/halls/1").flashAttr("hall",new LectureHallDTO("GK")));
         verify(lectureHallService,times(1)).update(new LectureHallDTO(1L,"GK"));
     }
+
     @Test
     void post_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         when(lectureHallService.save(new LectureHallDTO("bolishaya"))).thenReturn(new LectureHallDTO(1L,"bolishaya"));

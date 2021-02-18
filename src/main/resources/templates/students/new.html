@@ -10,8 +10,6 @@
             float: left;
             width : 200px;
         }
-        input:focus:required:invalid {background-color: pink; color: white;}
-        input:required:valid {background-color: white; color: black; }
     </style>
 </head>
 <body>
@@ -43,21 +41,16 @@
         </div>
     </div>
 </nav>
-<script>
-    function verify() {
-        document.getElementById("first-name").innerHTML = "input:invalid { border: 1px solid red!important;}input:valid { border: 1px solid green;}";
-        document.getElementById("last-name").innerHTML = "input:invalid { border: 1px solid red!important;}input:valid { border: 1px solid green;}";
-    }
-</script>
+
 <form th:method="POST" th:action="@{/students}" th:object="${student}">
     <label for="first-name">Enter first name: </label>
-    <input name="first-name" type="text" th:value = "*{firstName}" id="first-name" required/>
+    <input name="first-name" type="text" th:value = "*{firstName}" id="first-name"/>
     <br/>
     <label for="last-name">Enter last name: </label>
-    <input name="last-name" type="text" th:value = "*{lastName}" id="last-name" required/>
+    <input name="last-name" type="text" th:value = "*{lastName}" id="last-name"/>
     <br/>
     <label for="all-groups">Choose group : </label>
-    <select id="all-groups" name="group" required>
+    <select id="all-groups" name="group">
         <option selected disabled value="">choose</option>
         <datalist id="groups">
             <div th:each="group : ${groups}">
@@ -66,7 +59,7 @@
         </datalist>
     </select>
     <br/>
-    <input class="btn btn-primary" type="submit" value="Create student" onclick="verify()">
+    <input class="btn btn-primary" type="submit" value="Create student">
 </form>
 
 </body>

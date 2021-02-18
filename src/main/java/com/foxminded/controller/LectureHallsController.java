@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/halls")
 public class LectureHallsController {
@@ -35,7 +37,7 @@ public class LectureHallsController {
     }
 
     @PostMapping()
-    public String save(@ModelAttribute("hall") LectureHallDTO lectureHallDTO){
+    public String save(@Valid @ModelAttribute("hall") LectureHallDTO lectureHallDTO){
         lectureHallService.save(lectureHallDTO);
         return "redirect:/halls";
     }
@@ -47,7 +49,7 @@ public class LectureHallsController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("hall") LectureHallDTO lectureHallDTO,@PathVariable("id") Long id){
+    public String update(@Valid @ModelAttribute("hall") LectureHallDTO lectureHallDTO,@PathVariable("id") Long id){
         lectureHallDTO.setHallId(id);
         lectureHallService.update(lectureHallDTO);
         return "redirect:/halls";

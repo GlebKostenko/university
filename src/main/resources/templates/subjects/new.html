@@ -10,8 +10,6 @@
             float: left;
             width : 200px;
         }
-        input:focus:required:invalid {background-color: pink; color: white;}
-        input:required:valid {background-color: white; color: black; }
     </style>
 </head>
 <body>
@@ -43,16 +41,12 @@
         </div>
     </div>
 </nav>
-<script>
-    function verify() {
-        document.getElementById("name").innerHTML = "input:invalid { border: 1px solid red!important;}input:valid { border: 1px solid green;}";
-    }
-</script>
+
 <form th:method="POST" th:action="@{/subjects}" th:object="${subject}">
     <label for="name">Enter subject name: </label>
-    <input type="text" th:field="*{subjectName}" id="name" required/>
+    <input type="text" th:field="*{subjectName}" id="name"/>
     <br/>
-    <input class="btn btn-primary" type="submit" value="Create subject" onclick="verify()">
+    <input class="btn btn-primary" type="submit" value="Create subject">
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>

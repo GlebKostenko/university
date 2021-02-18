@@ -40,6 +40,24 @@ class StudentsControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void saveEmptyStudent() throws Exception{
+        mockMvc.perform(post("/students")
+                .param("first-name","")
+                .param("last-name","")
+                .param("group",""))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateStudentWithEmptyFirstAndLastName() throws Exception{
+        mockMvc.perform(patch("/students/1")
+                .param("first-name","")
+                .param("last-name","")
+                .param("group","fivt"))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         when(groupService.findAll()).thenReturn(Arrays.asList(new GroupDTO(1L,"fivt")));
         doNothing().when(studentService).update(new StudentDTO(1L,"Alexey","Romanov",new GroupDTO(1L)));

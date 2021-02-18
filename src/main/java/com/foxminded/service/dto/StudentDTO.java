@@ -1,12 +1,16 @@
 package com.foxminded.service.dto;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 
 public class StudentDTO {
     private Long studentId;
+    @NotBlank(message = "student first name is mandatory")
     private String firstName;
+    @NotBlank(message = "student last name is mandatory")
     private String lastName;
     private GroupDTO group;
 

@@ -1,11 +1,13 @@
 package com.foxminded.service.dto;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 
 public class LectureHallDTO {
     private Long hallId;
+    @NotBlank(message = "hall name is mandatory")
     private String hallName;
     public LectureHallDTO(){}
     public LectureHallDTO(Long hallId, String hallName){

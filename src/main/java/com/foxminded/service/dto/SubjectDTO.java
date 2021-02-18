@@ -1,10 +1,11 @@
 package com.foxminded.service.dto;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class SubjectDTO {
     private Long subjectId;
+    @NotBlank(message = "subject name is mandatory")
     private String subjectName;
     public SubjectDTO(Long subjectId, String subjectName){
         this.subjectId = subjectId;

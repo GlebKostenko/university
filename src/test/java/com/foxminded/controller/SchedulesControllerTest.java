@@ -45,6 +45,29 @@ class SchedulesControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void saveEmptySchedule_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(post("/schedules").param("group","")
+                .param("date-time","")
+                .param("duration","")
+                .param("teacher","")
+                .param("hall","")
+                .param("subject",""))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateScheduleWithEmptyParameters_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(patch("/schedules/1")
+                .param("group","fivt")
+                .param("date-time","2021-04-08T12:30")
+                .param("duration","")
+                .param("teacher","Ivan Ivanov")
+                .param("hall","glavnaya")
+                .param("subject","Math"))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         when(groupService.findAll()).thenReturn(Arrays.asList(new GroupDTO(1L,"fivt")));
         when(lectureHallService.findAll()).thenReturn(Arrays.asList(new LectureHallDTO(1L,"glavnaya")));

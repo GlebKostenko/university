@@ -31,6 +31,17 @@ class SubjectsControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void saveEmptySubject_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(post("/subjects").flashAttr("subject",new SubjectDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateSubjectWithEmptyName_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(patch("/subjects/1").flashAttr("subject",new SubjectDTO("")));
+    }
+
+    @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         doNothing().when(subjectService).update(new SubjectDTO(1L,"Biology"));
         mockMvc.perform(patch("/subjects/1").flashAttr("subject",new SubjectDTO("Biology")));

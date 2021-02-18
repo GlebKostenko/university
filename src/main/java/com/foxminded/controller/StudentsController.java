@@ -40,11 +40,11 @@ public class StudentsController {
     }
 
     @PostMapping()
-    public String save(@RequestParam("first-name") String firstName
-                      ,@RequestParam("last-name") String lastName
-                      ,@RequestParam("group") String group){
+    public String save( @RequestParam("first-name") String firstName
+                      , @RequestParam("last-name") String lastName
+                      , @RequestParam("group") String group){
         GroupDTO groupDTO = groupService.findAll().stream().filter((x)->x.getGroupName().equals(group)).findAny().get();
-        studentService.save(new StudentDTO(firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
+        studentService.save(new StudentDTO( firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
         return "redirect:/students";
     }
 

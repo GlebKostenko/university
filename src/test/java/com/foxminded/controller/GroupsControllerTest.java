@@ -3,6 +3,7 @@ package com.foxminded.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foxminded.service.GroupService;
 import com.foxminded.service.dto.GroupDTO;
+import com.foxminded.service.dto.TeacherDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,21 @@ class GroupsControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
     @MockBean
     private GroupService groupService;
+    @Autowired
+    GroupsController groupsController;
+
+
+    @Test
+    void saveEmptyGroup_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(post("/groups").flashAttr("group",new GroupDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateGroupWithEmptyName_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(patch("/groups/1").flashAttr("group",new GroupDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
 
     @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{

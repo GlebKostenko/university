@@ -25,4 +25,11 @@ class ErrorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("exceptions/error-page"));
     }
+
+    @Test
+    void validation() throws Exception{
+        mockMvc.perform(get("/exceptions/validation"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("exceptions/validation/valid"));
+    }
 }

@@ -11,8 +11,6 @@
             float: left;
             width : 200px;
         }
-        input:focus:required:invalid {background-color: pink; color: white;}
-        input:required:valid {background-color: white; color: black; }
     </style>
 </head>
 <body>
@@ -47,7 +45,7 @@
 
 <form th:method="POST" th:action="@{/schedules}" th:object="${schedule}">
     <label for="all-groups">Choose group : </label>
-    <select id="all-groups" name="group" required>
+    <select id="all-groups" name="group">
         <option selected disabled value="">choose</option>
         <datalist id="groups">
             <div th:each="group : ${groups}">
@@ -57,13 +55,13 @@
     </select>
     <br/>
     <label for="date-time">Enter date time: </label>
-    <input name="date-time" type="datetime-local" id="date-time" required/>
+    <input name="date-time" type="datetime-local" id="date-time"/>
     <br/>
     <label for="duration">Enter duration in seconds: </label>
-    <input name="duration" type="number" id="duration" required/>
+    <input name="duration" type="number" id="duration"/>
     <br/>
     <label for="all-teachers">Choose teacher : </label>
-    <select id="all-teachers" name="teacher" required>
+    <select id="all-teachers" name="teacher">
         <option selected disabled value="">choose</option>
         <datalist id="teachers">
             <div th:each="teacher : ${teachers}">
@@ -73,7 +71,7 @@
     </select>
     <br/>
     <label for="all-halls">Choose hall : </label>
-    <select id="all-halls" name="hall" required>
+    <select id="all-halls" name="hall">
         <option selected disabled value="">choose</option>
         <datalist id="halls">
             <div th:each="hall : ${halls}">
@@ -83,7 +81,7 @@
     </select>
     <br/>
     <label for="all-subjects">Choose subject : </label>
-    <select id="all-subjects" name="subject" required>
+    <select id="all-subjects" name="subject">
         <option selected disabled value="">choose</option>
         <datalist id="subjects">
             <div th:each="subject : ${subjects}">

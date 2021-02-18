@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/subjects")
 public class SubjectsController {
@@ -35,7 +37,7 @@ public class SubjectsController {
     }
 
     @PostMapping()
-    public String save(@ModelAttribute("subject") SubjectDTO subjectDTO){
+    public String save(@Valid @ModelAttribute("subject") SubjectDTO subjectDTO){
         subjectService.save(subjectDTO);
         return "redirect:/subjects";
     }
@@ -47,7 +49,7 @@ public class SubjectsController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("subject") SubjectDTO subjectDTO,@PathVariable("id") Long id){
+    public String update(@Valid @ModelAttribute("subject") SubjectDTO subjectDTO,@PathVariable("id") Long id){
         subjectDTO.setSubjectId(id);
         subjectService.update(subjectDTO);
         return "redirect:/subjects";

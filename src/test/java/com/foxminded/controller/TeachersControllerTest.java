@@ -36,6 +36,17 @@ class TeachersControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    void saveEmptyTeacher_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(post("/teachers").flashAttr("teacher",new TeacherDTO("","")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
+    }
+
+    @Test
+    void updateTeacherWithEmptyFirstAndLastName_thenShouldBeRedirectToErrorPage() throws Exception{
+        mockMvc.perform(patch("/teachers/1").flashAttr("teacher",new TeacherDTO("","")));
+    }
+
+    @Test
     void update_WhenAllIsOk_thenShouldBeOneCallWithoutError() throws Exception{
         doNothing().when(teacherService).update(new TeacherDTO(1L,"Petr","Kapronov"));
         mockMvc.perform(patch("/teachers/1").flashAttr("teacher",new TeacherDTO("Petr","Kapronov")));

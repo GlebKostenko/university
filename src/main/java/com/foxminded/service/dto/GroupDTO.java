@@ -2,11 +2,12 @@
 package com.foxminded.service.dto;
 
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class GroupDTO {
     private Long groupId;
+    @NotBlank(message = "group name is mandatory")
     private String groupName;
 
     public GroupDTO(Long groupId, String groupName){

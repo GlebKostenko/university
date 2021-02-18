@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/groups")
 public class GroupsController {
@@ -35,7 +37,7 @@ public class GroupsController {
     }
 
     @PostMapping()
-    public String save(@ModelAttribute("group") GroupDTO groupDTO){
+    public String save(@Valid @ModelAttribute("group") GroupDTO groupDTO){
         groupService.save(groupDTO);
         return "redirect:/groups";
     }
@@ -47,7 +49,7 @@ public class GroupsController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("group") GroupDTO groupDTO,@PathVariable("id") Long id){
+    public String update(@Valid @ModelAttribute("group") GroupDTO groupDTO,@PathVariable("id") Long id){
         groupDTO.setGroupId(id);
         groupService.update(groupDTO);
         return "redirect:/groups";
