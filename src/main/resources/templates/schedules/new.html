@@ -11,6 +11,8 @@
             float: left;
             width : 200px;
         }
+        input:focus:required:invalid {background-color: pink; color: white;}
+        input:required:valid {background-color: white; color: black; }
     </style>
 </head>
 <body>
@@ -45,10 +47,8 @@
 
 <form th:method="POST" th:action="@{/schedules}" th:object="${schedule}">
     <label for="all-groups">Choose group : </label>
-    <select id="all-groups" name="group">
-        <option selected="selected">
-            <p th:text=".....">VALUE</p>
-        </option>
+    <select id="all-groups" name="group" required>
+        <option selected disabled value="">choose</option>
         <datalist id="groups">
             <div th:each="group : ${groups}">
                 <option th:text="${group.getGroupName()}"/>
@@ -57,16 +57,14 @@
     </select>
     <br/>
     <label for="date-time">Enter date time: </label>
-    <input name="date-time" type="datetime-local" id="date-time"/>
+    <input name="date-time" type="datetime-local" id="date-time" required/>
     <br/>
     <label for="duration">Enter duration in seconds: </label>
-    <input name="duration" type="number" id="duration"/>
+    <input name="duration" type="number" id="duration" required/>
     <br/>
     <label for="all-teachers">Choose teacher : </label>
-    <select id="all-teachers" name="teacher">
-        <option selected="selected">
-            <p th:text=".....">VALUE</p>
-        </option>
+    <select id="all-teachers" name="teacher" required>
+        <option selected disabled value="">choose</option>
         <datalist id="teachers">
             <div th:each="teacher : ${teachers}">
                 <option th:text="${teacher.getFirstName() + ' ' + teacher.getLastName()}"/>
@@ -75,10 +73,8 @@
     </select>
     <br/>
     <label for="all-halls">Choose hall : </label>
-    <select id="all-halls" name="hall">
-        <option selected="selected">
-            <p th:text=".....">VALUE</p>
-        </option>
+    <select id="all-halls" name="hall" required>
+        <option selected disabled value="">choose</option>
         <datalist id="halls">
             <div th:each="hall : ${halls}">
                 <option th:text="${hall.getHallName()}"/>
@@ -87,10 +83,8 @@
     </select>
     <br/>
     <label for="all-subjects">Choose subject : </label>
-    <select id="all-subjects" name="subject">
-        <option selected="selected">
-            <p th:text=".....">VALUE</p>
-        </option>
+    <select id="all-subjects" name="subject" required>
+        <option selected disabled value="">choose</option>
         <datalist id="subjects">
             <div th:each="subject : ${subjects}">
                 <option th:text="${subject.getSubjectName()}"/>

@@ -1,7 +1,6 @@
 package com.foxminded.repository;
 
 import com.foxminded.model.Group;
-import com.foxminded.service.dto.GroupDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
