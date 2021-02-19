@@ -22,6 +22,7 @@ public class ErrorController {
     }
 
     @ExceptionHandler({BindException.class,
+            MissingServletRequestParameterException.class,
             ConstraintViolationException.class,
             MethodArgumentTypeMismatchException.class,
             TransactionSystemException.class})

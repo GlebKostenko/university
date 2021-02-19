@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -54,12 +55,12 @@ public class SchedulesController {
     }
 
     @PostMapping()
-    public String save(@RequestParam("group") String group
-                      ,@RequestParam("date-time") String ldt
-                      ,@RequestParam("duration") Integer  duration
-                      ,@RequestParam("teacher") String teacher
-                      ,@RequestParam("hall") String hall
-                      ,@RequestParam("subject") String subject){
+    public String save(@NotBlank @RequestParam("group") String group
+                      ,@NotBlank@RequestParam("date-time") String ldt
+                      ,@NotBlank @RequestParam("duration") Integer  duration
+                      ,@NotBlank @RequestParam("teacher") String teacher
+                      ,@NotBlank @RequestParam("hall") String hall
+                      ,@NotBlank @RequestParam("subject") String subject){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
         GroupDTO groupDTO = groupService.findAll().stream()
@@ -93,12 +94,12 @@ public class SchedulesController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("group") String group,
-                         @RequestParam("date-time") String ldt,
-                         @RequestParam("duration") int duration,
-                         @RequestParam("teacher") String teacher,
-                         @RequestParam("hall") String hall,
-                         @RequestParam("subject") String subject,
+    public String update(@NotBlank @RequestParam("group") String group,
+                         @NotBlank @RequestParam("date-time") String ldt,
+                         @NotBlank @RequestParam("duration") int duration,
+                         @NotBlank @RequestParam("teacher") String teacher,
+                         @NotBlank @RequestParam("hall") String hall,
+                         @NotBlank @RequestParam("subject") String subject,
                          @PathVariable("id") Long id){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(ldt,formatter);
