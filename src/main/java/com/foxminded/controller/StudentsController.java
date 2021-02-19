@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Controller
 @RequestMapping("/students")
 public class StudentsController {
@@ -40,9 +42,9 @@ public class StudentsController {
     }
 
     @PostMapping()
-    public String save( @RequestParam("first-name") String firstName
-                      , @RequestParam("last-name") String lastName
-                      , @RequestParam("group") String group){
+    public String save( @NotBlank @RequestParam("first-name") String firstName
+                      , @NotBlank @RequestParam("last-name") String lastName
+                      , @NotBlank @RequestParam("group") String group){
         GroupDTO groupDTO = groupService.findAll().stream().filter((x)->x.getGroupName().equals(group)).findAny().get();
         studentService.save(new StudentDTO( firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
         return "redirect:/students";
@@ -56,9 +58,9 @@ public class StudentsController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("first-name") String firstName
-                        ,@RequestParam("last-name") String lastName
-                        ,@RequestParam("group") String group
+    public String update(@NotBlank @RequestParam("first-name") String firstName
+                        ,@NotBlank @RequestParam("last-name") String lastName
+                        ,@NotBlank @RequestParam("group") String group
                         ,@PathVariable("id") Long id){
         GroupDTO groupDTO = groupService.findAll().stream().filter((x)->x.getGroupName().equals(group)).findAny().get();
         studentService.update(new StudentDTO(id,firstName,lastName,new GroupDTO(groupDTO.getGroupId())));
