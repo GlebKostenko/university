@@ -41,18 +41,13 @@ class StudentsControllerTest {
 
     @Test
     void saveEmptyStudent() throws Exception{
-        mockMvc.perform(post("/students")
-                .param("first-name","")
-                .param("last-name","")
-                .param("group",""))
+        mockMvc.perform(post("/students"))
                 .andExpect(view().name("redirect:/exceptions/validation"));
     }
 
     @Test
     void updateStudentWithEmptyFirstAndLastName() throws Exception{
         mockMvc.perform(patch("/students/1")
-                .param("first-name","")
-                .param("last-name","")
                 .param("group","fivt"))
                 .andExpect(view().name("redirect:/exceptions/validation"));
     }
