@@ -43,7 +43,8 @@ class TeachersControllerTest {
 
     @Test
     void updateTeacherWithEmptyFirstAndLastName_thenShouldBeRedirectToErrorPage() throws Exception{
-        mockMvc.perform(patch("/teachers/1").flashAttr("teacher",new TeacherDTO("","")));
+        mockMvc.perform(patch("/teachers/1").flashAttr("teacher",new TeacherDTO("","")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
     }
 
     @Test

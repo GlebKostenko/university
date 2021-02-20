@@ -38,7 +38,8 @@ class SubjectsControllerTest {
 
     @Test
     void updateSubjectWithEmptyName_thenShouldBeRedirectToErrorPage() throws Exception{
-        mockMvc.perform(patch("/subjects/1").flashAttr("subject",new SubjectDTO("")));
+        mockMvc.perform(patch("/subjects/1").flashAttr("subject",new SubjectDTO("")))
+                .andExpect(view().name("redirect:/exceptions/validation"));
     }
 
     @Test
