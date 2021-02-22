@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "340ec374-b0f4-4a8a-9940-4c263d195cb7",
+		"name": "Teacher Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/teachers-rest/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Dmitry\",\n        \"lastName\": \"Fridman\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/3",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Dmitry\",\n        \"lastName\": \"Fridman\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Dmitry\",\n        \"lastName\": \"Fridman\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/3",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Dmitry\",\n        \"lastName\": \"Fridman\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Igor\",\n        \"lastName\": \"Veselov\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Nikolay\",\n        \"lastName\": \"Semenov\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/teachers-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"teacherId\": 0,\n        \"firstName\": \"Petr\",\n        \"lastName\": \"Kapronov\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/teachers-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teachers-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

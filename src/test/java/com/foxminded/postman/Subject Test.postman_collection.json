@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "1a9d1832-fc4d-4d2a-a100-a1208e5c1442",
+		"name": "Subject Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/subjects-rest/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Economic\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/subjects-rest/2",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Economic\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/subjects-rest/2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Economic\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/subjects-rest/2",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Economic\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/subjects-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Physics\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/subjects-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"subjectId\": 0,\n        \"subjectName\": \"Math\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/subjects-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subjects-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

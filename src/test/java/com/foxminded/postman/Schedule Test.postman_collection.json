@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "e275a7da-c99d-40c1-9e57-88e15554b5c1",
+		"name": "Schedule Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/schedules-rest/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/schedules-rest/2/",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/2/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/schedules-rest/2/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/2/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/schedules-rest/2/?group=Fivt&date-time=2021-04-08T13:00&duration=5400&teacher=Igor Veselov&hall=Glavnaya fizicheskaya&subject=Economic",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/2/?group=Fivt&date-time=2021-04-08T13:00&duration=5400&teacher=Igor Veselov&hall=Glavnaya fizicheskaya&subject=Economic",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						"2",
+						""
+					],
+					"query": [
+						{
+							"key": "group",
+							"value": "Fivt"
+						},
+						{
+							"key": "date-time",
+							"value": "2021-04-08T13:00"
+						},
+						{
+							"key": "duration",
+							"value": "5400"
+						},
+						{
+							"key": "teacher",
+							"value": "Igor Veselov"
+						},
+						{
+							"key": "hall",
+							"value": "Glavnaya fizicheskaya"
+						},
+						{
+							"key": "subject",
+							"value": "Economic"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/schedules-rest/?group=MehMat&date-time=2021-04-08T12:00&duration=3600&teacher=Igor Veselov&hall=Glavnaya fizicheskaya&subject=Math",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/?group=MehMat&date-time=2021-04-08T12:00&duration=3600&teacher=Igor Veselov&hall=Glavnaya fizicheskaya&subject=Math",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						""
+					],
+					"query": [
+						{
+							"key": "group",
+							"value": "MehMat"
+						},
+						{
+							"key": "date-time",
+							"value": "2021-04-08T12:00"
+						},
+						{
+							"key": "duration",
+							"value": "3600"
+						},
+						{
+							"key": "teacher",
+							"value": "Igor Veselov"
+						},
+						{
+							"key": "hall",
+							"value": "Glavnaya fizicheskaya"
+						},
+						{
+							"key": "subject",
+							"value": "Math"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/schedules-rest/?group=Fivt&date-time=2021-04-08T12:30&duration=5400&teacher=Petr Kapronov&hall=202&subject=Economic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/schedules-rest/?group=Fivt&date-time=2021-04-08T12:30&duration=5400&teacher=Petr Kapronov&hall=202&subject=Economic",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"schedules-rest",
+						""
+					],
+					"query": [
+						{
+							"key": "group",
+							"value": "Fivt"
+						},
+						{
+							"key": "date-time",
+							"value": "2021-04-08T12:30"
+						},
+						{
+							"key": "duration",
+							"value": "5400"
+						},
+						{
+							"key": "teacher",
+							"value": "Petr Kapronov"
+						},
+						{
+							"key": "hall",
+							"value": "202"
+						},
+						{
+							"key": "subject",
+							"value": "Economic"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -19,7 +19,7 @@ public class Student {
     @Column(name = "last_name")
     @NotBlank(message = "student last name is mandatory")
     private String lastName;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Group group;
 
     public Student(Long studentId, String firstName, String lastName, Group group) {

@@ -12,17 +12,17 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id")
     private Long scheduleId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Group group;
     @Column(name = "date_time")
     private LocalDateTime dateTime;
     @Column(name = "duration")
     private int duration;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Teacher teacher;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private LectureHall lectureHall;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Subject subject;
 
     public Schedule(Long scheduleId,Group group, LocalDateTime dateTime, int duration, Teacher teacher, LectureHall lectureHall, Subject subject) {

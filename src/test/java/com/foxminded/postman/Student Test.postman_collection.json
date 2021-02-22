@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "d4e08482-c38a-4d5a-b339-c0baf4071622",
+		"name": "Student Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/students-rest/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/students-rest/2",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/students-rest/2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/students-rest/2/?first-name=Andrey&last-name=Melnikov&group=MehMat",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/2/?first-name=Andrey&last-name=Melnikov&group=MehMat",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						"2",
+						""
+					],
+					"query": [
+						{
+							"key": "first-name",
+							"value": "Andrey"
+						},
+						{
+							"key": "last-name",
+							"value": "Melnikov"
+						},
+						{
+							"key": "group",
+							"value": "MehMat"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/students-rest/?first-name=Andrey&last-name=Melnikov&group=Faki",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/?first-name=Andrey&last-name=Melnikov&group=Faki",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						""
+					],
+					"query": [
+						{
+							"key": "first-name",
+							"value": "Andrey"
+						},
+						{
+							"key": "last-name",
+							"value": "Melnikov"
+						},
+						{
+							"key": "group",
+							"value": "Faki"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/students-rest/?first-name=Alexey&last-name=Romanov&group=Fivt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/students-rest/?first-name=Alexey&last-name=Romanov&group=Fivt",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students-rest",
+						""
+					],
+					"query": [
+						{
+							"key": "first-name",
+							"value": "Alexey"
+						},
+						{
+							"key": "last-name",
+							"value": "Romanov"
+						},
+						{
+							"key": "group",
+							"value": "Fivt"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

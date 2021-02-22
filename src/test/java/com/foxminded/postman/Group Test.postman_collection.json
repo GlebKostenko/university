@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "a64e2988-f975-4bd3-9028-303e31776521",
+		"name": "Group Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/groups-rest/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Fivt\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/2",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Fivt\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Fivt\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/1",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Fivt\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Fupm\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"Faki\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/groups-rest/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"groupId\": 0,\n        \"groupName\": \"MehMat\"\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/groups-rest/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"groups-rest",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
